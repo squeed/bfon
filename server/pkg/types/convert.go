@@ -49,6 +49,17 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			Join: &out,
 		}, nil
 
+	case KindCreateGame:
+		out := MessageCreateGame{}
+		err := m.As(KindCreateGame, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:   string(m.Kind),
+			Create: &out,
+		}, nil
+
 	case KindAddWord:
 		out := MessageAddWord{}
 		err := m.As(KindAddWord, &out)

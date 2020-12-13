@@ -3,17 +3,18 @@ package app
 import (
 	"log"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/squeed/bfon/server/pkg/conn"
 	pgame "github.com/squeed/bfon/server/pkg/game"
 	"github.com/squeed/bfon/server/pkg/types"
 )
 
 func (a *App) processCommand(cmd *types.GameCommand) {
-	log.Printf("cmd kind %s", cmd.Kind)
+	log.Printf("processing cmd %s", spew.Sdump(cmd))
 
 	var connID = cmd.ConnID
 	var userID string
-	var gameID pgame.GameID
+	var gameID string
 
 	var conn *conn.Conn
 	var game *pgame.Game
@@ -31,6 +32,15 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		a.userToConn[userID] = conn
 		a.connToUser[connID] = userID
 
+		if gameID, ok := a.userToGame[userID]; ok {
+			game := a.games[gameID]
+			if game == nil {
+				log.Printf("User's game non-existent", gameID)
+				delete(a.userToGame, gameID)
+				return
+			}
+			a.sendGameState(game.GetState(), userID)
+		}
 		return
 	}
 
@@ -42,19 +52,12 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindJoinGame {
-		gameID = pgame.ParseGameID(cmd.Join.GameName)
-		game := a.games[gameID]
-		if game == nil {
-			log.Printf("Join nonexistent game %s", gameID)
-			// TODO: send response
-			conn.Enqueue(&types.MessageInvalidGame{
-				GameName: string(gameID),
-			})
-			return
-		}
+		a.joinGame(conn, userID, cmd.Join.GameName)
+		return
+	}
 
-		a.userToGame[userID] = gameID
-		a.sendGameState(game.GetState(), userID)
+	if cmd.Kind == types.KindCreateGame {
+		a.createGame(conn, userID, cmd)
 		return
 	}
 
@@ -66,11 +69,17 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindLeaveGame {
+		a.leaveGame(conn, userID)
+	}
+
 	if cmd.Kind == types.KindAddWord {
 		game.AddWord(cmd.AddWord.Word)
-		a.sendGameState(game.GetState(), userID)
+		a.broadcastGameState(game)
 		return
 	}
+
+	log.Printf("Unhandled kind %s", cmd.Kind)
 }
 
 func (a *App) broadcastGameState(game *pgame.Game) {
@@ -89,4 +98,39 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 		return
 	}
 	conn.Enqueue(state)
+}
+
+func (a *App) createGame(conn *conn.Conn, userID string, cmd *types.GameCommand) {
+	if _, ok := a.games[pgame.ParseGameID(cmd.Create.GameName)]; ok {
+		log.Printf("error: create existing game %s", cmd.Create.GameName)
+		return
+	}
+
+	game := pgame.NewGame(cmd.Create.GameName)
+	a.games[game.ID] = game
+
+	a.joinGame(conn, userID, game.Name)
+
+}
+
+func (a *App) joinGame(conn *conn.Conn, userID string, name string) {
+	gameID := pgame.ParseGameID(name)
+	game := a.games[gameID]
+	if game == nil {
+		log.Printf("Join nonexistent game %s", gameID)
+		conn.Enqueue(&types.MessageInvalidGame{
+			GameName: string(gameID),
+		})
+		return
+	}
+
+	a.userToGame[userID] = gameID
+	a.sendGameState(game.GetState(), userID)
+	return
+}
+
+func (a *App) leaveGame(conn *conn.Conn, userID string) {
+	delete(a.userToGame, userID)
+	// TODO: send left-game state
+	return
 }

@@ -3,6 +3,7 @@ package types
 const (
 	KindRegister    = "register"
 	KindJoinGame    = "joinGame"
+	KindCreateGame  = "createGame"
 	KindInvalidGame = "invalidGame"
 	KindGameState   = "gameState"
 	KindLeaveGame   = "leaveGame"
@@ -12,6 +13,7 @@ const (
 var AllMessageKinds = []MessageKind{
 	KindRegister,
 	KindJoinGame,
+	KindCreateGame,
 	KindInvalidGame,
 	KindGameState,
 	KindLeaveGame,

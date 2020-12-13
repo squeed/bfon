@@ -9,13 +9,14 @@ import (
 
 func main() {
 	t := typescriptify.New()
+	t.BackupDir = ""
 
 	t.Add(types.Message{})
 	t.Add(types.MessageGameState{})
 	t.Add(types.MessageRegister{})
 	t.AddEnum(types.AllMessageKinds)
 
-	err := t.ConvertToFile("types.ts")
+	err := t.ConvertToFile("Types.ts")
 	if err != nil {
 		panic(err.Error())
 	}

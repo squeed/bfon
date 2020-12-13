@@ -15,7 +15,7 @@ import (
 type App struct {
 	cmds chan types.GameCommand
 
-	games map[game.GameID]*game.Game
+	games map[string]*game.Game
 
 	// conn id -> connection
 	conns map[uuid.UUID]*conn.Conn
@@ -25,20 +25,20 @@ type App struct {
 	connToUser map[uuid.UUID]string
 
 	// player ID -> Game ID
-	userToGame map[string]game.GameID
+	userToGame map[string]string
 }
 
 func NewApp() *App {
 
 	return &App{
 		cmds:  make(chan types.GameCommand, 10),
-		games: map[game.GameID]*game.Game{},
+		games: map[string]*game.Game{},
 		conns: map[uuid.UUID]*conn.Conn{},
 
 		userToConn: map[string]*conn.Conn{},
 		connToUser: map[uuid.UUID]string{},
 
-		userToGame: map[string]game.GameID{},
+		userToGame: map[string]string{},
 	}
 }
 
