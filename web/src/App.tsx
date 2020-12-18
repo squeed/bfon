@@ -244,3 +244,11 @@ class Team extends React.Component<{team: types.Team}> {
     );
   }
 }
+
+class Guess extends React.Component<{serverState: types.MessageGameState}> {
+  render() {
+    return (
+      <div>TODO</div> 
+    );
+  }
+}
