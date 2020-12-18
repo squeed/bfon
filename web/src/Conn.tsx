@@ -27,6 +27,10 @@ export class Connection {
         }
     }
 
+    public uid(): string {
+        return this.id;
+    }
+
     
 
     public sendCommand(kind: String, data: any) {

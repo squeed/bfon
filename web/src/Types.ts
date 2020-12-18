@@ -48,6 +48,7 @@ export class MessageGameState {
     currentTeam: number;
     words: string[];
     remainingWords: string[];
+    userGuessing?: string;
     deadline?: number;
 
     static createFrom(source: any = {}) {
@@ -63,6 +64,7 @@ export class MessageGameState {
         this.currentTeam = source["currentTeam"];
         this.words = source["words"];
         this.remainingWords = source["remainingWords"];
+        this.userGuessing = source["userGuessing"];
         this.deadline = source["deadline"];
     }
 

@@ -7,6 +7,7 @@ type AppState = {
   connected: boolean;
   gameName: string | undefined;
   gameState: types.MessageGameState | undefined;
+  userID: string | undefined;
 };
 
 const DEBUG_MODE = true;
@@ -19,10 +20,13 @@ class App extends React.Component<{}, AppState> {
       this.setState({
         connected: true,
         gameName: "Crazy Llama",
+        userID: "1111-2222",
         gameState: new types.MessageGameState({
-          name: "pants",
-          ID: "pants",
-          round: -1,
+          name: "Crazy Llama",
+          ID: "crazyllama",
+
+          round: 1,
+
           teams: [
             {
               id: "asdf1",
@@ -34,14 +38,31 @@ class App extends React.Component<{}, AppState> {
               name: "team two",
               score: 2,
             },
+            {
+              id: "asdf3",
+              name: "team three",
+              score: 55,
+            },
+            {
+              id: "asdf4",
+              name: "team four",
+              score: 8,
+            },
           ],
+
+          // set to 0 - 3 to make a certain team active
           currentTeam: -1,
+
+          //userGuessing: "1111-2222"
+          //deadline: 1707980688
+
           words: ["poopoo", "caca"],
           remainingWords: ["caca"],
         }),
       });
       return;
     }
+
     this.conn = new Connection(
       "ws://127.0.0.1:8080/ws",
       () => this.onConnect(),
@@ -61,6 +82,7 @@ class App extends React.Component<{}, AppState> {
     this.setState({
       gameState: st,
       gameName: st.name,
+      userID: this.conn?.uid(),
     });
   }
 
@@ -78,6 +100,8 @@ class App extends React.Component<{}, AppState> {
       this.setState(st);
       return;
     }
+
+
     if (!this.conn) {
       console.log("not connected");
       return;
@@ -139,6 +163,35 @@ type GameProps = {
 };
 
 class Game extends React.Component<GameProps> {
+  
+
+  render() {
+    const ss = this.props.serverState;
+    
+    return (
+      <div id="game">
+        <div>Hey, it's game {ss.name} </div>
+        {
+          ss.round === -1 &&
+          <div>Team picker goes here</div>
+        }
+        {
+          ss.round === 0 &&
+          <WordList words={ss.words} addWord={this.props.addWord} />
+        }
+        {
+          ss.round > 0 && ss.round <= 3 &&
+          <div>
+            <TeamList serverState={ss} />
+            <div>Guessing widget goes here</div>
+          </div>
+        }
+      </div>
+    );
+  }
+}
+
+class WordList extends React.Component<{words: string[], addWord: (word: string) => void}>{
   inputRef = React.createRef<HTMLInputElement>();
 
   addWord(evt: React.FormEvent<HTMLFormElement>) {
@@ -149,14 +202,13 @@ class Game extends React.Component<GameProps> {
     }
   }
 
-  render() {
-    const ss = this.props.serverState;
-    const wordsList = this.props.serverState.words.map((word) => (
+  render(){
+    const wordsList = this.props.words.map((word) => (
       <li key={word}>{word}</li>
     ));
+
     return (
-      <div id="game">
-        <div>Hey, it's game {ss.name} </div>
+      <div>
         Words in this game:
         <ul>{wordsList}</ul>
         <form onSubmit={(e) => this.addWord(e)}>
@@ -165,21 +217,29 @@ class Game extends React.Component<GameProps> {
           </label>
           <input type="submit" value="Submit" />
         </form>
+
       </div>
-    );
-  }
+    )
+  };
 }
 
-type TeamProps = {
-  name: string;
-  score: number;
-};
+class TeamList extends React.Component<{serverState: types.MessageGameState}> {
+  render(){
+    const ss = this.props.serverState;
+    const teams = ss.teams.map((team) => (
+      <Team team={team} />
+    ));
+    return (<div>{teams}</div>);
+  }
 
-class Team extends React.Component<TeamProps> {
+}
+
+class Team extends React.Component<{team: types.Team}> {
   render() {
+    const t = this.props.team;
     return (
       <div>
-        Team {this.props.name} has score {this.props.score}.
+        Team "{t.name}" has score {t.score}.
       </div>
     );
   }

@@ -43,7 +43,8 @@ type MessageGameState struct {
 	Words          []string `json:"words"`
 	RemainingWords []string `json:"remainingWords"`
 
-	Deadline int `json:"deadline,omitempty"`
+	UserGuessing string `json:"userGuessing,omitempty"`
+	Deadline     int    `json:"deadline,omitempty"`
 }
 
 type Team struct {
