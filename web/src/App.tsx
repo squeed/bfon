@@ -1,5 +1,7 @@
 import React from "react";
-import "./Game.css";
+import "./styles/Game.scss";
+import "./styles/App.scss";
+
 import * as types from "./Types";
 import { Connection } from "./Conn";
 
@@ -19,7 +21,7 @@ class App extends React.Component<{}, AppState> {
     if (DEBUG_MODE) {
       this.setState({
         connected: true,
-        gameName: "Crazy Llama",
+        gameName: "crazy llama",
         userID: "1111-2222",
         gameState: new types.MessageGameState({
           name: "Crazy Llama",
@@ -51,10 +53,10 @@ class App extends React.Component<{}, AppState> {
           ],
 
           // set to 0 - 3 to make a certain team active
-          currentTeam: -1,
-
-          //userGuessing: "1111-2222"
-          //deadline: 1707980688
+          currentTeam: 1,
+          // say "nobody is guessing" by commenting this next line out
+         // userGuessing: "1111-2222",
+          deadline: 1707980688,
 
           words: ["poopoo", "caca"],
           remainingWords: ["caca"],
@@ -134,10 +136,27 @@ class App extends React.Component<{}, AppState> {
     if (!this.state.gameName) {
       return (
         <div>
+          <div className="gametitle">
+          <h1>Bowl Full of Nouns</h1>
+          <h3>A remote party game for 4-20 people</h3>
+          </div>
+          <div className="launchoptions">
+            <label htmlFor="gamepw">Enter password</label>
+            <input id="gamepw" ></input>
+            <button onClick={() => console.log("password entered")}>
+            <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            </button>
+            <p>or</p>
           <button onClick={() => this.createGame("pants")}>
             {" "}
-            Create Pants Game
+            Create Game
           </button>
+          </div>
+          <div className="launchfooter">
+            <p><a href="">How to play</a></p>
+            <p>By <a href="http://molly.is">Molly</a> and <a href="http://caseyc.net">Casey</a>, Christmas 2020.</p>
+          </div>
+          
         </div>
       );
     }
@@ -163,14 +182,12 @@ type GameProps = {
 };
 
 class Game extends React.Component<GameProps> {
-  
-
   render() {
     const ss = this.props.serverState;
     
     return (
       <div id="game">
-        <div>Hey, it's game {ss.name} </div>
+        <GameHeader gameName={ss.name}></GameHeader>
         {
           ss.round === -1 &&
           <div>Team picker goes here</div>
@@ -182,8 +199,11 @@ class Game extends React.Component<GameProps> {
         {
           ss.round > 0 && ss.round <= 3 &&
           <div>
-            <TeamList serverState={ss} />
+            <TeamList serverState={ss} /> 
             <div>Guessing widget goes here</div>
+            <Bowl 
+            words={ss.words.length}
+            remainingWords={ss.remainingWords.length}/>
           </div>
         }
       </div>
@@ -227,20 +247,31 @@ class TeamList extends React.Component<{serverState: types.MessageGameState}> {
   render(){
     const ss = this.props.serverState;
     const teams = ss.teams.map((team) => (
-      <Team team={team} />
+      <Team team={team} 
+        active={false} />
     ));
+    
     return (<div>{teams}</div>);
   }
 
 }
 
-class Team extends React.Component<{team: types.Team}> {
+class Team extends React.Component<{team: types.Team, active: boolean}> {
   render() {
     const t = this.props.team;
     return (
-      <div>
-        Team "{t.name}" has score {t.score}.
+      <div className="teamRow">
+        <p className="teamName">{t.name}</p><p className="teamScore"> {t.score}</p>
       </div>
+    );
+  }
+}
+
+class Bowl extends React.Component<{words:number, remainingWords:number}> {
+  render() {
+    
+    return (
+      <div className="bowl"><span className="remainingWords">{this.props.remainingWords}</span> / <span className="words">{this.props.words}</span></div> 
     );
   }
 }
@@ -252,3 +283,63 @@ class Guess extends React.Component<{serverState: types.MessageGameState}> {
     );
   }
 }
+
+class GameHeader extends React.Component<{gameName:string}, {showSettings: boolean}> {
+  constructor(props: {gameName: string}){
+    super(props);
+    this.state = {showSettings: false};
+  }
+
+  toggleSettings() {
+    this.setState(
+      {showSettings: !this.state.showSettings}
+    );
+  }
+
+  render(){
+    return(
+      <div className="gameHeader"><p className="gameTitle"> Bowl Full of Nouns</p><p className="gameName">{this.props.gameName}</p><p className="gameSettings">
+        <i className="fa fa-cog"
+          onClick={() => this.toggleSettings()}
+        ></i>
+      { this.state.showSettings && (<GameMenu />)}
+      </p></div>
+    )
+  }
+}
+
+class GameMenu extends React.Component {
+  render(){
+    return(
+      <div className="gameMenu">
+        <ul>
+          <li><a href="">Reset Round</a></li>
+          <li><a href="">End Game</a></li>
+        </ul>
+      </div>
+    )
+  }
+}
+
+class Instructions extends React.Component {
+  render() {
+    return (
+      <div><div className="gameInstructions">
+      <p>Everybody puts some nouns in the bowl. Proper nouns are okay (Billie Eilish, Nigeria, Zeus). Noun phrases are okay as long as they usually belong together (sauvignon blanc, dumpster fire, taxi driver). Being complicated just to be tricky is not okay (silver pickle fork, sleeping tomcat, left sock).</p>
+      <p>Players are divided into teams.</p>
+      <p>The game consists of 3 rounds. In each round, teams take turns appointing a cluemeister to help them guess words. The cluemeister draws nouns from the bowl and attempts to get the rest of their team to guess as many nouns as possible in a limited time. When the bowl is empty, the round is over.</p>
+      <dl><dt>Round 1</dt><dd>The cluemeister can say anything they want to help their teammates guess the clue.</dd>
+      <dt>Round 2</dt><dd>The cluemeister can only say ONE (1) word and can't make extra noises or motions.</dd>
+      <dt>Round 3</dt><dd>The cluemeister can't say anything, but can make motions.</dd>
+      </dl>
+      <h3>Giving up</h3>
+      <p>There is no "passing." If the cluemeister gives up, the team's turn is over.</p>
+      <h3>Leftover time</h3>
+      <p>If a team ends a round with time still on the clock, that team begins the next round with a shortened turn. Their remaining time carries over to the next round.</p>
+      <h3>Scoring</h3>
+      <p>Each correctly guessed noun is worth 1 point. The game corrects for any unfairness in case one team got more play time than other teams.</p>
+    </div></div> 
+    );
+  }
+}
+
