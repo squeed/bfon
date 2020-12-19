@@ -4,6 +4,7 @@ import "./styles/App.scss";
 
 import * as types from "./Types";
 import { Connection } from "./Conn";
+import bowl from './img/bowl.svg';
 
 type AppState = {
   connected: boolean;
@@ -271,7 +272,8 @@ class Bowl extends React.Component<{words:number, remainingWords:number}> {
   render() {
     
     return (
-      <div className="bowl"><span className="remainingWords">{this.props.remainingWords}</span> / <span className="words">{this.props.words}</span></div> 
+      <div className="bowl"><p className="remainingWords">{this.props.remainingWords}</p> / <p className="words">{this.props.words}</p>
+      <img src={bowl} ></img></div> 
     );
   }
 }
