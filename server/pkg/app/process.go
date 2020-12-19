@@ -2,6 +2,7 @@ package app
 
 import (
 	"log"
+	"time"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/squeed/bfon/server/pkg/conn"
@@ -14,10 +15,28 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 
 	var connID = cmd.ConnID
 	var userID string
-	var gameID string
 
 	var conn *conn.Conn
 	var game *pgame.Game
+
+	var err error
+
+	// synthetic event sent on alarmclock
+	if cmd.Kind == "Deadline" {
+		game, err := a.store.GetGame(cmd.Deadline.GameID)
+		if err != nil {
+			log.Printf("error getting game: %v", err)
+			return
+		}
+		game.EndTurn(cmd.Deadline.Round)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("failed to save game: %v", err)
+			return
+		}
+
+		a.broadcastGameState(game)
+		return
+	}
 
 	conn = a.conns[connID]
 
@@ -32,13 +51,8 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		a.userToConn[userID] = conn
 		a.connToUser[connID] = userID
 
-		if gameID, ok := a.userToGame[userID]; ok {
-			game := a.games[gameID]
-			if game == nil {
-				log.Printf("User's game non-existent", gameID)
-				delete(a.userToGame, gameID)
-				return
-			}
+		game, err := a.store.GetUserGame(userID)
+		if err == nil {
 			a.sendGameState(game.GetState(), userID)
 		}
 		return
@@ -62,20 +76,50 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	// At this point, must have valid game
-	gameID = a.userToGame[userID]
-	game = a.games[gameID]
-	if game == nil {
-		log.Printf("User %s game %s is null", userID, gameID)
+	game, err = a.store.GetUserGame(userID)
+	if err != nil {
+		log.Printf("User %s game is null %v", userID, err)
 		return
 	}
 
 	if cmd.Kind == types.KindLeaveGame {
 		a.leaveGame(conn, userID)
+		return
 	}
 
 	if cmd.Kind == types.KindAddWord {
 		game.AddWord(cmd.AddWord.Word)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("addword failed: %v", err)
+			return
+		}
+
 		a.broadcastGameState(game)
+		return
+	}
+
+	if cmd.Kind == types.KindStartTurn {
+		msg := game.StartTurn(userID, cmd.StartTurn.SeqNumber)
+		if msg == nil {
+			return
+		}
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("startguess failed: %v", err)
+			return
+		}
+		a.broadcastGameState(game)
+		t := game.DeadlineTime()
+		if t == nil {
+			return
+		}
+
+		time.AfterFunc(time.Until(*t), func() {
+			log.Printf("Deadline expired, queuing...")
+			a.cmds <- types.GameCommand{
+				Kind:     "Deadline",
+				Deadline: msg,
+			}
+		})
 		return
 	}
 
@@ -84,11 +128,14 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 
 func (a *App) broadcastGameState(game *pgame.Game) {
 	msg := game.GetState()
+	userIDs, err := a.store.GetGameUsers(game.ID)
+	if err != nil {
+		log.Printf("ERROR broadcast game state: %v", err)
+		return
+	}
 
-	for userID, userGameID := range a.userToGame {
-		if userGameID == game.ID {
-			a.sendGameState(msg, userID)
-		}
+	for _, userID := range userIDs {
+		a.sendGameState(msg, userID)
 	}
 }
 
@@ -101,36 +148,41 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 }
 
 func (a *App) createGame(conn *conn.Conn, userID string, cmd *types.GameCommand) {
-	if _, ok := a.games[pgame.ParseGameID(cmd.Create.GameName)]; ok {
+	if _, err := a.store.GetGame(cmd.Create.GameName); err == nil {
 		log.Printf("error: create existing game %s", cmd.Create.GameName)
 		return
 	}
 
 	game := pgame.NewGame(cmd.Create.GameName)
-	a.games[game.ID] = game
+	if err := a.store.SetGame(game); err != nil {
+		log.Printf("failed to join game: %v", err)
+		return
+	}
 
 	a.joinGame(conn, userID, game.Name)
-
 }
 
 func (a *App) joinGame(conn *conn.Conn, userID string, name string) {
 	gameID := pgame.ParseGameID(name)
-	game := a.games[gameID]
-	if game == nil {
+	game, err := a.store.GetGame(gameID)
+
+	if err != nil {
 		log.Printf("Join nonexistent game %s", gameID)
 		conn.Enqueue(&types.MessageInvalidGame{
 			GameName: string(gameID),
 		})
 		return
 	}
+	err = a.store.SetUserGame(userID, gameID)
+	if err != nil {
+		log.Printf("Game join failed: %v", err)
+		return
+	}
 
-	a.userToGame[userID] = gameID
 	a.sendGameState(game.GetState(), userID)
-	return
 }
 
 func (a *App) leaveGame(conn *conn.Conn, userID string) {
-	delete(a.userToGame, userID)
+	_ = a.store.SetUserGame(userID, "")
 	// TODO: send left-game state
-	return
 }

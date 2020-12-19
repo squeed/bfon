@@ -5,18 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gorilla/websocket"
-
 	"github.com/squeed/bfon/server/pkg/app"
 )
 
 var addr = flag.String("addr", ":8080", "websocket address")
-
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin:     func(_ *http.Request) bool { return true },
-}
 
 func main() {
 

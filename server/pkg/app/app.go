@@ -7,15 +7,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 
+	"github.com/squeed/bfon/server/pkg/app/store"
 	"github.com/squeed/bfon/server/pkg/conn"
-	"github.com/squeed/bfon/server/pkg/game"
 	"github.com/squeed/bfon/server/pkg/types"
 )
 
 type App struct {
 	cmds chan types.GameCommand
 
-	games map[string]*game.Game
+	store store.Store
 
 	// conn id -> connection
 	conns map[uuid.UUID]*conn.Conn
@@ -23,22 +23,18 @@ type App struct {
 	// player id -> connection
 	userToConn map[string]*conn.Conn
 	connToUser map[uuid.UUID]string
-
-	// player ID -> Game ID
-	userToGame map[string]string
 }
 
 func NewApp() *App {
 
 	return &App{
+		store: store.NewMemStore(),
+
 		cmds:  make(chan types.GameCommand, 10),
-		games: map[string]*game.Game{},
 		conns: map[uuid.UUID]*conn.Conn{},
 
 		userToConn: map[string]*conn.Conn{},
 		connToUser: map[uuid.UUID]string{},
-
-		userToGame: map[string]string{},
 	}
 }
 

@@ -56,7 +56,7 @@ func (c *Conn) Enqueue(msg types.Messageable) {
 func (c *Conn) readPump() {
 	defer c.close()
 	c.ws.SetReadLimit(maxMessageSize)
-	c.ws.SetReadDeadline(time.Now().Add(pongWait))
+	_ = c.ws.SetReadDeadline(time.Now().Add(pongWait))
 	c.ws.SetPongHandler(c.pong)
 	for {
 		m := &types.Message{}
@@ -78,7 +78,7 @@ func (c *Conn) readPump() {
 	log.Printf("read pump done")
 }
 func (c *Conn) pong(_ string) error {
-	c.ws.SetReadDeadline(time.Now().Add(pongWait))
+	_ = c.ws.SetReadDeadline(time.Now().Add(pongWait))
 	return nil
 }
 
@@ -91,9 +91,9 @@ func (c *Conn) writePump() {
 	for {
 		select {
 		case msg, ok := <-c.queue:
-			c.ws.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = c.ws.SetWriteDeadline(time.Now().Add(writeWait))
 			if !ok {
-				c.ws.WriteMessage(websocket.CloseMessage, []byte{})
+				_ = c.ws.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 
@@ -106,7 +106,7 @@ func (c *Conn) writePump() {
 			log.Printf("Sent message %s to connection %s", message.Kind, c.id)
 
 		case <-ticker.C:
-			c.ws.SetWriteDeadline(time.Now().Add(writeWait))
+			_ = c.ws.SetWriteDeadline(time.Now().Add(writeWait))
 			if err := c.ws.WriteMessage(websocket.PingMessage, nil); err != nil {
 				log.Printf("failed to send ws ping to conn %s: %v", c.id, err)
 				return
