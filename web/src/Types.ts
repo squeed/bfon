@@ -9,6 +9,7 @@ export enum MessageKind {
     gameState = "gameState",
     leaveGame = "leaveGame",
     addWord = "addWord",
+    startTurn = "startTurn",
 }
 export class Message {
     kind: MessageKind;
@@ -25,7 +26,6 @@ export class Message {
     }
 }
 export class Team {
-    id: string;
     name: string;
     score: number;
 
@@ -35,7 +35,6 @@ export class Team {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        this.id = source["id"];
         this.name = source["name"];
         this.score = source["score"];
     }
@@ -43,6 +42,7 @@ export class Team {
 export class MessageGameState {
     name: string;
     ID: string;
+    seqNumber: number;
     round: number;
     teams: Team[];
     currentTeam: number;
@@ -50,6 +50,7 @@ export class MessageGameState {
     remainingWords: string[];
     userGuessing?: string;
     deadline?: number;
+    timeRemaining?: number;
 
     static createFrom(source: any = {}) {
         return new MessageGameState(source);
@@ -59,6 +60,7 @@ export class MessageGameState {
         if ('string' === typeof source) source = JSON.parse(source);
         this.name = source["name"];
         this.ID = source["ID"];
+        this.seqNumber = source["seqNumber"];
         this.round = source["round"];
         this.teams = this.convertValues(source["teams"], Team);
         this.currentTeam = source["currentTeam"];
@@ -66,6 +68,7 @@ export class MessageGameState {
         this.remainingWords = source["remainingWords"];
         this.userGuessing = source["userGuessing"];
         this.deadline = source["deadline"];
+        this.timeRemaining = source["timeRemaining"];
     }
 
 	convertValues(a: any, classs: any, asMap: boolean = false): any {
