@@ -1,8 +1,28 @@
+/* ----------- VARIABLES ----------- */
+
+@font-face {
+    font-family: WorkSans;
+    src: url(WorkSans-VariableFont_wght.ttf);
+}
+@font-face {
+    font-family: Poppins;
+    src: url(Poppins-Medium.ttf);
+}
+
+/* --- colors --- */
+$white: #fff;
+
+/* ----------- BASE STYLES ----------- */
+
 body {
-    font: 14px "Century Gothic", Futura, sans-serif;
+    font: 14px "Poppins", Futura, sans-serif;
     margin: 20px;
   }
-  
+  h1 {
+      font-family: WorkSans;
+      font-size: 2em;
+  }
+
   ol, ul {
     padding-left: 30px;
   }
