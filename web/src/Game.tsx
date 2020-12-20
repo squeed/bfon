@@ -25,11 +25,11 @@ type GameProps = {
             <div>Team picker goes here</div>
           }
           {
-            ss.round === 0 &&
+            ss.round <= 0 &&
             <WordList words={ss.words} addWord={this.props.addWord} />
           }
           {
-            ss.round > 0 && ss.round <= 3 &&
+            ss.round > 0 && ss.round <= 4 &&
             <div>
               <TeamList serverState={ss} /> 
               <div>Guessing widget goes here</div>

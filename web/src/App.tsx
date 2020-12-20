@@ -18,6 +18,7 @@ const DEBUG_MODE = true;
 
 class App extends React.Component<{}, AppState> {
   conn: Connection | undefined;
+  passwordInputRef = React.createRef<HTMLInputElement>();
 
   componentDidMount() {
     if (DEBUG_MODE) {
@@ -114,7 +115,18 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
-  createGame(name: string) {
+  createGame() {
+    const node = this.passwordInputRef.current
+    if (!node){
+      console.log("BUG: missing node");
+      return;
+    }
+    const name = node.value;
+    if (name === "") {
+      console.log("Ignoring empty password");
+      return
+    }
+
     this.setState({
       gameState: undefined,
       gameName: name,
@@ -125,6 +137,30 @@ class App extends React.Component<{}, AppState> {
     }
 
     this.conn.sendCommand("createGame", { gameName: name });
+  }
+
+  joinGame(){
+    const node = this.passwordInputRef.current
+    if (!node){
+      console.log("BUG: missing node");
+      return;
+    }
+    const name = node.value;
+    if (name === "") {
+      console.log("Ignoring empty password");
+      return
+    }
+
+    this.setState({
+      gameState: undefined,
+      gameName: name,
+    });
+    if (!this.conn) {
+      console.log("not connected");
+      return;
+    }
+
+    this.conn.sendCommand("joinGame", { gameName: name });
   }
 
   render() {
@@ -139,16 +175,17 @@ class App extends React.Component<{}, AppState> {
           <h3>A remote party game for 4-20 people</h3>
           </div>
           <div className="launchoptions">
-            <label htmlFor="gamepw">Enter password</label>
-            <input id="gamepw" ></input>
-            <button onClick={() => console.log("password entered")}>
-            <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            <label htmlFor="gamepw">Enter password:</label>
+            <input id="gamepw" ref={this.passwordInputRef} ></input>
+            <p>
+            <button onClick={() => this.joinGame()}>
+              Join <i className="fa fa-arrow-right" aria-hidden="true"></i>
             </button>
-            <p>or</p>
-          <button onClick={() => this.createGame("pants")}>
-            {" "}
-            Create Game
-          </button>
+            or
+            <button onClick={() => this.createGame()}>
+              Create <i className="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </p>
           </div>
           <div className="launchfooter">
             <p><a href="">How to play</a></p>
