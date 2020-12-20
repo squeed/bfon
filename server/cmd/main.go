@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 
 	"github.com/squeed/bfon/server/pkg/app"
 )
@@ -14,6 +16,7 @@ func main() {
 
 	flag.Parse()
 
+	rand.Seed(time.Now().Unix())
 	a := app.NewApp()
 
 	http.HandleFunc("/ws", a.HandleWS)

@@ -50,7 +50,7 @@ func TestTurn(t *testing.T) {
 			CurrentTeam: 1,
 
 			Words:          []string{"a", "b", "c"},
-			RemainingWords: []string{"b", "a"},
+			RemainingWords: []string{"a", "b", "c"},
 		},
 	}
 
@@ -64,17 +64,17 @@ func TestTurn(t *testing.T) {
 		Round:  1,
 	}, msg)
 
-	// false guess
-	g.GuessWord(43, false)
-
-	assert.Equal(t, uint(3), g.Teams[1].Score)
-	assert.Equal(t, []string{"a", "b"}, g.RemainingWords)
-
 	// correct guess
-	g.GuessWord(44, true)
+	g.GuessWord(43, "b")
 
 	assert.Equal(t, uint(4), g.Teams[1].Score)
-	assert.Equal(t, []string{"b"}, g.RemainingWords)
+	assert.Equal(t, []string{"a", "c"}, g.RemainingWords)
+	assert.Equal(t, 44, g.SeqNumber)
+
+	g.GuessWord(44, "c")
+
+	assert.Equal(t, uint(5), g.Teams[1].Score)
+	assert.Equal(t, []string{"a"}, g.RemainingWords)
 	assert.Equal(t, 45, g.SeqNumber)
 
 	// End the turn
@@ -92,12 +92,12 @@ func TestTurn(t *testing.T) {
 
 				Teams: []types.Team{
 					{Name: "A", Score: 1},
-					{Name: "B", Score: 4},
+					{Name: "B", Score: 5},
 				},
 				CurrentTeam: 0,
 
 				Words:          []string{"a", "b", "c"},
-				RemainingWords: []string{"b"},
+				RemainingWords: []string{"a"},
 			},
 		}, g,
 	)
@@ -106,15 +106,11 @@ func TestTurn(t *testing.T) {
 	g.StartTurn("4141", 46)
 
 	// Guess last word
-	g.GuessWord(47, true)
+	g.GuessWord(47, "a")
 
-	assert.Len(t, g.RemainingWords, 3)
-	assert.Len(t, g.Words, 3)
-	assert.ElementsMatch(t, g.RemainingWords, g.Words)
 	assert.Greater(t, g.TimeRemaining, 0)
 
 	// Undo the randomness so we can test
-	g.RemainingWords = g.Words
 	g.TimeRemaining = 80
 
 	assert.Equal(t,
@@ -128,7 +124,7 @@ func TestTurn(t *testing.T) {
 
 				Teams: []types.Team{
 					{Name: "A", Score: 2},
-					{Name: "B", Score: 4},
+					{Name: "B", Score: 5},
 				},
 				CurrentTeam: 0,
 

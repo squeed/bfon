@@ -28,7 +28,7 @@ type MessageInvalidGame struct {
 }
 
 type MessageAddTeam struct {
-	Name string `json:"word"`
+	Name string `json:"name"`
 }
 
 type MessageAddWord struct {
@@ -40,8 +40,8 @@ type MessageStartTurn struct {
 }
 
 type MessageGuess struct {
-	SeqNumber int  `json:"seqNumber"`
-	Correct   bool `json:"correct"`
+	SeqNumber int    `json:"seqNumber"`
+	Word      string `json:"word"`
 }
 
 type MessageGameState struct {

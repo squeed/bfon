@@ -2,7 +2,6 @@ package game
 
 import (
 	"log"
-	"math/rand"
 	"strings"
 	"time"
 
@@ -24,7 +23,7 @@ func NewGame(name string) *Game {
 			Name: name,
 			ID:   ParseGameID(name),
 
-			Round: -1,
+			Round: 0, // add words and teams
 
 			Teams:       []types.Team{},
 			CurrentTeam: -1,
@@ -59,6 +58,10 @@ func (g *Game) DeadlineTime() *time.Time {
 }
 
 func (g *Game) AddTeam(name string) {
+	if g.Round > 0 {
+		log.Printf("rejecting AddTeam, round %d", g.Round)
+		return
+	}
 	g.Teams = append(g.Teams, types.Team{
 		Name:  name,
 		Score: 0,
@@ -122,8 +125,8 @@ func (g *Game) EndTurn(round int) {
 	g.CurrentTeam = (g.CurrentTeam + 1) % len(g.Teams)
 }
 
-func (g *Game) GuessWord(seqNo int, correct bool) {
-	log.Println("guessWord")
+func (g *Game) GuessWord(seqNo int, word string) {
+	log.Println("GuessWord")
 	if g.SeqNumber != seqNo {
 		log.Println("weird - word guess had incorrect seqno")
 		return
@@ -133,24 +136,22 @@ func (g *Game) GuessWord(seqNo int, correct bool) {
 		return
 	}
 
-	g.SeqNumber++
-
-	if !correct {
-		if len(g.RemainingWords) == 1 {
-			return
+	found := false
+	for _, w := range g.RemainingWords {
+		if w == word {
+			found = true
+			break
 		}
-
-		// move beginning to end
-		beginning := g.RemainingWords[0]
-		g.RemainingWords = g.RemainingWords[1:]
-		g.RemainingWords = append(g.RemainingWords, beginning)
+	}
+	if !found {
+		log.Printf("Weird - word guess of nonexistent word %s", word)
+		return
 	}
 
-	if correct {
-		g.Teams[g.CurrentTeam].Score++
-	}
+	g.SeqNumber++
+	g.Teams[g.CurrentTeam].Score++
 
-	if correct && len(g.RemainingWords) == 1 {
+	if len(g.RemainingWords) == 1 {
 		g.RemainingWords = []string{}
 		// compute clock remaining
 		remaining := time.Until(*g.DeadlineTime()).Seconds()
@@ -158,19 +159,17 @@ func (g *Game) GuessWord(seqNo int, correct bool) {
 		return
 	}
 
-	if correct {
-		g.RemainingWords = g.RemainingWords[1:]
+	words := make([]string, 0, len(g.RemainingWords)-1)
+	for _, w := range g.RemainingWords {
+		if w != word {
+			words = append(words, w)
+		}
 	}
+	g.RemainingWords = words
 }
 
 // EndRound moves to the next round - called when the bowl is empty
 func (g *Game) NextRound(remainingTime int) {
-	// team creation to word addition
-	if g.Round == -1 {
-		g.Round = 0
-		return
-	}
-
 	g.Round++
 	if g.Round == 4 {
 		// game over
@@ -180,12 +179,12 @@ func (g *Game) NextRound(remainingTime int) {
 	// shuffle words
 	g.RemainingWords = append([]string{}, g.Words...)
 
-	rand.Shuffle(len(g.RemainingWords), func(i, j int) {
-		g.RemainingWords[i], g.RemainingWords[j] = g.RemainingWords[j], g.RemainingWords[i]
-	})
-
 	// Stop guessing
 	g.TimeRemaining = remainingTime
 	g.UserGuessing = ""
 	g.Deadline = 0
+
+	if g.CurrentTeam == -1 {
+		g.CurrentTeam = 0
+	}
 }

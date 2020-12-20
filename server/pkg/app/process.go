@@ -88,13 +88,36 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindAddTeam {
-		// TODO: add team
+		game.AddTeam(cmd.AddTeam.Name)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("AddTeam failed: %v", err)
+			return
+		}
+
+		a.broadcastGameState(game)
+		return
 	}
 
 	if cmd.Kind == types.KindAddWord {
 		game.AddWord(cmd.AddWord.Word)
 		if err := a.store.SetGame(game); err != nil {
 			log.Printf("addword failed: %v", err)
+			return
+		}
+
+		a.broadcastGameState(game)
+		return
+	}
+
+	if cmd.Kind == types.KindStartGame {
+		if game.Round != 0 {
+			log.Println("starting already started game")
+			return
+		}
+		game.NextRound(0)
+
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("StartGame failed: %v", err)
 			return
 		}
 
@@ -128,7 +151,11 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindGuess {
-		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Correct)
+		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Word)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("Guess failed: %v", err)
+			return
+		}
 		a.broadcastGameState(game)
 		return
 	}

@@ -12,6 +12,7 @@ export enum MessageKind {
     leaveGame = "leaveGame",
     startTurn = "startTurn",
     guess = "guess",
+    startGame = "startGame",
 }
 export class Message {
     kind: MessageKind;
@@ -116,7 +117,7 @@ export class MessageJoinGame {
     }
 }
 export class MessageAddTeam {
-    word: string;
+    name: string;
 
     static createFrom(source: any = {}) {
         return new MessageAddTeam(source);
@@ -124,7 +125,7 @@ export class MessageAddTeam {
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        this.word = source["word"];
+        this.name = source["name"];
     }
 }
 export class MessageAddWord {
@@ -177,7 +178,7 @@ export class MessageStartTurn {
 }
 export class MessageGuess {
     seqNumber: number;
-    correct: boolean;
+    word: string;
 
     static createFrom(source: any = {}) {
         return new MessageGuess(source);
@@ -186,6 +187,6 @@ export class MessageGuess {
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
         this.seqNumber = source["seqNumber"];
-        this.correct = source["correct"];
+        this.word = source["word"];
     }
 }

@@ -1,6 +1,9 @@
 import * as Cookies from 'js-cookie';
 import uuid from 'uuid-random';
 
+import * as types from "./Types";
+
+
 const COOKIE_NAME = "ID";
 
 type NewStateFunc = (state: any) => void;
@@ -21,7 +24,7 @@ export class Connection {
     }
 
     handleConnection() {
-        this.sendCommand("register", {id: this.id});
+        this.sendCommand(types.MessageKind.register, {id: this.id});
         if (!!this.onConnect) {
             this.onConnect();
         }
@@ -33,7 +36,7 @@ export class Connection {
 
     
 
-    public sendCommand(kind: String, data: any) {
+    public sendCommand(kind: types.MessageKind, data: any) {
         const cmd = {
             kind: kind,
             data: data,

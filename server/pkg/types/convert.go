@@ -49,15 +49,15 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			Join: &out,
 		}, nil
 
-	case KindCreateGame:
-		out := MessageCreateGame{}
-		err := m.As(KindCreateGame, &out)
+	case KindAddTeam:
+		out := MessageAddTeam{}
+		err := m.As(KindAddTeam, &out)
 		if err != nil {
 			return nil, err
 		}
 		return &GameCommand{
-			Kind:   string(m.Kind),
-			Create: &out,
+			Kind:    string(m.Kind),
+			AddTeam: &out,
 		}, nil
 
 	case KindAddWord:
@@ -70,8 +70,46 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			Kind:    string(m.Kind),
 			AddWord: &out,
 		}, nil
+
+	case KindCreateGame:
+		out := MessageCreateGame{}
+		err := m.As(KindCreateGame, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:   string(m.Kind),
+			Create: &out,
+		}, nil
+
+	case KindStartTurn:
+		out := MessageStartTurn{}
+		err := m.As(KindStartTurn, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:      string(m.Kind),
+			StartTurn: &out,
+		}, nil
+
+	case KindGuess:
+		out := MessageGuess{}
+		err := m.As(KindGuess, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:  string(m.Kind),
+			Guess: &out,
+		}, nil
+
+	case KindStartGame:
+		return &GameCommand{
+			Kind: string(m.Kind),
+		}, nil
 	}
-	return nil, fmt.Errorf("Unknown kind %s", m.Kind)
+	return nil, fmt.Errorf("ToCommand unknown kind %s", m.Kind)
 }
 
 func (m *Message) As(kind MessageKind, v interface{}) error {
