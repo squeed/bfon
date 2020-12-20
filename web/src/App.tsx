@@ -6,7 +6,6 @@ import * as types from "./Types";
 import { Connection } from "./Conn";
 import Game from "./Game";
 
-
 type AppState = {
   connected: boolean;
   gameName: string | undefined;
@@ -54,7 +53,7 @@ class App extends React.Component<{}, AppState> {
           // set to 0 - 3 to make a certain team active
           currentTeam: 1,
           // say "nobody is guessing" by commenting this next line out
-         // userGuessing: "1111-2222",
+          // userGuessing: "1111-2223",
           deadline: 1707980688,
 
           words: ["poopoo", "caca"],
@@ -102,7 +101,6 @@ class App extends React.Component<{}, AppState> {
       return;
     }
 
-
     if (!this.conn) {
       console.log("not connected");
       return;
@@ -116,15 +114,15 @@ class App extends React.Component<{}, AppState> {
   }
 
   createGame() {
-    const node = this.passwordInputRef.current
-    if (!node){
+    const node = this.passwordInputRef.current;
+    if (!node) {
       console.log("BUG: missing node");
       return;
     }
     const name = node.value;
     if (name === "") {
       console.log("Ignoring empty password");
-      return
+      return;
     }
 
     this.setState({
@@ -139,16 +137,16 @@ class App extends React.Component<{}, AppState> {
     this.conn.sendCommand("createGame", { gameName: name });
   }
 
-  joinGame(){
-    const node = this.passwordInputRef.current
-    if (!node){
+  joinGame() {
+    const node = this.passwordInputRef.current;
+    if (!node) {
       console.log("BUG: missing node");
       return;
     }
     const name = node.value;
     if (name === "") {
       console.log("Ignoring empty password");
-      return
+      return;
     }
 
     this.setState({
@@ -164,44 +162,50 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
-    if ( !this.state || !this.state.connected ) {
+    if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting...</div>;
     }
     if (!this.state.gameName) {
       return (
         <div>
           <div className="gametitle">
-          <h1>Bowl Full of Nouns</h1>
-          <h3>A remote party game for 4-20 people</h3>
+            <h1>Bowl Full of Nouns</h1>
+            <h3>A remote party game for 4-20 people</h3>
           </div>
           <div className="launchoptions">
             <label htmlFor="gamepw">Enter password:</label>
-            <input id="gamepw" ref={this.passwordInputRef} ></input>
+            <input id="gamepw" ref={this.passwordInputRef}></input>
             <p>
-            <button onClick={() => this.joinGame()}>
-              Join <i className="fa fa-arrow-right" aria-hidden="true"></i>
-            </button>
-            or
-            <button onClick={() => this.createGame()}>
-              Create <i className="fa fa-plus" aria-hidden="true"></i>
-            </button>
-          </p>
+              <button onClick={() => this.joinGame()}>
+                Join <i className="fa fa-arrow-right" aria-hidden="true"></i>
+              </button>
+              or
+              <button onClick={() => this.createGame()}>
+                Create <i className="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </p>
           </div>
           <div className="launchfooter">
-            <p><a href="">How to play</a></p>
-            <p>By <a href="http://molly.is">Molly</a> and <a href="http://caseyc.net">Casey</a>, Christmas 2020.</p>
+            <p>
+              <a href="">How to play</a>
+            </p>
+            <p>
+              By <a href="http://molly.is">Molly</a> and{" "}
+              <a href="http://caseyc.net">Casey</a>, Christmas 2020.
+            </p>
           </div>
-          
         </div>
       );
     }
     if (!this.state.gameState) {
       return <div>Joining game...</div>;
     }
+
     return (
       <div>
         <Game
           serverState={this.state.gameState}
+          myUserID={this.state.userID}
           addWord={(word: string) => this.addWord(word)}
         />
       </div>
