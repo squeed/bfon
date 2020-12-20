@@ -1,25 +1,29 @@
 package types
 
 const (
+	KindGameState   = "gameState"
 	KindRegister    = "register"
 	KindJoinGame    = "joinGame"
+	KindAddTeam     = "addTeam"
+	KindAddWord     = "addWord"
 	KindCreateGame  = "createGame"
 	KindInvalidGame = "invalidGame"
-	KindGameState   = "gameState"
 	KindLeaveGame   = "leaveGame"
-	KindAddWord     = "addWord"
 	KindStartTurn   = "startTurn"
+	KindGuess       = "guess"
 )
 
 var AllMessageKinds = []MessageKind{
+	KindGameState,
 	KindRegister,
 	KindJoinGame,
+	KindAddTeam,
+	KindAddWord,
 	KindCreateGame,
 	KindInvalidGame,
-	KindGameState,
 	KindLeaveGame,
-	KindAddWord,
 	KindStartTurn,
+	KindGuess,
 }
 
 func (k MessageKind) TSName() string {

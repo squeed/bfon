@@ -2,14 +2,16 @@
 
 
 export enum MessageKind {
+    gameState = "gameState",
     register = "register",
     joinGame = "joinGame",
+    addTeam = "addTeam",
+    addWord = "addWord",
     createGame = "createGame",
     invalidGame = "invalidGame",
-    gameState = "gameState",
     leaveGame = "leaveGame",
-    addWord = "addWord",
     startTurn = "startTurn",
+    guess = "guess",
 }
 export class Message {
     kind: MessageKind;
@@ -99,5 +101,91 @@ export class MessageRegister {
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
         this.id = source["id"];
+    }
+}
+export class MessageJoinGame {
+    gameName: string;
+
+    static createFrom(source: any = {}) {
+        return new MessageJoinGame(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.gameName = source["gameName"];
+    }
+}
+export class MessageAddTeam {
+    word: string;
+
+    static createFrom(source: any = {}) {
+        return new MessageAddTeam(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.word = source["word"];
+    }
+}
+export class MessageAddWord {
+    word: string;
+
+    static createFrom(source: any = {}) {
+        return new MessageAddWord(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.word = source["word"];
+    }
+}
+export class MessageCreateGame {
+    gameName: string;
+
+    static createFrom(source: any = {}) {
+        return new MessageCreateGame(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.gameName = source["gameName"];
+    }
+}
+export class MessageInvalidGame {
+    gameName: string;
+
+    static createFrom(source: any = {}) {
+        return new MessageInvalidGame(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.gameName = source["gameName"];
+    }
+}
+export class MessageStartTurn {
+    seqNumber: number;
+
+    static createFrom(source: any = {}) {
+        return new MessageStartTurn(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.seqNumber = source["seqNumber"];
+    }
+}
+export class MessageGuess {
+    seqNumber: number;
+    correct: boolean;
+
+    static createFrom(source: any = {}) {
+        return new MessageGuess(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.seqNumber = source["seqNumber"];
+        this.correct = source["correct"];
     }
 }

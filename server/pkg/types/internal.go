@@ -12,8 +12,10 @@ type GameCommand struct {
 	Register  *MessageRegister
 	Join      *MessageJoinGame
 	Create    *MessageCreateGame
+	AddTeam   *MessageAddTeam
 	AddWord   *MessageAddWord
 	StartTurn *MessageStartTurn
+	Guess     *MessageGuess
 
 	// internal / synthetic messages
 	Disconnect *CommandDisconnect

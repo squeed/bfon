@@ -87,6 +87,10 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindAddTeam {
+		// TODO: add team
+	}
+
 	if cmd.Kind == types.KindAddWord {
 		game.AddWord(cmd.AddWord.Word)
 		if err := a.store.SetGame(game); err != nil {
@@ -120,6 +124,12 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 				Deadline: msg,
 			}
 		})
+		return
+	}
+
+	if cmd.Kind == types.KindGuess {
+		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Correct)
+		a.broadcastGameState(game)
 		return
 	}
 

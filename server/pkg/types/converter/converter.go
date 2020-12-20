@@ -14,6 +14,14 @@ func main() {
 	t.Add(types.Message{})
 	t.Add(types.MessageGameState{})
 	t.Add(types.MessageRegister{})
+	t.Add(types.MessageJoinGame{})
+	t.Add(types.MessageAddTeam{})
+	t.Add(types.MessageAddWord{})
+	t.Add(types.MessageCreateGame{})
+	t.Add(types.MessageInvalidGame{})
+	t.Add(types.MessageStartTurn{})
+	t.Add(types.MessageGuess{})
+
 	t.AddEnum(types.AllMessageKinds)
 
 	err := t.ConvertToFile("Types.ts")
