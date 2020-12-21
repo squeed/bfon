@@ -1,4 +1,5 @@
 import "./styles/Game.scss";
+import bowl0 from "./img/bowl0.svg";
 import bowl20 from "./img/bowl20.svg";
 import bowl40 from "./img/bowl40.svg";
 import bowl60 from "./img/bowl60.svg";
@@ -151,17 +152,21 @@ class Team extends React.Component<{ team: types.Team; active: boolean }> {
     if(this.props.active){
       return (
       <div className="teamRow active"> 
+        <div className="teamDetails">
         <p className="teamName">{t.name}</p>
-        {this.props.active && <div>Yer' Up</div>}
-        <extras.Countdown deadline={999999999} />
-        <p className="teamScore"> {t.score}</p>
+        <p className="countdown"><extras.Countdown deadline={999999999} /></p>
+        </div>
+        
+        {/* {this.props.active && <div>Yer' Up</div>} */}
+        
+        <p className="teamScore"> <p className="scoreNumber">{t.score}</p></p>
       </div>
       )
     } else
     return (
       <div className="teamRow"> 
-        <p className="teamName">{t.name}</p>
-        <p className="teamScore"> {t.score}</p>
+        <div className="teamDetails"><p className="teamName">{t.name}</p></div>
+        <p className="teamScore"> <p className="scoreNumber">{t.score}</p></p>
       </div>
     );
   }
@@ -169,11 +174,36 @@ class Team extends React.Component<{ team: types.Team; active: boolean }> {
 
 class Bowl extends React.Component<{ words: number; remainingWords: number }> {
   render() {
+    let bowl = bowl0;
+    let bowlLabel = "bowlImage bowl0";
+    let bowlFill = this.props.remainingWords/this.props.words;
+    if (bowlFill > .8){
+        bowl = bowl100;
+        bowlLabel = "bowlImage bowl100";
+    } else if (bowlFill > .6){
+        bowl = bowl80;
+        bowlLabel = "bowlImage bowl80";
+    } else if (bowlFill > .4){
+        bowl = bowl60;
+        bowlLabel = "bowlImage bowl60";
+    } else if (bowlFill > .2){
+        bowl = bowl40;
+        bowlLabel = "bowlImage bowl40";
+    } else if (bowlFill > 0) {
+      bowl = bowl20;
+      bowlLabel = "bowlImage bowl20";
+    } else if (bowlFill == 0) {
+      bowl = bowl0;
+      bowlLabel = "bowlImage bowl0";
+    }
+    console.log(bowlFill);
+
     return (
       <div className="bowl">
-        <p className="remainingWords">{this.props.remainingWords}</p> /{" "}
-        <p className="words">{this.props.words}</p>
-        <img src={bowl20} alt=""></img>
+        <p className="remainingWords">{this.props.remainingWords}</p>
+        <div className={bowlLabel}>
+          <img src={bowl} alt=""></img>
+          </div>
       </div>
     );
   }

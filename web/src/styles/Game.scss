@@ -41,12 +41,7 @@ $blue: #58A1B2;
 /* -------- TYPOGRAPHY --------- */
 
 body {
-    font: 14px "Poppins", Futura, sans-serif;
-    margin: 20px;
-    }
-h1 {
-      font-family: WorkSans;
-      font-size: 2em;
+    font-family: "Poppins", Futura, sans-serif;
     }
 
 /* ----------- BASE STYLES ----------- */
@@ -117,33 +112,23 @@ body {
   .game-info {
     margin-left: 20px;
   }
-/* ---------- HEADER ----------- */
-  .gameHeader {
-      display: flex;
-      .gameTitle {
-          font-weight: bold;
-      }
-      .gameName {
-          text-transform: uppercase;
-      }
-      .gameSettings{
-          cursor:pointer;
-      }
-  }
-
   .gameMenu {
-      position: absolute;
-      ul {
-          list-style-type: none;
-          padding: 0;
-          margin: 0;
-          li {
-              a {
-                  text-decoration: none;
-              }
-          }
-      }
-  }
+    position: absolute;
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        li {
+            a {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+ 
+
+  
   
   /* ---------- ALL TEAMS LIST ----------- */
 
@@ -155,14 +140,24 @@ body {
       @include padding-vert(.2em);
       background-color: $cream;
       font-family: 'Work Sans', sans-serif;
-      .teamName {
-          @include zeromarg();
-          flex: 2;
-          font-size: 1.2em;
-        font-weight: 500;
+      .teamDetails {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
         padding: 1.3em 0;
-        
+        p {
+            @include zeromarg();
+        }
+
+        .teamName {
+            @include zeromarg();
+            font-size: 1.2em;
+          font-weight: 500;
+          
+          
+        }
       }
+      
       &.active {
           background-color: $orange;
           color: $white;
@@ -172,6 +167,9 @@ body {
           }
       }
       .teamScore {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           padding: .3em .5em;
           background-color: $white;
           color: $black;
@@ -180,6 +178,44 @@ body {
           font-weight: 700;
           font-size: 2em;
           width: 1em;
+          height: 1.5em;
+          .scoreNumber {
+              @include zeromarg();
+          }
       }
 
   }
+
+  /* ---------- BOWL ----------- */
+.bowl {
+    @include page-edge();
+    @include padding-vert(.3em);
+    .remainingWords {
+        @include zeromarg();
+        font-family: "Work Sans", sans-serif;
+        font-size: 5em;
+        color: $white;
+        font-weight: 800;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: .35em;
+    }
+    .bowlImage {
+        @include zeromarg();
+        position: absolute;
+        z-index: -1;
+        bottom: 10px;
+        img {
+            height: 15em;
+            width: 100%;
+            margin-left: auto;
+        margin-right: auto;
+        
+        }
+
+    }
+
+}

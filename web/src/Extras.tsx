@@ -4,9 +4,9 @@ import React from "react";
 export class Countdown extends React.Component<{deadline: number}> {
     render() {
         return (
-            <div>
+            <p>
                 4:20 remaining
-            </div>
+            </p>
         );
     }
 }
@@ -55,6 +55,8 @@ class GameMenu extends React.Component {
         );
     }
 }
+
+
 
 export class Instructions extends React.Component {
     render() {

@@ -24,6 +24,7 @@ class App extends React.Component<{}, AppState> {
       this.setState({
         connected: true,
         userID: "1111-2222",
+        // To set the "beginning of game" state, comment out from here...
         gameName: "crazy llama",
         gameState: new types.MessageGameState({
           name: "Crazy Llama",
@@ -33,19 +34,19 @@ class App extends React.Component<{}, AppState> {
 
           teams: [
             {
-              name: "team one",
+              name: "Clara Jasper Emerson",
               score: 5,
             },
             {
-              name: "team two",
+              name: "Paulina Annike Lily",
               score: 2,
             },
             {
-              name: "team three",
+              name: "Mom Dad Great-Grandpa Best Team Ever",
               score: 55,
             },
             {
-              name: "team four",
+              name: "Koko Whiffle Tupper",
               score: 8,
             },
           ],
@@ -56,9 +57,10 @@ class App extends React.Component<{}, AppState> {
           userGuessing: "1111-2222",
           deadline: 1707980688,
 
-          words: ["pants", "shirt", "shoes", "socks"],
+          words: ["pants", "shirt", "shoes", "socks", "hat", "diaper", "sleeper", "astronaut", "space dog", "engineer", "Momo", "sippy cup", "ball", "yogurt", "nom nom nom"],
           remainingWords: ["pants", "socks"],
         }),
+        // ... to here
       });
       return;
     }
