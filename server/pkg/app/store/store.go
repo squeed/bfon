@@ -1,8 +1,6 @@
 package store
 
 import (
-	"fmt"
-
 	"github.com/squeed/bfon/server/pkg/game"
 )
 
@@ -14,12 +12,4 @@ type Store interface {
 	SetUserGame(userID, gameID string) error
 
 	GetGameUsers(gameID string) ([]string, error)
-}
-
-type DBStore struct {
-}
-
-func (s *DBStore) GetGame(gameID string) (*game.Game, error) {
-
-	return nil, fmt.Errorf("not implemented")
 }

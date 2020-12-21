@@ -25,10 +25,10 @@ type App struct {
 	connToUser map[uuid.UUID]string
 }
 
-func NewApp() *App {
+func NewApp(db store.Store) *App {
 
 	return &App{
-		store: store.NewMemStore(),
+		store: db,
 
 		cmds:  make(chan types.GameCommand, 10),
 		conns: map[uuid.UUID]conn.Conn{},

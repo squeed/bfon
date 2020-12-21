@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
+	"github.com/squeed/bfon/server/pkg/app/store"
 	pgame "github.com/squeed/bfon/server/pkg/game"
 	"github.com/squeed/bfon/server/pkg/types"
 )
@@ -31,8 +32,8 @@ func (fc *FakeConn) Enqueue(msg types.Messageable) {
 
 // Kind of a monolithic test - run through a game sequence
 func TestProcess(t *testing.T) {
-	app := NewApp()
-	store := app.store
+	store := store.NewMemStore()
+	app := NewApp(store)
 
 	conn := FakeConn{
 		ConnID: ConnID,
