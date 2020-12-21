@@ -9,23 +9,87 @@
     src: url(Poppins-Medium.ttf);
 }
 
-/* --- colors --- */
-$white: #fff;
 
-/* ----------- BASE STYLES ----------- */
+
+/* --- mixins and variables --- */
+$white: #fff;
+$black: #524b4b;
+$lightcream: #fef8ec;
+$cream: #FDF0D5;
+$darkerpurple: #201d1e;
+$darkpurple: #3A3335;
+$orange: #F0544F;
+$pink: #D81E5B;
+$blue: #58A1B2;
+
+
+@mixin zeromarg {
+    padding: 0;
+    margin: 0;
+}
+
+@mixin page-edge {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+@mixin padding-vert($val){
+    padding-top: $val;
+    padding-bottom: $val;
+}
+
+
+/* -------- TYPOGRAPHY --------- */
 
 body {
     font: 14px "Poppins", Futura, sans-serif;
     margin: 20px;
-  }
-  h1 {
+    }
+h1 {
       font-family: WorkSans;
       font-size: 2em;
-  }
+    }
 
-  ol, ul {
-    padding-left: 30px;
-  }
+/* ----------- BASE STYLES ----------- */
+
+body {
+    @include zeromarg();
+    .root {
+        @include zeromarg();
+    }
+    background-color: $cream;
+}
+
+
+/* ------------ NAV -------------- */
+
+.gameNav {
+    display: flex;
+    justify-content: space-between;
+    background-color: $darkpurple;
+    color: $lightcream;
+    @include padding-vert(.2em);
+    @include page-edge();
+
+    .gameTitle {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: 'Work Sans', sans-serif;
+        color: $pink;
+        font-size: 1.3em;
+        
+    }
+    .gameName {
+        text-transform: uppercase;
+        font-weight: medium;
+        font-family: 'Work Sans', sans-serif;
+        color: $cream;
+        font-size: 1em;
+    }
+    .gameSettings {
+        color: $cream;
+    }
+}
+
   
   .board-row:after {
     clear: both;
@@ -37,28 +101,13 @@ body {
     margin-bottom: 10px;
   }
   
-  .square {
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 34px;
-  }
+  
   
   .square:focus {
     outline: none;
   }
   
-  .kbd-navigation .square:focus {
-    background: #ddd;
-  }
+  
   
   .game {
     display: flex;
@@ -101,13 +150,36 @@ body {
   .teamRow {
       display: flex;
       justify-content: space-around;
-      border: 1px solid #666;
+      color: $black;
+      @include page-edge();
+      @include padding-vert(.2em);
+      background-color: $cream;
+      font-family: 'Work Sans', sans-serif;
       .teamName {
+          @include zeromarg();
           flex: 2;
+          font-size: 1.2em;
+        font-weight: 500;
+        padding: 1.3em 0;
+        
+      }
+      &.active {
+          background-color: $orange;
+          color: $white;
+          .teamName {
+            font-weight: 700;
+
+          }
       }
       .teamScore {
-          border: 1px solid #000;
           padding: .3em .5em;
+          background-color: $white;
+          color: $black;
           text-align: right;
+          margin: .3em .5em;
+          font-weight: 700;
+          font-size: 2em;
+          width: 1em;
       }
+
   }

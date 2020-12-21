@@ -1,7 +1,17 @@
 import * as types from "./Types";
 import React from "react";
 
-export class GameHeader extends React.Component<
+export class Countdown extends React.Component<{deadline: number}> {
+    render() {
+        return (
+            <div>
+                4:20 remaining
+            </div>
+        );
+    }
+}
+
+export class GameNav extends React.Component<
     { gameName: string },
     { showSettings: boolean }
     > {
@@ -16,13 +26,14 @@ export class GameHeader extends React.Component<
 
     render() {
         return (
-            <div className="gameHeader">
+            <div className="gameNav">
                 <p className="gameTitle"> Bowl Full of Nouns</p>
-                <p className="gameName">{this.props.gameName}</p>
-                <p className="gameSettings">
+                <p className="gameName">{this.props.gameName} <span className="gameSettings">
                     <i className="fa fa-cog" onClick={() => this.toggleSettings()}></i>
                     {this.state.showSettings && <GameMenu />}
+                </span>
                 </p>
+                
             </div>
         );
     }
