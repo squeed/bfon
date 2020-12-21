@@ -26,7 +26,7 @@ class Game extends React.Component<GameProps> {
 
     return (
       <div id="game">
-        <extras.GameHeader gameName={ss.name} />
+        <extras.GameNav gameName={ss.name} />
 
         {ss.round === 0 && (
           <div>
@@ -148,10 +148,19 @@ class TeamList extends React.Component<{
 class Team extends React.Component<{ team: types.Team; active: boolean }> {
   render() {
     const t = this.props.team;
-    return (
-      <div className="teamRow">
+    if(this.props.active){
+      return (
+      <div className="teamRow active"> 
         <p className="teamName">{t.name}</p>
         {this.props.active && <div>Yer' Up</div>}
+        <extras.Countdown deadline={999999999} />
+        <p className="teamScore"> {t.score}</p>
+      </div>
+      )
+    } else
+    return (
+      <div className="teamRow"> 
+        <p className="teamName">{t.name}</p>
         <p className="teamScore"> {t.score}</p>
       </div>
     );
@@ -248,7 +257,8 @@ class Guess extends React.Component<GuessProps, GuessState> {
           <p>You're guessing</p>
           <p>Word is: {ss.remainingWords[this.state.wordIdx]}</p>
           <button onClick={() => this.guess(true)}>Correct!</button>
-          <button onClick={() => this.guess(false)}>Incorrect!</button>
+          <button onClick={() => this.guess(false)}>Whoops, I broke the rule</button>
+          <button>I give up</button>
           <Countdown deadline={ss.deadline} />
         </div>
       );
@@ -297,6 +307,6 @@ class Countdown extends React.Component<CountdownProps, CountdownState> {
   }
 
   render() {
-    return <div>{this.state.secondsLeft}s left</div>;
+    return <div className="timer">{this.state.secondsLeft}s left</div>;
   }
 }
