@@ -63,7 +63,7 @@ export class GameNav extends React.Component<
     render() {
         return (
             <div className="gameNav">
-                <p className="gameTitle"> B.F.O.N.</p>
+                <p className="gameTitle heading--stroke heading--shadow"> B.F.O.N.</p>
                 <p className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName} <span className="gameSettings">
                     <i className="fa fa-angle-down" ></i>
                     

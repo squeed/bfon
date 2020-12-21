@@ -53,6 +53,88 @@ body {
     font-family: "Work Sans", sans-serif;
     }
 
+/* -------- OFFSET STROKE --------- */
+
+$body: #f2cee6;
+$stroke: #0d1b1e;
+$shadow: #2dc7ff;
+$size: 6rem;
+$halftone: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAHElEQVQYV2NUVFT8f//+fUYGBgYGMAEDcA5IBQCKJQVmn76DhAAAAABJRU5ErkJggg==");
+
+@mixin stroke-width($property) {
+	-webkit-text-stroke-width: $property;
+	-moz-text-stroke-width: $property;
+}
+
+@mixin stroke-color($property) {
+	-webkit-text-stroke-color: $property;
+	-moz-text-stroke-color: $property;
+}
+
+@mixin background-clip($property) {
+	-webkit-background-clip: $property;
+	-moz-background-clip: $property;
+	background-clip: $property;
+}
+
+@mixin fill-color($property) {
+	-webkit-text-fill-color: $property;
+	-moz-text-fill-color: $property;
+}
+
+
+
+$stroke: $black;
+$shadow: $white;
+
+.heading {
+	font-size: $size;
+	letter-spacing: 6px;
+	margin: 0;
+
+	&--stroke {
+		@include stroke-width(2px);
+		@include stroke-color($stroke);
+		color: transparent;
+	}
+
+	&--shadow {
+		text-shadow: -2px -2px $shadow;
+	}
+
+	&--stroke-shadow {
+		color: $body;
+		text-shadow: -2px 0 $stroke, 0 -2px $stroke, 2px 0 $stroke, 0 2px $stroke,
+			2px 2px $stroke, -2px -2px $stroke, -2px 2px $stroke, 2px -2px $stroke,
+			6px 6px $shadow;
+	}
+
+	&--halftone {
+		position: relative;
+
+		&:after {
+			background: $halftone repeat;
+			@include stroke-width(0);
+			@include background-clip(text);
+			@include fill-color(transparent);
+			font-size: $size;
+			letter-spacing: 6px;
+			left: calc(50% + 6px);
+			top: calc(50% + 6px);
+			content: "Hello";
+			z-index: -1;
+			position: absolute;
+			transform: translate(-50%, -50%);
+		}
+
+		&-color {
+			&:after {
+				background-color: $shadow;
+			}
+		}
+	}
+}
+
 /* ----------- BASE STYLES ----------- */
 
 body {
@@ -76,7 +158,7 @@ button {
 .gameNav {
     display: flex;
     justify-content: space-between;
-    background-color: $darkerpurple;
+    background-color: $blue;
    border-bottom: 3px solid $darkpurple;
     
     @include page-edge();
@@ -91,8 +173,8 @@ button {
         text-transform: uppercase;
         font-weight: 800;
         font-family: 'Work Sans', sans-serif;
-        color: $white;
-        font-size: 2em;
+        
+        font-size: 2.7em;
         @include padding-vert(.2em);
         margin: 0;
         
