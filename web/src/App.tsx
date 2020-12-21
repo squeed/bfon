@@ -52,10 +52,10 @@ class App extends React.Component<{}, AppState> {
           ],
 
           // set to 0 - 3 to make a certain team active
-          currentTeam: 1,
-          // say "nobody is guessing" by commenting this next line out
-          userGuessing: "1111-2222",
-          deadline: 1707980688,
+          currentTeam: 2,
+          // say "nobody is guessing" by commenting the next two lines out
+          //userGuessing: "1111-2222",
+          //deadline: 1707980688,
 
           words: ["pants", "shirt", "shoes", "socks", "hat", "diaper", "sleeper", "astronaut", "space dog", "engineer", "Momo", "sippy cup", "ball", "yogurt", "nom nom nom"],
           remainingWords: ["pants", "socks"],

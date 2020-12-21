@@ -10,6 +10,7 @@ import * as types from "./Types";
 import React from "react";
 
 import * as extras from "./Extras";
+import { isTemplateMiddleOrTemplateTail } from "typescript";
 
 type GameProps = {
   serverState: types.MessageGameState;
@@ -31,7 +32,7 @@ class Game extends React.Component<GameProps> {
 
         {ss.round === 0 && (
           <div>
-            <TeamList serverState={ss} addTeam={this.props.addTeam} />
+            <TeamList serverState={ss} addTeam={this.props.addTeam} iAmClueing={false} />
             <WordList words={ss.words} addWord={this.props.addWord} />
 
             {/* TODO: only show this when there are enough teams & words */}
@@ -45,7 +46,11 @@ class Game extends React.Component<GameProps> {
         )}
         {ss.round > 0 && ss.round <= 3 && (
           <div>
-            <TeamList serverState={ss} addTeam={this.props.addTeam} />
+            <TeamList 
+              serverState={ss} 
+              addTeam={this.props.addTeam} 
+              iAmClueing={this.props.myUserID === ss.userGuessing}
+            />
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
@@ -61,7 +66,7 @@ class Game extends React.Component<GameProps> {
         {ss.round >= 4 && (
           <div>
             Game is over!
-            <TeamList serverState={ss} addTeam={(w) => undefined} />
+            <TeamList serverState={ss} addTeam={(w) => undefined} iAmClueing={false} />
           </div>
         )}
       </div>
@@ -106,6 +111,7 @@ class WordList extends React.Component<{
 class TeamList extends React.Component<{
   serverState: types.MessageGameState;
   addTeam: (teamName: string) => void;
+  iAmClueing: boolean;
 }> {
   teamNameRef = React.createRef<HTMLInputElement>();
 
@@ -130,6 +136,17 @@ class TeamList extends React.Component<{
       </div>
     );
 
+    if (this.props.iAmClueing){
+      const team = ss.teams[ss.currentTeam]
+      return (
+        <Team
+        team={team}
+        active={true}
+        key={team.name}
+      />
+      )
+    }
+
     const teams = ss.teams.map((team, index) => (
       <Team
         team={team}
@@ -153,8 +170,8 @@ class Team extends React.Component<{ team: types.Team; active: boolean }> {
       return (
       <div className="teamRow active"> 
         <div className="teamDetails">
-        <p className="teamName">{t.name}</p>
-        <p className="countdown"><extras.Countdown deadline={999999999} /></p>
+        <p className="teamName">{t.name} </p>
+        <p className="countdown"><extras.Countdown deadline={2} /></p>
         </div>
         
         {/* {this.props.active && <div>Yer' Up</div>} */}
@@ -171,7 +188,7 @@ class Team extends React.Component<{ team: types.Team; active: boolean }> {
     );
   }
 }
-
+// BOWL
 class Bowl extends React.Component<{ words: number; remainingWords: number }> {
   render() {
     let bowl = bowl0;
@@ -198,9 +215,19 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
     }
     console.log(bowlFill);
 
+    const textStyle = {
+      color: "#ffffff",
+      fontSize: "30px"
+    }
+
     return (
       <div className="bowl">
-        <p className="remainingWords">{this.props.remainingWords}</p>
+        <svg className="remainingWordsSVG">
+        <text x="50%" y="90%" className="textFill" >{this.props.remainingWords}</text>
+        <text x="51%" y="91%" className="textStroke">{this.props.remainingWords}</text>
+        </svg>
+        
+        {/* <p className="remainingWords">{this.props.remainingWords}</p> */}
         <div className={bowlLabel}>
           <img src={bowl} alt=""></img>
           </div>
@@ -220,7 +247,7 @@ type GuessState = {
   len: number;
   wordIdx: number; // index into array
 };
-
+// GUESSING WIDGET
 class Guess extends React.Component<GuessProps, GuessState> {
   constructor(props: GuessProps) {
     super(props)
@@ -276,7 +303,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
     if (!ss.userGuessing || !ss.deadline) {
       return (
         <div>
-          <button onClick={() => this.props.startGuessing()}>Start guessing</button>
+          <button onClick={() => this.props.startGuessing()}>Start Clueing</button>
         </div>
       );
     }
@@ -284,7 +311,6 @@ class Guess extends React.Component<GuessProps, GuessState> {
     if (ss.userGuessing === this.props.myUserID && !!ss.deadline) {
       return (
         <div>
-          <p>You're guessing</p>
           <p>Word is: {ss.remainingWords[this.state.wordIdx]}</p>
           <button onClick={() => this.guess(true)}>Correct!</button>
           <button onClick={() => this.guess(false)}>Whoops, I broke the rule</button>

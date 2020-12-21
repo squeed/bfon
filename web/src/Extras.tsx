@@ -27,11 +27,12 @@ export class GameNav extends React.Component<
     render() {
         return (
             <div className="gameNav">
-                <p className="gameTitle"> Bowl Full of Nouns</p>
-                <p className="gameName">{this.props.gameName} <span className="gameSettings">
-                    <i className="fa fa-cog" onClick={() => this.toggleSettings()}></i>
-                    {this.state.showSettings && <GameMenu />}
+                <p className="gameTitle"> B.F.O.N.</p>
+                <p className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName} <span className="gameSettings">
+                    <i className="fa fa-angle-down" ></i>
+                    
                 </span>
+                {this.state.showSettings && <GameMenu />}
                 </p>
                 
             </div>
