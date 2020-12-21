@@ -1,5 +1,9 @@
 import "./styles/Game.scss";
-import bowl from "./img/bowl.svg";
+import bowl20 from "./img/bowl20.svg";
+import bowl40 from "./img/bowl40.svg";
+import bowl60 from "./img/bowl60.svg";
+import bowl80 from "./img/bowl80.svg";
+import bowl100 from "./img/bowl100.svg";
 
 import * as types from "./Types";
 import React from "react";
@@ -160,7 +164,7 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
       <div className="bowl">
         <p className="remainingWords">{this.props.remainingWords}</p> /{" "}
         <p className="words">{this.props.words}</p>
-        <img src={bowl} alt=""></img>
+        <img src={bowl20} alt=""></img>
       </div>
     );
   }
