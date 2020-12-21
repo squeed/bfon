@@ -91,7 +91,7 @@ button {
         text-transform: uppercase;
         font-weight: 800;
         font-family: 'Work Sans', sans-serif;
-        color: $orange;
+        color: $white;
         font-size: 2em;
         @include padding-vert(.2em);
         margin: 0;
@@ -99,10 +99,11 @@ button {
     }
     .gameName {
         text-transform: uppercase;
-        font-weight: 800;
+        font-weight: 300;
         font-family: 'Work Sans', sans-serif;
-        color: $cream;
-        font-size: 1.2em;
+        color: $white;
+        font-size: 1em;
+        letter-spacing: .04em;
         background-color: $darkpurple;
         
         padding: 1em 1em 1em 1em;
@@ -110,12 +111,14 @@ button {
         cursor:pointer;
     }
     .gameSettings {
-        color: $cream;
+        color: $white;
         display: inline-block;
         padding-left: 10px;
+        
     }
     .gameMenu {
         @include zeromarg();
+        letter-spacing: normal;
         position: relative;
         text-align: right;
         top: 0;
@@ -128,9 +131,9 @@ button {
             li {
                 font-weight: 300;
                 font-size: .9em;
-                margin: .2em 0;
+                margin: .4em 0;
                 a{
-                    color: $cream;
+                    color: $white;
                     text-decoration: none;
                     text-transform: none;
                 }
@@ -190,7 +193,7 @@ button {
 
         
         button {
-            background-color: $blue;
+            background-color: $green;
             color: $lightcream;
             margin: .7em 0 0 0;
             font-size: 1.1em;
@@ -215,7 +218,7 @@ button {
       }
       
       &.active {
-          background-color: $orange;
+          background-color: $blue;
           color: $white;
           .teamName {
 
@@ -233,7 +236,7 @@ button {
           color: $black;
           text-align: right;
           font-weight: 700;
-          font-size: 2em;
+          font-size: 1.5em;
           width: 1em;
           height: 1.5em;
           .scoreNumber {
@@ -259,7 +262,13 @@ button {
         line-height: 1em;
         align-items: center;
         justify-content: center;
-        top: 50px;
+        .scaletext-wrapper {
+            overflow: visible !important;
+            span {
+                position: relative !important;
+                top: .5em !important;
+            }
+        }
         
       }
       .buttonCorrect {
@@ -267,6 +276,7 @@ button {
           text-align: center;
           button {
               background-color: $green;
+              color: $white;
           }
 
       }
@@ -317,7 +327,9 @@ button {
         font-size: 96px;
         font-weight: 800;
         text-anchor: middle;
-        position: relative;
+        position: absolute;
+        bottom: 20px;
+        left: 0;
         width: 100%;
         
         .textFill {
@@ -339,7 +351,7 @@ button {
         z-index: -1;
         bottom: 10px;
         img {
-            height: 15em;
+            height: 12em;
             width: 100%;
             margin-left: auto;
         margin-right: auto;
