@@ -8,6 +8,14 @@
     font-family: Poppins;
     src: url(Poppins-Medium.ttf);
 }
+@font-face {
+    font-family: "Caveat Brush";
+    src: url(CaveatBrush-Regular.ttf);
+}
+@font-face {
+    font-family: "Kalam";
+    src: url(Kalam-Regular.ttf);
+}
 
 
 
@@ -21,6 +29,7 @@ $darkpurple: #3A3335;
 $orange: #F0544F;
 $pink: #D81E5B;
 $blue: #58A1B2;
+$green: #81B775;
 
 
 @mixin zeromarg {
@@ -52,6 +61,13 @@ body {
         @include zeromarg();
     }
     background-color: $cream;
+}
+
+button {
+    font-size: 1em;
+    border-radius: 2px;
+    padding: .5em 1em;
+    border: none;
 }
 
 
@@ -161,6 +177,7 @@ body {
   .teamRow {
       display: flex;
       justify-content: space-around;
+      align-items: center;
       color: $black;
       @include page-edge();
       @include padding-vert(.2em);
@@ -168,19 +185,30 @@ body {
       font-family: 'Work Sans', sans-serif;
       .teamDetails {
         flex: 2;
-        display: flex;
-       
-          align-items: center;
+        
+        align-items: center;
 
-        padding: 1.3em 0;
+        
+        button {
+            background-color: $blue;
+            color: $lightcream;
+            margin: .7em 0 0 0;
+            font-size: 1.1em;
+        }
         p {
             @include zeromarg();
+        }
+        .countdown {
+            font-size: 2em;
+            font-weight: 300;
+            padding: .1em 0;
+
         }
 
         .teamName {
             @include zeromarg();
-            font-size: 1.2em;
-          font-weight: 500;
+            font-size: 1.3em;
+          font-weight: 300;
           
           
         }
@@ -190,8 +218,9 @@ body {
           background-color: $orange;
           color: $white;
           .teamName {
-            font-weight: 700;
 
+            font-size: 1.1em;
+            font-weight: 500;
           }
       }
       .teamScore {
@@ -199,10 +228,10 @@ body {
           justify-content: center;
           align-items: center;
           padding: .3em .5em;
+          margin: .4em 0 .4em 1em;
           background-color: $white;
           color: $black;
           text-align: right;
-          margin: .3em .5em;
           font-weight: 700;
           font-size: 2em;
           width: 1em;
@@ -212,6 +241,58 @@ body {
           }
       }
 
+  }
+
+  /* ---------- CLUEING ----------- */
+
+  .clueWidget {
+      @include page-edge();
+
+      .clueWord {
+        font-family: "Kalam", sans-serif;
+        background-color: $white;
+        text-align: center;
+        font-size: 2.5em;
+        margin: .2em 0;
+        padding: .5em .5em .5em .5em;
+        height: 3em;
+        line-height: 1em;
+        align-items: center;
+        justify-content: center;
+        top: 50px;
+        
+      }
+      .buttonCorrect {
+          font-size: 1.5em;
+          text-align: center;
+          button {
+              background-color: $green;
+          }
+
+      }
+      .otherButtons {
+          text-align: center;
+          @include zeromarg();
+      }
+      .buttonWhoops, .buttonGiveUp {
+          display: inline-block;
+          text-align: center;
+          margin: 0;
+          padding: 0em .6em;
+      }
+      .buttonWhoops button, .buttonGiveUp button {
+          margin: 0;
+          padding: 0;
+          background-color: transparent;
+          text-decoration: underline;
+          text-align: center;
+      }
+      .buttonWhoops {
+
+      }
+      .buttonGiveUp{
+
+      }
   }
 
   /* ---------- BOWL ----------- */

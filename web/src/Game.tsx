@@ -9,8 +9,10 @@ import bowl100 from "./img/bowl100.svg";
 import * as types from "./Types";
 import React from "react";
 
+import ScaleText from "react-scale-text";
+
 import * as extras from "./Extras";
-import { isTemplateMiddleOrTemplateTail } from "typescript";
+import { isTemplateMiddleOrTemplateTail, NodeBuilderFlags } from "typescript";
 
 type GameProps = {
   serverState: types.MessageGameState;
@@ -32,7 +34,7 @@ class Game extends React.Component<GameProps> {
 
         {ss.round === 0 && (
           <div>
-            <TeamList serverState={ss} addTeam={this.props.addTeam} iAmClueing={false} />
+            <TeamList serverState={ss} addTeam={this.props.addTeam} iAmClueing={false} startClueing={()=>{return;}} />
             <WordList words={ss.words} addWord={this.props.addWord} />
 
             {/* TODO: only show this when there are enough teams & words */}
@@ -50,12 +52,13 @@ class Game extends React.Component<GameProps> {
               serverState={ss} 
               addTeam={this.props.addTeam} 
               iAmClueing={this.props.myUserID === ss.userGuessing}
+              startClueing={() => this.props.startGuessing()}
             />
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
               submitGuess={(c) => this.props.guess(c)}
-              startGuessing={() => this.props.startGuessing()}
+
             />
             <Bowl
               words={ss.words.length}
@@ -66,7 +69,7 @@ class Game extends React.Component<GameProps> {
         {ss.round >= 4 && (
           <div>
             Game is over!
-            <TeamList serverState={ss} addTeam={(w) => undefined} iAmClueing={false} />
+            <TeamList serverState={ss} addTeam={(w) => undefined} iAmClueing={false} startClueing={()=>{return;}} />
           </div>
         )}
       </div>
@@ -112,6 +115,7 @@ class TeamList extends React.Component<{
   serverState: types.MessageGameState;
   addTeam: (teamName: string) => void;
   iAmClueing: boolean;
+  startClueing: ()=>void;
 }> {
   teamNameRef = React.createRef<HTMLInputElement>();
 
@@ -142,6 +146,8 @@ class TeamList extends React.Component<{
         <Team
         team={team}
         active={true}
+        deadline={ss.deadline}
+        startClueing={()=>this.props.startClueing()}
         key={team.name}
       />
       )
@@ -151,6 +157,8 @@ class TeamList extends React.Component<{
       <Team
         team={team}
         active={ss.round > 0 && ss.round < 3 && index === ss.currentTeam}
+        deadline={ss.deadline}
+        startClueing={()=>this.props.startClueing()}
         key={team.name}
       />
     ));
@@ -163,7 +171,14 @@ class TeamList extends React.Component<{
   }
 }
 
-class Team extends React.Component<{ team: types.Team; active: boolean }> {
+type TeamProps = { 
+  team: types.Team; 
+  active: boolean;
+  deadline: number | undefined;
+  startClueing: ()=>void;
+};
+
+class Team extends React.Component<TeamProps> {
   render() {
     const t = this.props.team;
     if(this.props.active){
@@ -171,7 +186,10 @@ class Team extends React.Component<{ team: types.Team; active: boolean }> {
       <div className="teamRow active"> 
         <div className="teamDetails">
         <p className="teamName">{t.name} </p>
-        <p className="countdown"><extras.Countdown deadline={2} /></p>
+        
+        {!!this.props.deadline && <p className="countdown"><extras.Countdown deadline={this.props.deadline} /></p>}
+        {!this.props.deadline && <p className="goButton"><button onClick={()=>this.props.startClueing()}>I'm the Cluemeister <i className="fa fa-arrow-right"></i></button></p>}
+        
         </div>
         
         {/* {this.props.active && <div>Yer' Up</div>} */}
@@ -240,14 +258,13 @@ type GuessProps = {
   serverState: types.MessageGameState;
   myUserID: string;
   submitGuess: (word: string) => void;
-  startGuessing: () => void;
 };
 
 type GuessState = {
   len: number;
   wordIdx: number; // index into array
 };
-// GUESSING WIDGET
+// CLUEING WIDGET
 class Guess extends React.Component<GuessProps, GuessState> {
   constructor(props: GuessProps) {
     super(props)
@@ -303,66 +320,31 @@ class Guess extends React.Component<GuessProps, GuessState> {
     if (!ss.userGuessing || !ss.deadline) {
       return (
         <div>
-          <button onClick={() => this.props.startGuessing()}>Start Clueing</button>
+          {/* nothing */}
         </div>
       );
     }
 
+   
+    var cw = ss.remainingWords[this.state.wordIdx];
     if (ss.userGuessing === this.props.myUserID && !!ss.deadline) {
       return (
-        <div>
-          <p>Word is: {ss.remainingWords[this.state.wordIdx]}</p>
-          <button onClick={() => this.guess(true)}>Correct!</button>
-          <button onClick={() => this.guess(false)}>Whoops, I broke the rule</button>
-          <button>I give up</button>
-          <Countdown deadline={ss.deadline} />
+        <div className="clueWidget">
+          <p className="clueWord">
+            <ScaleText>{cw}</ScaleText>
+            
+            
+            </p>
+          <p className="buttonCorrect"><button onClick={() => this.guess(true)}>Got it!</button></p>
+          <div className="otherButtons">
+          <p className="buttonWhoops"><button onClick={() => this.guess(false)}>Whoops, bad clue</button></p>
+          <p className="buttonGiveUp"><button>I give up</button></p>
+          </div>
+          
+          
         </div>
       );
     }
-
-    return (
-      <div>
-        <p>Someone else is guessing.</p>
-        <Countdown deadline={ss.deadline} />
-      </div>
-    );
-  }
-}
-
-type CountdownProps = { deadline: number };
-type CountdownState = { secondsLeft: number };
-class Countdown extends React.Component<CountdownProps, CountdownState> {
-  timerID: number | undefined;
-
-  constructor(props: CountdownProps) {
-    super(props);
-
-    this.state = { secondsLeft: this.secondsLeft(props.deadline) };
-  }
-
-  secondsLeft(deadline: number): number {
-    const dl = Math.floor(deadline - Date.now() / 1000);
-    if (dl < 0) {
-      return 0;
-    }
-    return dl;
-  }
-
-  tick() {
-    this.setState((state, props) => ({
-      secondsLeft: this.secondsLeft(props.deadline),
-    }));
-  }
-
-  componentDidMount() {
-    this.timerID = window.setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    window.clearInterval(this.timerID);
-  }
-
-  render() {
-    return <div className="timer">{this.state.secondsLeft}s left</div>;
+    return null;
   }
 }

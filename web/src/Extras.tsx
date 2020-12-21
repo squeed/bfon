@@ -1,14 +1,50 @@
 import * as types from "./Types";
 import React from "react";
 
-export class Countdown extends React.Component<{deadline: number}> {
-    render() {
-        return (
-            <p>
-                4:20 remaining
-            </p>
-        );
+type CountdownProps = { deadline: number };
+type CountdownState = { secondsLeft: number };
+export class Countdown extends React.Component<CountdownProps, CountdownState> {
+  timerID: number | undefined;
+
+  constructor(props: CountdownProps) {
+    super(props);
+
+    this.state = { secondsLeft: this.secondsLeft(props.deadline) };
+  }
+
+  secondsLeft(deadline: number): number {
+    const dl = Math.floor(deadline - Date.now() / 1000);
+    if (dl < 0) {
+      return 0;
     }
+    return dl;
+  }
+
+  tick() {
+    this.setState((state, props) => ({
+      secondsLeft: this.secondsLeft(props.deadline),
+    }));
+  }
+
+  componentDidMount() {
+    this.timerID = window.setInterval(() => this.tick(), 1000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.timerID);
+  }
+
+  render() {
+    function time_convert(num:number)
+    { 
+     var hours = Math.floor(num / 60);  
+     var minutes = num % 60;
+     return hours + ":" + minutes;         
+   }
+   var timeHM = time_convert(this.state.secondsLeft);
+
+    return <div className="timer">{timeHM}</div>;
+  }
 }
 
 export class GameNav extends React.Component<
@@ -49,7 +85,10 @@ class GameMenu extends React.Component {
                         <a href="">Reset Round</a>
                     </li>
                     <li>
-                        <a href="">End Game</a>
+                        <a href="">Leave Game</a>
+                    </li>
+                    <li>
+                        <a href="">End Game for All</a>
                     </li>
                 </ul>
             </div>

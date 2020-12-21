@@ -57,8 +57,8 @@ class App extends React.Component<{}, AppState> {
           //userGuessing: "1111-2222",
           //deadline: 1707980688,
 
-          words: ["pants", "shirt", "shoes", "socks", "hat", "diaper", "sleeper", "astronaut", "space dog", "engineer", "Momo", "sippy cup", "ball", "yogurt", "nom nom nom"],
-          remainingWords: ["pants", "socks"],
+          words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
+          remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
         }),
         // ... to here
       });
@@ -201,6 +201,7 @@ class App extends React.Component<{}, AppState> {
       }
       let w = st.gameState.remainingWords.filter(w => w !== word);
       st.gameState.remainingWords = w;
+      st.gameState.teams[st.gameState.currentTeam].score++
       console.log("foo");
       this.setState(st);
 
