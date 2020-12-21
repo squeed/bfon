@@ -16,7 +16,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	var connID = cmd.ConnID
 	var userID string
 
-	var conn *conn.Conn
+	var conn conn.Conn
 	var game *pgame.Game
 
 	var err error
@@ -184,7 +184,7 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 	conn.Enqueue(state)
 }
 
-func (a *App) createGame(conn *conn.Conn, userID string, cmd *types.GameCommand) {
+func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) {
 	if _, err := a.store.GetGame(cmd.Create.GameName); err == nil {
 		log.Printf("error: create existing game %s", cmd.Create.GameName)
 		return
@@ -199,7 +199,7 @@ func (a *App) createGame(conn *conn.Conn, userID string, cmd *types.GameCommand)
 	a.joinGame(conn, userID, game.Name)
 }
 
-func (a *App) joinGame(conn *conn.Conn, userID string, name string) {
+func (a *App) joinGame(conn conn.Conn, userID string, name string) {
 	gameID := pgame.ParseGameID(name)
 	game, err := a.store.GetGame(gameID)
 
@@ -219,7 +219,7 @@ func (a *App) joinGame(conn *conn.Conn, userID string, name string) {
 	a.sendGameState(game.GetState(), userID)
 }
 
-func (a *App) leaveGame(conn *conn.Conn, userID string) {
+func (a *App) leaveGame(conn conn.Conn, userID string) {
 	_ = a.store.SetUserGame(userID, "")
 	// TODO: send left-game state
 }

@@ -18,10 +18,10 @@ type App struct {
 	store store.Store
 
 	// conn id -> connection
-	conns map[uuid.UUID]*conn.Conn
+	conns map[uuid.UUID]conn.Conn
 
 	// player id -> connection
-	userToConn map[string]*conn.Conn
+	userToConn map[string]conn.Conn
 	connToUser map[uuid.UUID]string
 }
 
@@ -31,9 +31,9 @@ func NewApp() *App {
 		store: store.NewMemStore(),
 
 		cmds:  make(chan types.GameCommand, 10),
-		conns: map[uuid.UUID]*conn.Conn{},
+		conns: map[uuid.UUID]conn.Conn{},
 
-		userToConn: map[string]*conn.Conn{},
+		userToConn: map[string]conn.Conn{},
 		connToUser: map[uuid.UUID]string{},
 	}
 }

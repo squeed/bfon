@@ -24,7 +24,13 @@ const (
 	maxMessageSize = 512
 )
 
-type Conn struct {
+type Conn interface {
+	ID() uuid.UUID
+	Run()
+	Enqueue(msg types.Messageable)
+}
+
+type WSConn struct {
 	ws    *websocket.Conn
 	queue chan types.Messageable
 	id    uuid.UUID
@@ -33,8 +39,8 @@ type Conn struct {
 	cmdq chan types.GameCommand
 }
 
-func NewConnection(ws *websocket.Conn, id uuid.UUID, cmdq chan types.GameCommand) *Conn {
-	c := &Conn{
+func NewConnection(ws *websocket.Conn, id uuid.UUID, cmdq chan types.GameCommand) *WSConn {
+	c := &WSConn{
 		ws:    ws,
 		queue: make(chan types.Messageable, 5),
 		id:    id,
@@ -44,16 +50,20 @@ func NewConnection(ws *websocket.Conn, id uuid.UUID, cmdq chan types.GameCommand
 	return c
 }
 
-func (c *Conn) Run() {
+func (c *WSConn) ID() uuid.UUID {
+	return c.id
+}
+
+func (c *WSConn) Run() {
 	go c.readPump()
 	go c.writePump()
 }
 
-func (c *Conn) Enqueue(msg types.Messageable) {
+func (c *WSConn) Enqueue(msg types.Messageable) {
 	c.queue <- msg
 }
 
-func (c *Conn) readPump() {
+func (c *WSConn) readPump() {
 	defer c.close()
 	c.ws.SetReadLimit(maxMessageSize)
 	_ = c.ws.SetReadDeadline(time.Now().Add(pongWait))
@@ -77,12 +87,12 @@ func (c *Conn) readPump() {
 	}
 	log.Printf("read pump done")
 }
-func (c *Conn) pong(_ string) error {
+func (c *WSConn) pong(_ string) error {
 	_ = c.ws.SetReadDeadline(time.Now().Add(pongWait))
 	return nil
 }
 
-func (c *Conn) writePump() {
+func (c *WSConn) writePump() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {
 		ticker.Stop()
@@ -115,7 +125,7 @@ func (c *Conn) writePump() {
 	}
 }
 
-func (c *Conn) close() {
+func (c *WSConn) close() {
 	c.ws.Close()
 	c.cmdq <- types.GameCommand{Kind: "KindDisconnect", ConnID: c.id}
 }
