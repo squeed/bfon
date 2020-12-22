@@ -140,7 +140,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 			return
 		}
 
-		time.AfterFunc(time.Until(*t), func() {
+		go time.AfterFunc(time.Until(*t), func() {
 			log.Printf("Deadline expired, queuing...")
 			a.cmds <- types.GameCommand{
 				Kind:     "Deadline",

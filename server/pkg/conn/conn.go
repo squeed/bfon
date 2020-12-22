@@ -42,7 +42,7 @@ type WSConn struct {
 func NewConnection(ws *websocket.Conn, id uuid.UUID, cmdq chan types.GameCommand) *WSConn {
 	c := &WSConn{
 		ws:    ws,
-		queue: make(chan types.Messageable, 5),
+		queue: make(chan types.Messageable, 100),
 		id:    id,
 		cmdq:  cmdq,
 	}
@@ -60,6 +60,7 @@ func (c *WSConn) Run() {
 }
 
 func (c *WSConn) Enqueue(msg types.Messageable) {
+
 	c.queue <- msg
 }
 

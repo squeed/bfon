@@ -47,6 +47,7 @@ func (a *App) Run() {
 			return
 		}
 		a.processCommand(&cmd)
+		log.Printf("processsing done")
 	}
 }
 
