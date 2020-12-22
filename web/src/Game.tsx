@@ -54,18 +54,41 @@ class Game extends React.Component<GameProps> {
         )}
         {ss.round > 0 && ss.round <= 3 && (
           <div>
+            
+
+
+
             <TeamList 
               serverState={ss} 
               
               iAmClueing={this.props.myUserID === ss.userGuessing}
               startClueing={() => this.props.startGuessing()}
             />
+            {ss.round === 1 && (
+              <div className="roundDescription"><h4>Round 1</h4>
+              <p>Say anything – except for the word itself.</p></div>
+            )
+            }
+            {ss.round === 2 && (
+              <div className="roundDescription">
+                <h4>Round 2</h4>
+                <p>Say only ONE word. No actions.</p>
+                </div>
+            )
+            }
+            {ss.round === 3 && (
+              <div className="roundDescription">
+                <h4>Round 3</h4>
+                <p>Actions only – no talking!</p></div>
+            )
+            }
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
               submitGuess={(c) => this.props.guess(c)}
 
             />
+            
             <Bowl
               words={ss.words.length}
               remainingWords={ss.remainingWords.length}
@@ -133,7 +156,7 @@ class WordList extends React.Component<{
         />
         <form onSubmit={(e) => this.addWord(e)}>
           <label>
-            <input className="addWord" type="text" ref={this.inputRef} />
+            <input className="addWord" type="text" autoComplete="off" ref={this.inputRef} />
           </label>
           <input className="submitWord" type="submit" value="Submit" />
         </form>
@@ -160,7 +183,7 @@ class TeamForm extends React.Component<{
     return (
       <div>
         <label htmlFor="teamNameInput">Who's on Team 1?</label>
-        <input id="teamNameInput" ref={this.teamNameRef}></input>
+        <input id="teamNameInput" autoComplete="off" ref={this.teamNameRef}></input>
         <button onClick={() => this.addTeam()}>
           <i className="fa fa-plus" aria-hidden="true"></i>
         </button>

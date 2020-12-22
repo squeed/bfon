@@ -27,42 +27,35 @@ class App extends React.Component<{}, AppState> {
         connected: true,
         userID: "1111-2222",
         isAdmin: true,
-        // To set the "beginning of game" state, comment out from here...
-        // gameName: "crazy llama",
-        // gameState: new types.MessageGameState({
-        //   name: "Crazy Llama",
-        //   ID: "crazyllama",
+        //To set the "beginning of game" state, comment out from here...
+        gameName: "crazy llama",
+        gameState: new types.MessageGameState({
+          name: "Crazy Llama",
+          ID: "crazyllama",
 
-        //   round: 1,
+          round: 3,
 
-        //   teams: [
-        //     {
-        //       name: "Clara Jasper Emerson",
-        //       score: 5,
-        //     },
-        //     {
-        //       name: "Paulina Annike Lily",
-        //       score: 2,
-        //     },
-        //     {
-        //       name: "Mom Dad Great-Grandpa Best Team Ever",
-        //       score: 55,
-        //     },
-        //     {
-        //       name: "Koko Whiffle Tupper",
-        //       score: 8,
-        //     },
-        //   ],
+          teams: [
+            {
+              name: "Kelsey Ame Ngoc",
+              score: 5,
+            },
+            {
+              name: "Sergio Casey Molly",
+              score: 2,
+            }
+           
+          ],
 
-        //   // set to 0 - 3 to make a certain team active
-        //   currentTeam: 2,
-        //   // say "nobody is guessing" by commenting the next two lines out
-        //   //userGuessing: "1111-2222",
-        //   //deadline: 1707980688,
+          // set to 0 - 1 to make a certain team active
+          currentTeam: 1,
+          // say "nobody is guessing" by commenting the next two lines out
+          userGuessing: "1111-2222",
+          deadline: 1707980688,
 
-        //   words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
-        //   remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
-        // }),
+          words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
+          remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
+        }),
         // ... to here
       });
       return;
