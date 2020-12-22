@@ -1,50 +1,53 @@
-import * as types from "./Types";
+//import * as types from "./Types";
 import React from "react";
+import Modal from 'react-modal';
+
+Modal.setAppElement("#root");
+
 
 type CountdownProps = { deadline: number };
 type CountdownState = { secondsLeft: number };
 export class Countdown extends React.Component<CountdownProps, CountdownState> {
-  timerID: number | undefined;
+    timerID: number | undefined;
 
-  constructor(props: CountdownProps) {
-    super(props);
+    constructor(props: CountdownProps) {
+        super(props);
 
-    this.state = { secondsLeft: this.secondsLeft(props.deadline) };
-  }
-
-  secondsLeft(deadline: number): number {
-    const dl = Math.floor(deadline - Date.now() / 1000);
-    if (dl < 0) {
-      return 0;
+        this.state = { secondsLeft: this.secondsLeft(props.deadline) };
     }
-    return dl;
-  }
 
-  tick() {
-    this.setState((state, props) => ({
-      secondsLeft: this.secondsLeft(props.deadline),
-    }));
-  }
+    secondsLeft(deadline: number): number {
+        const dl = Math.floor(deadline - Date.now() / 1000);
+        if (dl < 0) {
+            return 0;
+        }
+        return dl;
+    }
 
-  componentDidMount() {
-    this.timerID = window.setInterval(() => this.tick(), 1000);
-  }
+    tick() {
+        this.setState((state, props) => ({
+            secondsLeft: this.secondsLeft(props.deadline),
+        }));
+    }
 
-  componentWillUnmount() {
-    window.clearInterval(this.timerID);
-  }
+    componentDidMount() {
+        this.timerID = window.setInterval(() => this.tick(), 1000);
+    }
 
-  render() {
-    function time_convert(num:number)
-    { 
-     var hours = Math.floor(num / 60);  
-     var minutes = num % 60;
-     return hours + ":" + minutes;         
-   }
-   var timeHM = time_convert(this.state.secondsLeft);
+    componentWillUnmount() {
+        window.clearInterval(this.timerID);
+    }
 
-    return <div className="timer">{timeHM}</div>;
-  }
+    render() {
+        function time_convert(num: number) {
+            var hours = Math.floor(num / 60);
+            var minutes = num % 60;
+            return hours + ":" + minutes;
+        }
+        var timeHM = time_convert(this.state.secondsLeft);
+
+        return <div className="timer">{timeHM}</div>;
+    }
 }
 
 export class GameNav extends React.Component<
@@ -66,11 +69,11 @@ export class GameNav extends React.Component<
                 <p className="gameTitle heading--stroke heading--shadow"> B.F.O.N.</p>
                 <p className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName} <span className="gameSettings">
                     <i className="fa fa-angle-down" ></i>
-                    
+
                 </span>
-                {this.state.showSettings && <GameMenu />}
+                    {this.state.showSettings && <GameMenu />}
                 </p>
-                
+
             </div>
         );
     }
@@ -82,13 +85,13 @@ class GameMenu extends React.Component {
             <div className="gameMenu">
                 <ul>
                     <li>
-                        <a href="">Reset Round</a>
+                        <a href="#">Reset Round</a>
                     </li>
                     <li>
-                        <a href="">Leave Game</a>
+                        <a href="#">Leave Game</a>
                     </li>
                     <li>
-                        <a href="">End Game for All</a>
+                        <a href="#">End Game for All</a>
                     </li>
                 </ul>
             </div>
@@ -96,6 +99,44 @@ class GameMenu extends React.Component {
     }
 }
 
+export class Footer extends React.Component<{}, {
+    showInstructions: boolean;
+}> {
+    constructor(props: {}) {
+        super(props);
+        this.state = { showInstructions: false };
+    }
+
+    setShowInstructions(show: boolean): boolean {
+        this.setState({
+            showInstructions: show,
+        });
+        return false;
+    }
+
+    render() {
+        return (
+            <div className="launchFooter">
+                <p>
+                    <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >About &amp; Instructions</a>
+                    <Modal
+                        isOpen={this.state.showInstructions}
+                        onRequestClose={() => this.setShowInstructions(false)}
+                        contentLabel="Instructions"
+                    >
+                        <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(false)}>Hide</a>
+                        <Instructions />
+                        <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(false)}>Hide</a>
+                    </Modal>
+                </p>
+                <p className="credits">
+                    By <a href="http://molly.is">Molly</a> and{" "}
+                    <a href="http://caseyc.net">Casey</a>, Christmas 2020
+            </p>
+            </div>
+        );
+    }
+}
 
 
 export class Instructions extends React.Component {

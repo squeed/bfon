@@ -12,7 +12,6 @@ import React from "react";
 import ScaleText from "react-scale-text";
 
 import * as extras from "./Extras";
-import { isTemplateMiddleOrTemplateTail, NodeBuilderFlags } from "typescript";
 
 type GameProps = {
   serverState: types.MessageGameState;
@@ -227,16 +226,11 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
     } else if (bowlFill > 0) {
       bowl = bowl20;
       bowlLabel = "bowlImage bowl20";
-    } else if (bowlFill == 0) {
+    } else {
       bowl = bowl0;
       bowlLabel = "bowlImage bowl0";
     }
     console.log(bowlFill);
-
-    const textStyle = {
-      color: "#ffffff",
-      fontSize: "30px"
-    }
 
     return (
       <div className="bowl">

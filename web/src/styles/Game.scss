@@ -1,7 +1,7 @@
 /* ----------- VARIABLES ----------- */
 
 @font-face {
-    font-family: WorkSans;
+    font-family: "Work Sans";
     src: url(WorkSans-VariableFont_wght.ttf);
 }
 @font-face {
@@ -22,14 +22,46 @@
 /* --- mixins and variables --- */
 $white: #fff;
 $black: #000;
-$lightcream: #fef8ec;
-$cream: #FDF0D5;
+$lightcream: #F6F4F4;
+$cream: #E2DADB;
 $darkerpurple: #201d1e;
 $darkpurple: #3A3335;
 $orange: #F0544F;
 $pink: #D81E5B;
 $blue: #58A1B2;
 $green: #81B775;
+
+$blue1: #73B0BF;
+$blue2: #65A8B8;
+$blue3: #58A1B2;
+$blue4: #478A9A;
+$blue5: #407D8C;
+$blue6: #3A707E;
+
+$pink1: #F1BBDC;
+$pink2: #EA99CA;
+$pink3: #E378BA;
+$pink4: #DC56A9;
+
+$green1: #66CC79;
+$green2: #47C25E;
+$green3: #38A84D;
+$green4: #339946;
+
+
+$dark1: #0B0A0A;
+$dark2:#201D1D; 
+$dark3: #363030;
+$dark4: #413A3A;
+$dark5: #4C4343;
+$dark6: #564D4D;
+
+$light1: #fff;
+$light2: #F6F4F4;
+$light3: #EDE9E9;
+$light4: #E3DDDD;
+$light5: #DAD2D2;
+$light6: #D1C7C7;
 
 
 @mixin zeromarg {
@@ -38,8 +70,8 @@ $green: #81B775;
 }
 
 @mixin page-edge {
-    padding-left: 1.5em;
-    padding-right: 1.5em;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 @mixin padding-vert($val){
     padding-top: $val;
@@ -51,14 +83,12 @@ $green: #81B775;
 
 body {
     font-family: "Work Sans", sans-serif;
+    font-size: 16px;
     }
 
 /* -------- OFFSET STROKE --------- */
 
-$body: #f2cee6;
-$stroke: #0d1b1e;
-$shadow: #2dc7ff;
-$size: 6rem;
+
 $halftone: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAHElEQVQYV2NUVFT8f//+fUYGBgYGMAEDcA5IBQCKJQVmn76DhAAAAABJRU5ErkJggg==");
 
 @mixin stroke-width($property) {
@@ -84,12 +114,10 @@ $halftone: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKL
 
 
 
-$stroke: $black;
-$shadow: $white;
+$stroke: $dark1;
+$shadow: #EA99CA;
 
 .heading {
-	font-size: $size;
-	letter-spacing: 6px;
 	margin: 0;
 
 	&--stroke {
@@ -103,7 +131,6 @@ $shadow: $white;
 	}
 
 	&--stroke-shadow {
-		color: $body;
 		text-shadow: -2px 0 $stroke, 0 -2px $stroke, 2px 0 $stroke, 0 2px $stroke,
 			2px 2px $stroke, -2px -2px $stroke, -2px 2px $stroke, 2px -2px $stroke,
 			6px 6px $shadow;
@@ -117,7 +144,7 @@ $shadow: $white;
 			@include stroke-width(0);
 			@include background-clip(text);
 			@include fill-color(transparent);
-			font-size: $size;
+			
 			letter-spacing: 6px;
 			left: calc(50% + 6px);
 			top: calc(50% + 6px);
@@ -146,9 +173,9 @@ body {
 }
 
 button {
-    font-size: 1em;
+    font-size: 1rem;
     border-radius: 2px;
-    padding: .5em 1em;
+    padding: .5rem 1rem;
     border: none;
 }
 
@@ -158,7 +185,7 @@ button {
 .gameNav {
     display: flex;
     justify-content: space-between;
-    background-color: $blue;
+    background-color: $blue3;
    border-bottom: 3px solid $darkpurple;
     
     @include page-edge();
@@ -174,21 +201,21 @@ button {
         font-weight: 800;
         font-family: 'Work Sans', sans-serif;
         
-        font-size: 2.7em;
-        @include padding-vert(.2em);
+        font-size: 2.7rem;
+        @include padding-vert(.2rem);
         margin: 0;
         
     }
     .gameName {
         text-transform: uppercase;
-        font-weight: 300;
+        font-weight: 800;
         font-family: 'Work Sans', sans-serif;
         color: $white;
-        font-size: 1em;
-        letter-spacing: .04em;
-        background-color: $darkpurple;
+        font-size: 1rem;
+        letter-spacing: .04rem;
+       
         
-        padding: 1em 1em 1em 1em;
+        padding: 1rem 1rem 1rem 1rem;
         margin: 0;
         cursor:pointer;
     }
@@ -205,15 +232,15 @@ button {
         text-align: right;
         top: 0;
         left: 0;
-        background-color: $darkpurple;
+        
         ul {
             list-style-type: none;
             @include zeromarg();
-            margin: .4em 0 0 0;
+            margin: .4rem 0 0 0;
             li {
-                font-weight: 300;
-                font-size: .9em;
-                margin: .4em 0;
+                font-weight: 600;
+                font-size: .9rem;
+                margin: .4rem 0;
                 a{
                     color: $white;
                     text-decoration: none;
@@ -252,9 +279,79 @@ button {
     margin-left: 20px;
   }
 
+ /* ---------- MODAL ----------- */
+.modal {
+    
+}
+
+ /* ---------- TITLE ----------- */
+
+ .gameLaunch {
+     
+     margin: 0;
+     background-color: $blue3;
+     font-family: "Work Sans", sans-serif;
+     color: $white;
+     text-align: center;
+     .gameMainTitle {
+        @include page-edge();
+        padding-top: 1em;
+       
+         h1 {
+            text-transform: uppercase;
+            font-size: 4.5rem;
+            margin: 0;
+         }
+        h3 {
+            font-weight: 500;
+            font-size: 1.6rem;
+        }
+        
+        
+     }
+     button {
+         background-color: $green2;
+         color: $white;
+         font-weight: bold;
+     }
+     .launchOptions {
+        @include page-edge();
+        background-color: $blue4;
+        padding-top: .1rem;
+        padding-bottom: 1rem;
+         .joinGame {
+           
+             input {
+                 
+                 padding: .2rem .2rem;
+                 font-size: 1rem;
+                 width: 9rem;
+             }
+             label {
+                 display: block;
+             }
+
+         }
+         p {
+
+         }
+     }
+ }
+ .launchFooter {
+     padding: .2rem 0 .5rem 0;
+     margin: 0;
+     a {
+         color: $light2;
+     }
+     p {
+        font-size: 1.1rem;
+     }
+     p.credits {
+         font-size: .9rem;
+     }
+ }
 
  
-
   
   
   /* ---------- ALL TEAMS LIST ----------- */
@@ -265,7 +362,7 @@ button {
       align-items: center;
       color: $black;
       @include page-edge();
-      @include padding-vert(.2em);
+      @include padding-vert(.2rem);
       background-color: $cream;
       font-family: 'Work Sans', sans-serif;
       .teamDetails {
@@ -277,22 +374,22 @@ button {
         button {
             background-color: $green;
             color: $lightcream;
-            margin: .7em 0 0 0;
-            font-size: 1.1em;
+            margin: .7rem 0 0 0;
+            font-size: 1.1rem;
         }
         p {
             @include zeromarg();
         }
         .countdown {
-            font-size: 2em;
+            font-size: 2rem;
             font-weight: 300;
-            padding: .1em 0;
+            padding: .1rem 0;
 
         }
 
         .teamName {
             @include zeromarg();
-            font-size: 1.3em;
+            font-size: 1.3rem;
           font-weight: 300;
           
           
@@ -304,7 +401,7 @@ button {
           color: $white;
           .teamName {
 
-            font-size: 1.1em;
+            font-size: 1.1rem;
             font-weight: 500;
           }
       }
@@ -312,15 +409,15 @@ button {
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: .3em .5em;
-          margin: .4em 0 .4em 1em;
+          padding: .3rem .5rem;
+          margin: .4rem 0 .4rem 1rem;
           background-color: $white;
           color: $black;
           text-align: right;
           font-weight: 700;
-          font-size: 1.5em;
-          width: 1em;
-          height: 1.5em;
+          font-size: 1.5rem;
+          width: 1rem;
+          height: 1.5rem;
           .scoreNumber {
               @include zeromarg();
           }
@@ -337,24 +434,24 @@ button {
         font-family: "Kalam", sans-serif;
         background-color: $white;
         text-align: center;
-        font-size: 2.5em;
-        margin: .2em 0;
-        padding: .5em .5em .5em .5em;
-        height: 3em;
-        line-height: 1em;
+        font-size: 2.5rem;
+        margin: .2rem 0;
+        padding: .5rem .5rem .5rem .5rem;
+        height: 3rem;
+        line-height: 1rem;
         align-items: center;
         justify-content: center;
         .scaletext-wrapper {
             overflow: visible !important;
             span {
                 position: relative !important;
-                top: .5em !important;
+                top: .5rem !important;
             }
         }
         
       }
       .buttonCorrect {
-          font-size: 1.5em;
+          font-size: 1.5rem;
           text-align: center;
           button {
               background-color: $green;
@@ -370,7 +467,7 @@ button {
           display: inline-block;
           text-align: center;
           margin: 0;
-          padding: 0em .6em;
+          padding: 0em .6rem;
       }
       .buttonWhoops button, .buttonGiveUp button {
           margin: 0;
@@ -390,11 +487,11 @@ button {
   /* ---------- BOWL ----------- */
 .bowl {
     @include page-edge();
-    @include padding-vert(.3em);
+    @include padding-vert(.3rem);
     .remainingWords {
         @include zeromarg();
         font-family: "Work Sans", sans-serif;
-        font-size: 5em;
+        font-size: 5rem;
         color: $white;
         font-weight: 800;
         display: flex;
@@ -402,7 +499,7 @@ button {
         justify-content: center;
         align-items: center;
         position: relative;
-        top: .35em;
+        top: .35rem;
     }
     .remainingWordsSVG {
         font-family: "Work Sans", sans-serif;
@@ -433,7 +530,7 @@ button {
         z-index: -1;
         bottom: 10px;
         img {
-            height: 12em;
+            height: 12rem;
             width: 100%;
             margin-left: auto;
         margin-right: auto;

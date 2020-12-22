@@ -5,6 +5,7 @@ import "./styles/App.scss";
 import * as types from "./Types";
 import { Connection } from "./Conn";
 import Game from "./Game";
+import * as extras from "./Extras";
 
 type AppState = {
   connected: boolean;
@@ -25,41 +26,41 @@ class App extends React.Component<{}, AppState> {
         connected: true,
         userID: "1111-2222",
         // To set the "beginning of game" state, comment out from here...
-        gameName: "crazy llama",
-        gameState: new types.MessageGameState({
-          name: "Crazy Llama",
-          ID: "crazyllama",
+        // gameName: "crazy llama",
+        // gameState: new types.MessageGameState({
+        //   name: "Crazy Llama",
+        //   ID: "crazyllama",
 
-          round: 1,
+        //   round: 1,
 
-          teams: [
-            {
-              name: "Clara Jasper Emerson",
-              score: 5,
-            },
-            {
-              name: "Paulina Annike Lily",
-              score: 2,
-            },
-            {
-              name: "Mom Dad Great-Grandpa Best Team Ever",
-              score: 55,
-            },
-            {
-              name: "Koko Whiffle Tupper",
-              score: 8,
-            },
-          ],
+        //   teams: [
+        //     {
+        //       name: "Clara Jasper Emerson",
+        //       score: 5,
+        //     },
+        //     {
+        //       name: "Paulina Annike Lily",
+        //       score: 2,
+        //     },
+        //     {
+        //       name: "Mom Dad Great-Grandpa Best Team Ever",
+        //       score: 55,
+        //     },
+        //     {
+        //       name: "Koko Whiffle Tupper",
+        //       score: 8,
+        //     },
+        //   ],
 
-          // set to 0 - 3 to make a certain team active
-          currentTeam: 2,
-          // say "nobody is guessing" by commenting the next two lines out
-          //userGuessing: "1111-2222",
-          //deadline: 1707980688,
+        //   // set to 0 - 3 to make a certain team active
+        //   currentTeam: 2,
+        //   // say "nobody is guessing" by commenting the next two lines out
+        //   //userGuessing: "1111-2222",
+        //   //deadline: 1707980688,
 
-          words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
-          remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
-        }),
+        //   words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
+        //   remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
+        // }),
         // ... to here
       });
       return;
@@ -292,41 +293,46 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
+
+    
     if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting...</div>;
     }
     if (!this.state.gameName) {
       return (
-        <div>
-          <div className="gametitle">
-            <h1>Bowl Full of Nouns</h1>
-            <h3>A remote party game for 4-20 people</h3>
+        <div className="gameLaunch">
+          <div className="gameMainTitle">
+            <h1 className="heading--stroke heading--shadow">Bowl Full of Nouns</h1>
+            <h3>A remote party game for 4+ people</h3>
           </div>
-          <div className="launchoptions">
-            <label htmlFor="gamepw">Enter password:</label>
+          <div className="launchOptions">
+            <div className="joinGame">
+            <p><label htmlFor="gamePW">Enter password:</label></p>
             <input id="gamepw" ref={this.passwordInputRef}></input>
-            <p>
-              <button onClick={() => this.joinGame()}>
-                Join <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            <button onClick={() => this.joinGame()}>
+                Join Game <i className="fa fa-arrow-right" aria-hidden="true"></i>
               </button>
-              or
-              <button onClick={() => this.createGame()}>
-                Create <i className="fa fa-plus" aria-hidden="true"></i>
+            </div>
+            <p>
+              OR
+            </p>
+            <div className="createGame">
+            <button onClick={() => this.createGame()}>
+                Create New Game
               </button>
-            </p>
+            </div>
+           
+           
           </div>
-          <div className="launchfooter">
-            <p>
-              <a href="">How to play</a>
-            </p>
-            <p>
-              By <a href="http://molly.is">Molly</a> and{" "}
-              <a href="http://caseyc.net">Casey</a>, Christmas 2020.
-            </p>
-          </div>
+          <extras.Footer />
         </div>
       );
     }
+    
+
+
+
+
     if (!this.state.gameState) {
       return <div>Joining game...</div>;
     }
