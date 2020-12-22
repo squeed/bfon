@@ -118,7 +118,7 @@ export class Footer extends React.Component<{}, {
         return (
             <div className="launchFooter">
                 <p>
-                    <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >About &amp; Instructions</a>
+                    <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
                     <Modal
                         isOpen={this.state.showInstructions}
                         onRequestClose={() => this.setShowInstructions(false)}
@@ -144,14 +144,30 @@ export class Instructions extends React.Component {
         return (
             <div>
                 <div className="gameInstructions">
+                    <h3>What is Bowl Full of Nouns?</h3>
+                    <p>It's an online, remote-friendly version of a beloved analog party game.</p>
+                    <h3>What technology do you need?</h3>
+                    <p>Every location taking part needs 1 device for a video call (Zoom, Google Meet, etc.), as well at least 1 phone that isn't being used for the video call.</p>
+                    <h3>How many players?</h3>
+                    <p>At least 4.</p>
+                    <hr></hr>
+                    <h3>Playing the game</h3>
+                    <h4>Create teams</h4>
+                    <p>The person who created the game divides the players into teams. Try not to put couples together; they know too much. We recommend a maximum of 4 teams.</p>
+                    <h4>Fill the bowl</h4>
+
                     <p>
-                        Everybody puts some nouns in the bowl. Proper nouns are okay (Billie
-                        Eilish, Nigeria, Zeus). Noun phrases are okay as long as they
-                        usually belong together (sauvignon blanc, dumpster fire, taxi
-                        driver). Being complicated just to be tricky is not okay (silver
-                        pickle fork, sleeping tomcat, left sock).
-          </p>
-                    <p>Players are divided into teams.</p>
+                        Each player puts 3-5 nouns in the bowl.</p>
+                        <p> <i className="fa fa-check fa-fw"></i> Proper nouns (Billie
+                        Eilish, Nigeria, Zeus)</p>
+                        <p> <i className="fa fa-check fa-fw"></i> Noun phrases (sauvignon blanc, dumpster fire, taxi
+                        driver)</p>
+                        <p> <i className="fa fa-times fa-fw"></i>Being complicated just to be tricky (silver pickle fork once owned by Jane Austen)</p>
+                        <p> <i className="fa fa-times fa-fw"></i>Being boring (chair, phone, computer)</p>
+                    
+                    <h4>Guess the words</h4>
+                    
+                    
                     <p>
                         The game consists of 3 rounds. In each round, teams take turns
                         appointing a cluemeister to help them guess words. The cluemeister
@@ -163,7 +179,7 @@ export class Instructions extends React.Component {
                         <dt>Round 1</dt>
                         <dd>
                             The cluemeister can say anything they want to help their teammates
-                            guess the clue.
+                            guess the clue. They can't spell the word or rhyme it.
             </dd>
                         <dt>Round 2</dt>
                         <dd>
