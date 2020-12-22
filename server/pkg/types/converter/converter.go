@@ -20,6 +20,7 @@ func main() {
 	t.Add(types.MessageCreateGame{})
 	t.Add(types.MessageInvalidGame{})
 	t.Add(types.MessageStartTurn{})
+	t.Add(types.MessageEndTurn{})
 	t.Add(types.MessageGuess{})
 
 	t.AddEnum(types.AllMessageKinds)

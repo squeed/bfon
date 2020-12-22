@@ -55,6 +55,10 @@ export class Connection {
         if (response.kind === "gameState") {
             this.onNewState(response.data);
         }
+
+        if (response.kind === "leaveGame") {
+            this.onNewState(null);
+        }
     }
 }
 

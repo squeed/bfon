@@ -11,6 +11,7 @@ export enum MessageKind {
     invalidGame = "invalidGame",
     leaveGame = "leaveGame",
     startTurn = "startTurn",
+    endTurn = "endTurn",
     guess = "guess",
     startGame = "startGame",
 }
@@ -46,6 +47,7 @@ export class MessageGameState {
     name: string;
     ID: string;
     seqNumber: number;
+    adminUser: string;
     round: number;
     teams: Team[];
     currentTeam: number;
@@ -64,6 +66,7 @@ export class MessageGameState {
         this.name = source["name"];
         this.ID = source["ID"];
         this.seqNumber = source["seqNumber"];
+        this.adminUser = source["adminUser"];
         this.round = source["round"];
         this.teams = this.convertValues(source["teams"], Team);
         this.currentTeam = source["currentTeam"];
@@ -169,6 +172,18 @@ export class MessageStartTurn {
 
     static createFrom(source: any = {}) {
         return new MessageStartTurn(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.seqNumber = source["seqNumber"];
+    }
+}
+export class MessageEndTurn {
+    seqNumber: number;
+
+    static createFrom(source: any = {}) {
+        return new MessageEndTurn(source);
     }
 
     constructor(source: any = {}) {

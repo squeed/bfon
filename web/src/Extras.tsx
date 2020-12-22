@@ -51,10 +51,10 @@ export class Countdown extends React.Component<CountdownProps, CountdownState> {
 }
 
 export class GameNav extends React.Component<
-    { gameName: string },
+    { gameName: string, leaveGame: () => void },
     { showSettings: boolean }
     > {
-    constructor(props: { gameName: string }) {
+    constructor(props: { gameName: string, leaveGame: () => void }) {
         super(props);
         this.state = { showSettings: false };
     }
@@ -71,7 +71,7 @@ export class GameNav extends React.Component<
                     <i className="fa fa-angle-down" ></i>
 
                 </span>
-                    {this.state.showSettings && <GameMenu />}
+                    {this.state.showSettings && <GameMenu leaveGame={() => this.props.leaveGame()} />}
                 </p>
 
             </div>
@@ -79,7 +79,7 @@ export class GameNav extends React.Component<
     }
 }
 
-class GameMenu extends React.Component {
+class GameMenu extends React.Component<{ leaveGame: () => void }> {
     render() {
         return (
             <div className="gameMenu">
@@ -88,7 +88,7 @@ class GameMenu extends React.Component {
                         <a href="#">Reset Round</a>
                     </li>
                     <li>
-                        <a href="#">Leave Game</a>
+                        <a href="#" onClick={() => this.props.leaveGame()}>Leave Game</a>
                     </li>
                     <li>
                         <a href="#">End Game for All</a>
@@ -119,7 +119,7 @@ export class Footer extends React.Component<{}, {
             <div className="launchFooter">
                 <p>
                     <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
-                    
+
                     <Modal
                         isOpen={this.state.showInstructions}
                         onRequestClose={() => this.setShowInstructions(false)}
@@ -127,7 +127,7 @@ export class Footer extends React.Component<{}, {
                     >
                         <a href="#" className="gameInstructions closeX" onClick={() => this.setShowInstructions(false)}><i className="fa fa-times"></i></a>
                         <Instructions />
-                        
+
                     </Modal>
                 </p>
                 <p className="credits">
@@ -145,11 +145,11 @@ export class Instructions extends React.Component {
         return (
             <div>
                 <div className="gameInstructions modalBody">
-                    
+
                     <p>Bowl Full of Nouns is an online, remote-friendly party game for 4+ people.</p>
-                    
+
                     <p>Every location taking part needs 1 device for a video call (Zoom, Google Meet, etc.), as well at least 1 phone that isn't being used for the video call.</p>
-                    
+
                     <hr></hr>
                     <h3>Playing the game</h3>
                     <h4>Create teams</h4>
@@ -158,32 +158,32 @@ export class Instructions extends React.Component {
 
                     <p>
                         Each player puts 3-5 nouns in the bowl.</p>
-                        <div className="yes">
-<ul>
-  <li>
-    Proper nouns
+                    <div className="yes">
+                        <ul>
+                            <li>
+                                Proper nouns
     <span className="example">&nbsp;(Billie Eilish, Nigeria)</span>
-  </li>
-  <li>
-    Noun phrases
+                            </li>
+                            <li>
+                                Noun phrases
     <span className="example">&nbsp;(cabernet sauvignon, bus driver)</span>
-    
-  </li>
-</ul>
-        </div>
-        <div className="no">
-          <ul>
-            <li>
-            Boring words
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="no">
+                        <ul>
+                            <li>
+                                Boring words
     <span className="example">&nbsp;(chair, tv, phone)</span>
-    
-            </li>
-          </ul>
-        </div>
-                    
+
+                            </li>
+                        </ul>
+                    </div>
+
                     <h4>Guess the words</h4>
-                    
-                    
+
+
                     <p>
                         The game consists of 3 rounds. In each round, teams take turns
                         appointing a cluemeister to help them guess words. The cluemeister
@@ -222,7 +222,7 @@ export class Instructions extends React.Component {
                         any unfairness in case one team got more play time than other teams.
           </p>
                 </div>
-                
+
             </div>
         );
     }

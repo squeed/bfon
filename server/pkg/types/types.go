@@ -39,6 +39,10 @@ type MessageStartTurn struct {
 	SeqNumber int `json:"seqNumber"`
 }
 
+type MessageEndTurn struct {
+	SeqNumber int `json:"seqNumber"`
+}
+
 type MessageGuess struct {
 	SeqNumber int    `json:"seqNumber"`
 	Word      string `json:"word"`
@@ -48,6 +52,8 @@ type MessageGameState struct {
 	Name      string `json:"name"`
 	ID        string `json:"ID"`
 	SeqNumber int    `json:"seqNumber"`
+
+	AdminUser string `json:"adminUser"`
 
 	Round int `json:"round"`
 
@@ -63,6 +69,8 @@ type MessageGameState struct {
 	// if there's a round overshot
 	TimeRemaining int `json:"timeRemaining,omitempty"`
 }
+
+type MessageLeftGame struct{}
 
 type Team struct {
 	Name  string `json:"name"`

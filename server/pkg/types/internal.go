@@ -15,6 +15,7 @@ type GameCommand struct {
 	AddTeam   *MessageAddTeam
 	AddWord   *MessageAddWord
 	StartTurn *MessageStartTurn
+	EndTurn   *MessageEndTurn
 	Guess     *MessageGuess
 
 	// internal / synthetic messages

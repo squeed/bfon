@@ -73,6 +73,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 0,
 
 		Teams: []types.Team{},
@@ -119,6 +120,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 0,
 
 		Teams: []types.Team{
@@ -143,6 +145,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 0,
 
 		Teams: []types.Team{
@@ -178,6 +181,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 1,
 
 		Teams: []types.Team{
@@ -208,6 +212,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 2,
 
 		Teams: []types.Team{
@@ -238,6 +243,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 3,
 
 		Teams: []types.Team{
@@ -268,6 +274,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 4,
 
 		Teams: []types.Team{
@@ -303,6 +310,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 5,
 
 		Teams: []types.Team{
@@ -346,6 +354,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 6,
 
 		Teams: []types.Team{
@@ -382,6 +391,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 7,
 
 		Teams: []types.Team{
@@ -411,6 +421,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 8,
 
 		Teams: []types.Team{
@@ -440,6 +451,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 9,
 
 		Teams: []types.Team{
@@ -481,6 +493,7 @@ func TestProcess(t *testing.T) {
 	gameShouldEqual(&types.MessageGameState{
 		Name:      GameName,
 		ID:        GameID,
+		AdminUser: UserID,
 		SeqNumber: 10,
 
 		Teams: []types.Team{

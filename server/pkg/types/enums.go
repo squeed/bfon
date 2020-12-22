@@ -10,6 +10,7 @@ const (
 	KindInvalidGame = "invalidGame"
 	KindLeaveGame   = "leaveGame"
 	KindStartTurn   = "startTurn"
+	KindEndTurn     = "endTurn"
 	KindGuess       = "guess"
 	KindStartGame   = "startGame"
 )
@@ -24,6 +25,7 @@ var AllMessageKinds = []MessageKind{
 	KindInvalidGame,
 	KindLeaveGame,
 	KindStartTurn,
+	KindEndTurn,
 	KindGuess,
 	KindStartGame,
 }

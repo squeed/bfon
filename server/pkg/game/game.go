@@ -17,11 +17,13 @@ type Game struct {
 	types.MessageGameState
 }
 
-func NewGame(name string) *Game {
+func NewGame(name, adminUser string) *Game {
 	g := &Game{
 		MessageGameState: types.MessageGameState{
 			Name: name,
 			ID:   ParseGameID(name),
+
+			AdminUser: adminUser,
 
 			Round: 0, // add words and teams
 
@@ -110,6 +112,19 @@ func (g *Game) StartTurn(userID string, seqNumber int) *types.CommandDeadline {
 		GameID: g.ID,
 		Round:  g.Round,
 	}
+}
+
+func (g *Game) EndUserTurn(seqNumber int) {
+	log.Println("EndTurn")
+	if g.SeqNumber != seqNumber {
+		log.Println("EndTurn out of sequence")
+		return
+	}
+
+	g.SeqNumber++
+	g.Deadline = 0
+	g.UserGuessing = ""
+	g.CurrentTeam = (g.CurrentTeam + 1) % len(g.Teams)
 }
 
 func (g *Game) EndTurn(round int) {

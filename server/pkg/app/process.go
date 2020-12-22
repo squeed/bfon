@@ -83,7 +83,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindLeaveGame {
-		a.leaveGame(conn, userID)
+		a.leaveGame(userID)
 		return
 	}
 
@@ -150,6 +150,16 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindEndTurn {
+		game.EndUserTurn(cmd.EndTurn.SeqNumber)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("startguess failed: %v", err)
+			return
+		}
+		a.broadcastGameState(game)
+		return
+	}
+
 	if cmd.Kind == types.KindGuess {
 		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Word)
 		if err := a.store.SetGame(game); err != nil {
@@ -181,6 +191,10 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 	if conn == nil {
 		return
 	}
+	if state == nil {
+		conn.Enqueue(&types.MessageLeftGame{})
+		return
+	}
 	conn.Enqueue(state)
 }
 
@@ -190,7 +204,7 @@ func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) 
 		return
 	}
 
-	game := pgame.NewGame(cmd.Create.GameName)
+	game := pgame.NewGame(cmd.Create.GameName, userID)
 	if err := a.store.SetGame(game); err != nil {
 		log.Printf("failed to join game: %v", err)
 		return
@@ -219,7 +233,7 @@ func (a *App) joinGame(conn conn.Conn, userID string, name string) {
 	a.sendGameState(game.GetState(), userID)
 }
 
-func (a *App) leaveGame(conn conn.Conn, userID string) {
+func (a *App) leaveGame(userID string) {
 	_ = a.store.SetUserGame(userID, "")
-	// TODO: send left-game state
+	a.sendGameState(nil, userID)
 }

@@ -17,8 +17,16 @@ func (ig *MessageInvalidGame) ToMessage() Message {
 	return *msg
 }
 
-func (ig *MessageGameState) ToMessage() Message {
-	msg, err := ToMessage(KindGameState, ig)
+func (m *MessageGameState) ToMessage() Message {
+	msg, err := ToMessage(KindGameState, m)
+	if err != nil {
+		panic(err)
+	}
+	return *msg
+}
+
+func (m *MessageLeftGame) ToMessage() Message {
+	msg, err := ToMessage(KindLeaveGame, m)
 	if err != nil {
 		panic(err)
 	}
@@ -93,6 +101,17 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			StartTurn: &out,
 		}, nil
 
+	case KindEndTurn:
+		out := MessageEndTurn{}
+		err := m.As(KindEndTurn, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:    string(m.Kind),
+			EndTurn: &out,
+		}, nil
+
 	case KindGuess:
 		out := MessageGuess{}
 		err := m.As(KindGuess, &out)
@@ -108,6 +127,12 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 		return &GameCommand{
 			Kind: string(m.Kind),
 		}, nil
+
+	case KindLeaveGame:
+		return &GameCommand{
+			Kind: string(m.Kind),
+		}, nil
+
 	}
 	return nil, fmt.Errorf("ToCommand unknown kind %s", m.Kind)
 }
