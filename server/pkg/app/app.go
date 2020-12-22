@@ -3,6 +3,7 @@ package app
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
@@ -70,6 +71,11 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 
-	// TODO: lol security
-	CheckOrigin: func(_ *http.Request) bool { return true },
+	CheckOrigin: func(req *http.Request) bool {
+		if strings.HasPrefix(req.Host, "localhost") || strings.HasPrefix(req.Host, "127.0.0.1") || strings.HasPrefix(req.Host, "bfon.club") {
+			return true
+		}
+		log.Printf("Rejecting request from %s", req.Host)
+		return false
+	},
 }

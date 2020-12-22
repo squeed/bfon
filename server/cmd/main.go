@@ -12,7 +12,7 @@ import (
 	"github.com/squeed/bfon/server/pkg/app/store"
 )
 
-var addr = flag.String("addr", ":8080", "websocket address")
+var addr = flag.String("addr", ":5000", "websocket address")
 var dbFile = flag.String("db", "db.sqlite", "path to sqlite db")
 
 func main() {

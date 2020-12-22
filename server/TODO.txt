@@ -1,5 +1,4 @@
 TODO:
 
-- store in sqlite database
 - allow user to leave game
 - admin mode, somehow
