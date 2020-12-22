@@ -128,5 +128,5 @@ func (c *WSConn) writePump() {
 
 func (c *WSConn) close() {
 	c.ws.Close()
-	c.cmdq <- types.GameCommand{Kind: "KindDisconnect", ConnID: c.id}
+	c.cmdq <- types.GameCommand{Kind: "disconnect", ConnID: c.id}
 }

@@ -38,6 +38,18 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == "disconnect" {
+		delete(a.conns, connID)
+		if userID, ok := a.connToUser[connID]; ok {
+			otherConn, ok := a.userToConn[userID]
+			if ok && otherConn.ID() == connID {
+				delete(a.userToConn, userID)
+				delete(a.connToUser, connID)
+			}
+		}
+		return
+	}
+
 	conn = a.conns[connID]
 
 	if conn == nil {
