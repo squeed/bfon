@@ -21,12 +21,12 @@ type GameProps = {
   startGame: () => void;
   startGuessing: () => void;
   myUserID: string;
-  isAdmin: boolean;
 };
 
 class Game extends React.Component<GameProps> {
   render() {
     const ss = this.props.serverState;
+    const isAdmin=(ss.adminUser === this.props.myUserID);
 /* this is the word-adding screen, I think? */
     return (
       <div id="game">
@@ -36,7 +36,7 @@ class Game extends React.Component<GameProps> {
           <div>
             
             <WordList words={ss.words} addWord={this.props.addWord} />
-            { this.props.isAdmin && 
+            { isAdmin && 
             (<div>  
             <TeamForm serverState={ss} addTeam={(team: string)=>this.props.addTeam(team)} />
             <div>
@@ -54,10 +54,6 @@ class Game extends React.Component<GameProps> {
         )}
         {ss.round > 0 && ss.round <= 3 && (
           <div>
-            
-
-
-
             <TeamList 
               serverState={ss} 
               
@@ -86,7 +82,6 @@ class Game extends React.Component<GameProps> {
               serverState={ss}
               myUserID={this.props.myUserID}
               submitGuess={(c) => this.props.guess(c)}
-
             />
             
             <Bowl
@@ -219,7 +214,7 @@ class TeamList extends React.Component<{
     const teams = ss.teams.map((team, index) => (
       <Team
         team={team}
-        active={ss.round > 0 && ss.round < 3 && index === ss.currentTeam}
+        active={ss.round > 0 && ss.round <= 3 && index === ss.currentTeam}
         deadline={ss.deadline}
         startClueing={()=>this.props.startClueing()}
         key={team.name}

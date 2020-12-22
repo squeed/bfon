@@ -49,6 +49,8 @@ type MessageGameState struct {
 	ID        string `json:"ID"`
 	SeqNumber int    `json:"seqNumber"`
 
+	AdminUser string `json:"adminUser"`
+
 	Round int `json:"round"`
 
 	Teams       []Team `json:"teams"`

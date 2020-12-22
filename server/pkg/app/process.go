@@ -190,7 +190,7 @@ func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) 
 		return
 	}
 
-	game := pgame.NewGame(cmd.Create.GameName)
+	game := pgame.NewGame(cmd.Create.GameName, userID)
 	if err := a.store.SetGame(game); err != nil {
 		log.Printf("failed to join game: %v", err)
 		return

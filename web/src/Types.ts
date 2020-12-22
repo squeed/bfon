@@ -46,6 +46,7 @@ export class MessageGameState {
     name: string;
     ID: string;
     seqNumber: number;
+    adminUser: string;
     round: number;
     teams: Team[];
     currentTeam: number;
@@ -64,6 +65,7 @@ export class MessageGameState {
         this.name = source["name"];
         this.ID = source["ID"];
         this.seqNumber = source["seqNumber"];
+        this.adminUser = source["adminUser"];
         this.round = source["round"];
         this.teams = this.convertValues(source["teams"], Team);
         this.currentTeam = source["currentTeam"];

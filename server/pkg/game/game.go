@@ -17,11 +17,13 @@ type Game struct {
 	types.MessageGameState
 }
 
-func NewGame(name string) *Game {
+func NewGame(name, adminUser string) *Game {
 	g := &Game{
 		MessageGameState: types.MessageGameState{
 			Name: name,
 			ID:   ParseGameID(name),
+
+			AdminUser: adminUser,
 
 			Round: 0, // add words and teams
 
