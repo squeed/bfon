@@ -1,4 +1,4 @@
-bfon.club:80
+bfon.club
 
 root * /srv
 reverse_proxy /ws localhost:5000
