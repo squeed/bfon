@@ -21,6 +21,7 @@ type GameProps = {
   startGame: () => void;
   startGuessing: () => void;
   myUserID: string;
+  isAdmin: boolean;
 };
 
 class Game extends React.Component<GameProps> {
@@ -33,23 +34,28 @@ class Game extends React.Component<GameProps> {
 
         {ss.round === 0 && (
           <div>
-            <TeamList serverState={ss} addTeam={this.props.addTeam} iAmClueing={false} startClueing={()=>{return;}} />
+            <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
             <WordList words={ss.words} addWord={this.props.addWord} />
-
-            {/* TODO: only show this when there are enough teams & words */}
+            { this.props.isAdmin && 
+            (<div>  
+            <TeamForm serverState={ss} addTeam={(team: string)=>this.props.addTeam(team)} />
             <div>
               <button onClick={() => this.props.startGame()}>
                 Start Game!
-                <i className="fa fa-plus" aria-hidden="true"></i>
+                
               </button>
             </div>
+            </div>)}
+
+            {/* TODO: only show this when there are enough teams & words */}
+            
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
           <div>
             <TeamList 
               serverState={ss} 
-              addTeam={this.props.addTeam} 
+              
               iAmClueing={this.props.myUserID === ss.userGuessing}
               startClueing={() => this.props.startGuessing()}
             />
@@ -68,7 +74,7 @@ class Game extends React.Component<GameProps> {
         {ss.round >= 4 && (
           <div>
             Game is over!
-            <TeamList serverState={ss} addTeam={(w) => undefined} iAmClueing={false} startClueing={()=>{return;}} />
+            <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
           </div>
         )}
       </div>
@@ -95,26 +101,49 @@ class WordList extends React.Component<{
 
   render() {
     return (
-      <div>
-        Time to add some words!
-        <br />
-        There are {this.props.words.length} words in the bowl.
+      <div className="addWords">
+        Every player adds 5 words to the bowl.
+        <div className="yes">
+<ul>
+  <li>
+    Proper nouns
+    <span className="example">&nbsp;(Billie Eilish, Nigeria)</span>
+  </li>
+  <li>
+    Noun phrases
+    <span className="example">&nbsp;(cabernet sauvignon, bus driver)</span>
+    
+  </li>
+</ul>
+        </div>
+        <div className="no">
+          <ul>
+            <li>
+            Boring words
+    <span className="example">&nbsp;(chair, tv, phone)</span>
+    
+            </li>
+          </ul>
+        </div>
+
+        <Bowl
+              words={50}
+              remainingWords={this.props.words.length}
+        />
         <form onSubmit={(e) => this.addWord(e)}>
           <label>
-            Add a word: <input type="text" ref={this.inputRef} />
+            <input className="addWord" type="text" ref={this.inputRef} />
           </label>
-          <input type="submit" value="Submit" />
+          <input className="submitWord" type="submit" value="Submit" />
         </form>
       </div>
     );
   }
 }
 
-class TeamList extends React.Component<{
+class TeamForm extends React.Component<{
   serverState: types.MessageGameState;
   addTeam: (teamName: string) => void;
-  iAmClueing: boolean;
-  startClueing: ()=>void;
 }> {
   teamNameRef = React.createRef<HTMLInputElement>();
 
@@ -127,17 +156,28 @@ class TeamList extends React.Component<{
   }
 
   render() {
-    const ss = this.props.serverState;
-
-    const addTeamForm = (
+    return (
       <div>
-        <label htmlFor="teamNameInput">Add a team:</label>
+        <label htmlFor="teamNameInput">Who's on Team 1?</label>
         <input id="teamNameInput" ref={this.teamNameRef}></input>
         <button onClick={() => this.addTeam()}>
           <i className="fa fa-plus" aria-hidden="true"></i>
         </button>
       </div>
     );
+  }
+}
+
+class TeamList extends React.Component<{
+  serverState: types.MessageGameState;
+  iAmClueing: boolean;
+  startClueing: ()=>void;
+}> {
+
+  render() {
+    const ss = this.props.serverState;
+
+    
 
     if (this.props.iAmClueing){
       const team = ss.teams[ss.currentTeam]
@@ -164,7 +204,6 @@ class TeamList extends React.Component<{
     return (
       <div>
         {teams}
-        {ss.round === 0 && addTeamForm}
       </div>
     );
   }
@@ -230,7 +269,6 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
       bowl = bowl0;
       bowlLabel = "bowlImage bowl0";
     }
-    console.log(bowlFill);
 
     return (
       <div className="bowl">

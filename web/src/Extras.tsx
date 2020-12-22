@@ -119,14 +119,15 @@ export class Footer extends React.Component<{}, {
             <div className="launchFooter">
                 <p>
                     <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
+                    
                     <Modal
                         isOpen={this.state.showInstructions}
                         onRequestClose={() => this.setShowInstructions(false)}
                         contentLabel="Instructions"
                     >
-                        <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(false)}>Hide</a>
+                        <a href="#" className="gameInstructions closeX" onClick={() => this.setShowInstructions(false)}><i className="fa fa-times"></i></a>
                         <Instructions />
-                        <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(false)}>Hide</a>
+                        
                     </Modal>
                 </p>
                 <p className="credits">
@@ -143,13 +144,12 @@ export class Instructions extends React.Component {
     render() {
         return (
             <div>
-                <div className="gameInstructions">
-                    <h3>What is Bowl Full of Nouns?</h3>
-                    <p>It's an online, remote-friendly version of a beloved analog party game.</p>
-                    <h3>What technology do you need?</h3>
+                <div className="gameInstructions modalBody">
+                    
+                    <p>Bowl Full of Nouns is an online, remote-friendly party game for 4+ people.</p>
+                    
                     <p>Every location taking part needs 1 device for a video call (Zoom, Google Meet, etc.), as well at least 1 phone that isn't being used for the video call.</p>
-                    <h3>How many players?</h3>
-                    <p>At least 4.</p>
+                    
                     <hr></hr>
                     <h3>Playing the game</h3>
                     <h4>Create teams</h4>
@@ -158,12 +158,28 @@ export class Instructions extends React.Component {
 
                     <p>
                         Each player puts 3-5 nouns in the bowl.</p>
-                        <p> <i className="fa fa-check fa-fw"></i> Proper nouns (Billie
-                        Eilish, Nigeria, Zeus)</p>
-                        <p> <i className="fa fa-check fa-fw"></i> Noun phrases (sauvignon blanc, dumpster fire, taxi
-                        driver)</p>
-                        <p> <i className="fa fa-times fa-fw"></i>Being complicated just to be tricky (silver pickle fork once owned by Jane Austen)</p>
-                        <p> <i className="fa fa-times fa-fw"></i>Being boring (chair, phone, computer)</p>
+                        <div className="yes">
+<ul>
+  <li>
+    Proper nouns
+    <span className="example">&nbsp;(Billie Eilish, Nigeria)</span>
+  </li>
+  <li>
+    Noun phrases
+    <span className="example">&nbsp;(cabernet sauvignon, bus driver)</span>
+    
+  </li>
+</ul>
+        </div>
+        <div className="no">
+          <ul>
+            <li>
+            Boring words
+    <span className="example">&nbsp;(chair, tv, phone)</span>
+    
+            </li>
+          </ul>
+        </div>
                     
                     <h4>Guess the words</h4>
                     
@@ -206,6 +222,7 @@ export class Instructions extends React.Component {
                         any unfairness in case one team got more play time than other teams.
           </p>
                 </div>
+                
             </div>
         );
     }

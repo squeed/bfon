@@ -29,7 +29,10 @@ $darkpurple: #3A3335;
 $orange: #F0544F;
 $pink: #D81E5B;
 $blue: #58A1B2;
+
 $green: #81B775;
+$red: #DE5757;
+
 
 $blue1: #73B0BF;
 $blue2: #65A8B8;
@@ -43,10 +46,11 @@ $pink2: #EA99CA;
 $pink3: #E378BA;
 $pink4: #DC56A9;
 
-$green1: #66CC79;
-$green2: #47C25E;
-$green3: #38A84D;
-$green4: #339946;
+
+$green1: #71C191;
+$green2: #55B47B;
+$green3: #439966;
+$green4: #32714B;
 
 
 $dark1: #0B0A0A;
@@ -86,7 +90,7 @@ body {
     font-size: 16px;
 }
 h3 {
-    font-family: "Poppins", sans-serif;
+    font-family: "Work Sans", sans-serif;
     font-weight: 600;
     font-size: 1rem;
 }
@@ -94,6 +98,14 @@ h4 {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-size: .8rem;
+}
+dl {
+    dt {
+
+    }
+    dd {
+
+    }
 }
 @mixin ptext {
     font-family: "Poppins", sans-serif;
@@ -192,6 +204,54 @@ button {
     border-radius: 2px;
     padding: .5rem 1rem;
     border: none;
+    font-weight: 700;
+}
+@mixin buttonlike {
+    font-size: 1rem;
+    border-radius: 2px;
+    padding: .5rem 1rem;
+    border: none;
+    font-weight: 700;
+}
+
+@mixin yesno {
+    border-radius: 2px;
+    padding: .2rem .5rem;
+    text-align: left;
+    margin: 1rem 0;
+    ul {
+        list-style-type: none;
+        padding: .5rem 1rem;
+        margin: .2rem .2rem .2rem 1rem;
+        li {
+            padding-bottom: .3rem;
+            span.example {
+                font-style: italic;
+            }
+        }
+    }
+}
+
+.yes {
+    @include yesno();
+    background-color: rgba(67, 153, 102, .3);
+    
+    ul li:before {    
+        font-family: 'FontAwesome';
+        content: '\f164';
+        margin:0 5px 0 -25px;
+        color: $green3;
+    }
+}
+.no {
+    @include yesno();
+    background-color: rgba(11, 10, 10, .3);
+    ul li:before {    
+        font-family: 'FontAwesome';
+        content: '\f165';
+        margin:0 5px 0 -25px;
+        color: $dark2;
+    }
 }
 
 
@@ -295,7 +355,24 @@ button {
   }
 
  /* ---------- MODAL ----------- */
-.modal {
+.ReactModalPortal {
+    .closeX {
+        
+        font-size: 2rem;
+        color: $dark4;
+        position:fixed;
+       z-index: 100;
+        top: 3rem; 
+        right: 4rem;
+    }
+    .modalBody {
+        
+    }
+    .modalEnd {
+        position: absolute;
+        
+    }
+    
 
 }
 
@@ -375,6 +452,51 @@ button {
     }
 }
   
+ /* ---------- ADD WORDS ----------- */
+ .addWords {
+     @include page-edge();
+     text-align: center;
+     margin-top: .5rem;
+
+     .bowlImage{
+         left: 0;
+     }
+
+     .addWord {
+        font-family: "Kalam", sans-serif;
+        background-color: $white;
+        width: 90%;
+       
+        text-align: center;
+        font-size: 2.5rem;
+        margin: 1rem 0;
+        padding: .1rem .5rem .5rem .5rem;
+        height: 3rem;
+        line-height: 1rem;
+        align-items: center;
+        justify-content: center;
+        .scaletext-wrapper {
+            overflow: visible !important;
+            span {
+                position: relative !important;
+                top: .5rem !important;
+            }
+        }
+        
+      }
+      .submitWord {
+          display: block;
+        @include buttonlike();
+        background-color: $green2;
+        color: $light1;
+        cursor: pointer;
+        margin: 0 auto;
+
+      }
+
+
+ }
+
   /* ---------- ALL TEAMS LIST ----------- */
 
   .teamRow {
