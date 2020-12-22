@@ -84,7 +84,22 @@ $light6: #D1C7C7;
 body {
     font-family: "Work Sans", sans-serif;
     font-size: 16px;
-    }
+}
+h3 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+}
+h4 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: .8rem;
+}
+@mixin ptext {
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    font-size: .8rem;
+}
 
 /* -------- OFFSET STROKE --------- */
 
@@ -281,7 +296,7 @@ button {
 
  /* ---------- MODAL ----------- */
 .modal {
-    
+
 }
 
  /* ---------- TITLE ----------- */
@@ -353,6 +368,12 @@ button {
 
  
   
+/* -------- INSTRUCTIONS --------- */
+.gameInstructions {
+    p {
+        @include ptext();
+    }
+}
   
   /* ---------- ALL TEAMS LIST ----------- */
 
