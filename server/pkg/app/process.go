@@ -150,6 +150,16 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindEndTurn {
+		game.EndUserTurn(cmd.EndTurn.SeqNumber)
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("startguess failed: %v", err)
+			return
+		}
+		a.broadcastGameState(game)
+		return
+	}
+
 	if cmd.Kind == types.KindGuess {
 		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Word)
 		if err := a.store.SetGame(game); err != nil {

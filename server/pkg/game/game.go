@@ -114,6 +114,19 @@ func (g *Game) StartTurn(userID string, seqNumber int) *types.CommandDeadline {
 	}
 }
 
+func (g *Game) EndUserTurn(seqNumber int) {
+	log.Println("EndTurn")
+	if g.SeqNumber != seqNumber {
+		log.Println("EndTurn out of sequence")
+		return
+	}
+
+	g.SeqNumber++
+	g.Deadline = 0
+	g.UserGuessing = ""
+	g.CurrentTeam = (g.CurrentTeam + 1) % len(g.Teams)
+}
+
 func (g *Game) EndTurn(round int) {
 	log.Println("EndTurn")
 	if g.Round != round {

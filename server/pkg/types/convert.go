@@ -93,6 +93,17 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			StartTurn: &out,
 		}, nil
 
+	case KindEndTurn:
+		out := MessageEndTurn{}
+		err := m.As(KindEndTurn, &out)
+		if err != nil {
+			return nil, err
+		}
+		return &GameCommand{
+			Kind:    string(m.Kind),
+			EndTurn: &out,
+		}, nil
+
 	case KindGuess:
 		out := MessageGuess{}
 		err := m.As(KindGuess, &out)

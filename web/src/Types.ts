@@ -11,6 +11,7 @@ export enum MessageKind {
     invalidGame = "invalidGame",
     leaveGame = "leaveGame",
     startTurn = "startTurn",
+    endTurn = "endTurn",
     guess = "guess",
     startGame = "startGame",
 }
@@ -171,6 +172,18 @@ export class MessageStartTurn {
 
     static createFrom(source: any = {}) {
         return new MessageStartTurn(source);
+    }
+
+    constructor(source: any = {}) {
+        if ('string' === typeof source) source = JSON.parse(source);
+        this.seqNumber = source["seqNumber"];
+    }
+}
+export class MessageEndTurn {
+    seqNumber: number;
+
+    static createFrom(source: any = {}) {
+        return new MessageEndTurn(source);
     }
 
     constructor(source: any = {}) {

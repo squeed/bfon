@@ -291,6 +291,30 @@ class App extends React.Component<{}, AppState> {
     this.conn?.sendCommand(types.MessageKind.startTurn, msg);
   }
 
+  endTurn() {
+    if (!this.state.gameState) { return; }
+
+    if (this.state.gameState.round < 1 || this.state.gameState.round > 3) { return; }
+
+    if (LOCAL_MODE) {
+      let st = {
+        connected: this.state.connected,
+        gameName: this.state.gameName,
+        gameState: this.state.gameState,
+        userID: this.state.userID,
+      };
+      st.gameState.userGuessing = undefined;
+      st.gameState.deadline = undefined;
+      this.setState(st);
+      return
+    }
+
+    const msg = new types.MessageEndTurn({
+      seqNumber: this.state.gameState.seqNumber,
+    });
+    this.conn?.sendCommand(types.MessageKind.endTurn, msg);
+  }
+
   render() {
 
     
@@ -327,9 +351,6 @@ class App extends React.Component<{}, AppState> {
         </div>
       );
     }
-    
-
-
 
 
     if (!this.state.gameState) {
@@ -345,6 +366,7 @@ class App extends React.Component<{}, AppState> {
           addTeam={(name: string) => this.addTeam(name)}
           guess={(word: string) => this.guess(word)}
           startGuessing={() => this.startGuessing()}
+          endTurn={() => this.endTurn()}
           startGame={()=>this.startGame()}
         />
       </div>

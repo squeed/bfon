@@ -39,6 +39,10 @@ type MessageStartTurn struct {
 	SeqNumber int `json:"seqNumber"`
 }
 
+type MessageEndTurn struct {
+	SeqNumber int `json:"seqNumber"`
+}
+
 type MessageGuess struct {
 	SeqNumber int    `json:"seqNumber"`
 	Word      string `json:"word"`

@@ -20,6 +20,7 @@ type GameProps = {
   guess: (word: string) => void;
   startGame: () => void;
   startGuessing: () => void;
+  endTurn: () => void;
   myUserID: string;
 };
 
@@ -82,6 +83,7 @@ class Game extends React.Component<GameProps> {
               serverState={ss}
               myUserID={this.props.myUserID}
               submitGuess={(c) => this.props.guess(c)}
+              endTurn={() => this.props.endTurn()}
             />
             
             <Bowl
@@ -309,6 +311,7 @@ type GuessProps = {
   serverState: types.MessageGameState;
   myUserID: string;
   submitGuess: (word: string) => void;
+  endTurn: () => void;
 };
 
 type GuessState = {
@@ -389,7 +392,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
           <p className="buttonCorrect"><button onClick={() => this.guess(true)}>Got it!</button></p>
           <div className="otherButtons">
           <p className="buttonWhoops"><button onClick={() => this.guess(false)}>Whoops, bad clue</button></p>
-          <p className="buttonGiveUp"><button>I give up</button></p>
+          <p className="buttonGiveUp"><button onClick={() => this.props.endTurn()}>I give up</button></p>
           </div>
           
           
