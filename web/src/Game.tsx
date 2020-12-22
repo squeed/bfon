@@ -27,14 +27,14 @@ type GameProps = {
 class Game extends React.Component<GameProps> {
   render() {
     const ss = this.props.serverState;
-
+/* this is the word-adding screen, I think? */
     return (
       <div id="game">
         <extras.GameNav gameName={ss.name} />
 
         {ss.round === 0 && (
           <div>
-            <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
+            
             <WordList words={ss.words} addWord={this.props.addWord} />
             { this.props.isAdmin && 
             (<div>  
@@ -44,6 +44,7 @@ class Game extends React.Component<GameProps> {
                 Start Game!
                 
               </button>
+              <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
             </div>
             </div>)}
 
