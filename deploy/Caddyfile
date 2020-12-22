@@ -1,4 +1,12 @@
-bfon.club
+{
+    storage file_system {
+        root /config
+    }
+
+    auto_https off
+}
+
+bfon.club:80
 
 root * /srv
 reverse_proxy /ws localhost:5000

@@ -18,7 +18,7 @@ go build -o "$repo/output/bfon-server" ./cmd
 cd "$repo/web"
 echo "building web"
 npm install
-REACT_APP_SERVER_URL="wss://bfon.club/ws" npm run build
+REACT_APP_SERVER_URL="ws://bfon.club/ws" npm run build
 
 
 mv "$repo/web/build" "$repo/output/webroot"
