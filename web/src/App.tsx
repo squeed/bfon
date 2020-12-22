@@ -43,7 +43,7 @@ class App extends React.Component<{}, AppState> {
               name: "Sergio Casey Molly",
               score: 2,
             }
-           
+
           ],
 
           // set to 0 - 1 to make a certain team active
@@ -62,7 +62,7 @@ class App extends React.Component<{}, AppState> {
 
     var url = "ws://127.0.0.1:8080/ws";
     if (!!process.env.REACT_APP_SERVER_URL) {
-        url = process.env.REACT_APP_SERVER_URL;
+      url = process.env.REACT_APP_SERVER_URL;
     }
 
     this.conn = new Connection(
@@ -81,12 +81,19 @@ class App extends React.Component<{}, AppState> {
 
   onNewState(st: any) {
     console.log("got new server state", st);
-
-    this.setState({
-      gameState: st,
-      gameName: st.name,
-      userID: this.conn?.uid(),
-    });
+    if (!st) {
+      this.setState({
+        userID: this.conn?.uid(),
+        gameState: undefined,
+        gameName: undefined,
+      });
+    } else {
+      this.setState({
+        gameState: st,
+        gameName: st.name,
+        userID: this.conn?.uid(),
+      });
+    }
   }
 
   addWord(word: string) {
@@ -186,6 +193,10 @@ class App extends React.Component<{}, AppState> {
 
     const msg: types.MessageJoinGame = { gameName: name };
     this.conn.sendCommand(types.MessageKind.joinGame, msg);
+  }
+
+  leaveGame() {
+    this.conn?.sendCommand(types.MessageKind.leaveGame, {});
   }
 
   guess(word: string) {
@@ -317,7 +328,7 @@ class App extends React.Component<{}, AppState> {
 
   render() {
 
-    
+
     if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting...</div>;
     }
@@ -330,9 +341,9 @@ class App extends React.Component<{}, AppState> {
           </div>
           <div className="launchOptions">
             <div className="joinGame">
-            <p><label htmlFor="gamePW">Enter password:</label></p>
-            <input id="gamepw" ref={this.passwordInputRef}></input>
-            <button onClick={() => this.joinGame()}>
+              <p><label htmlFor="gamePW">Enter password:</label></p>
+              <input id="gamepw" ref={this.passwordInputRef}></input>
+              <button onClick={() => this.joinGame()}>
                 Join Game <i className="fa fa-arrow-right" aria-hidden="true"></i>
               </button>
             </div>
@@ -340,12 +351,12 @@ class App extends React.Component<{}, AppState> {
               OR
             </p>
             <div className="createGame">
-            <button onClick={() => this.createGame()}>
+              <button onClick={() => this.createGame()}>
                 Create New Game
               </button>
             </div>
-           
-           
+
+
           </div>
           <extras.Footer />
         </div>
@@ -367,7 +378,8 @@ class App extends React.Component<{}, AppState> {
           guess={(word: string) => this.guess(word)}
           startGuessing={() => this.startGuessing()}
           endTurn={() => this.endTurn()}
-          startGame={()=>this.startGame()}
+          startGame={() => this.startGame()}
+          leaveGame={() => this.leaveGame()}
         />
       </div>
     );

@@ -21,6 +21,7 @@ type GameProps = {
   startGame: () => void;
   startGuessing: () => void;
   endTurn: () => void;
+  leaveGame: () => void;
   myUserID: string;
 };
 
@@ -31,7 +32,7 @@ class Game extends React.Component<GameProps> {
 /* this is the word-adding screen, I think? */
     return (
       <div id="game">
-        <extras.GameNav gameName={ss.name} />
+        <extras.GameNav gameName={ss.name} leaveGame={() => this.props.leaveGame() } />
 
         {ss.round === 0 && (
           <div>

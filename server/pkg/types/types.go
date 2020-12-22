@@ -70,6 +70,8 @@ type MessageGameState struct {
 	TimeRemaining int `json:"timeRemaining,omitempty"`
 }
 
+type MessageLeftGame struct{}
+
 type Team struct {
 	Name  string `json:"name"`
 	Score uint   `json:"score"`

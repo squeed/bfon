@@ -83,7 +83,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindLeaveGame {
-		a.leaveGame(conn, userID)
+		a.leaveGame(userID)
 		return
 	}
 
@@ -191,6 +191,10 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 	if conn == nil {
 		return
 	}
+	if state == nil {
+		conn.Enqueue(&types.MessageLeftGame{})
+		return
+	}
 	conn.Enqueue(state)
 }
 
@@ -229,7 +233,7 @@ func (a *App) joinGame(conn conn.Conn, userID string, name string) {
 	a.sendGameState(game.GetState(), userID)
 }
 
-func (a *App) leaveGame(conn conn.Conn, userID string) {
+func (a *App) leaveGame(userID string) {
 	_ = a.store.SetUserGame(userID, "")
-	// TODO: send left-game state
+	a.sendGameState(nil, userID)
 }
