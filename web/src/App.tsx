@@ -324,7 +324,7 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
 
 
     if (!this.state || !this.state.connected || !this.state.userID) {
-      return <div> Connecting...</div>;
+      return <div> Connecting to BFON central...</div>;
     }
     if (!this.state.gameState) {
       return (

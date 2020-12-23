@@ -420,11 +420,11 @@ class Guess extends React.Component<GuessProps, GuessState> {
           <div className="otherButtons">
             <p className="buttonWhoops">
               <button onClick={() => this.guess(false)}>
-                Whoops, bad clue
+                Oops, I cheated.
               </button>
             </p>
             <p className="buttonGiveUp">
-              <button onClick={() => this.props.endTurn()}>I give up</button>
+              <button onClick={() => this.props.endTurn()}>End my turn.</button>
             </p>
           </div>
         </div>
