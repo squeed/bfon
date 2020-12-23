@@ -56,6 +56,7 @@ func (g *Game) DeadlineTime() *time.Time {
 	}
 
 	d := time.Unix(g.Deadline, 0)
+	d = d.Add(2 * time.Second) // grace period
 	return &d
 }
 
@@ -175,6 +176,10 @@ func (g *Game) GuessWord(seqNo int, word string) {
 		g.RemainingWords = []string{}
 		// compute clock remaining
 		remaining := time.Until(*g.DeadlineTime()).Seconds()
+		if remaining < 5 {
+			remaining = 0
+			g.EndTurn(g.Round)
+		}
 		g.NextRound(int(remaining))
 		return
 	}
