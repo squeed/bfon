@@ -64,6 +64,11 @@ func (g *Game) AddTeam(name string) {
 		log.Printf("rejecting AddTeam, round %d", g.Round)
 		return
 	}
+	for _, t := range g.Teams {
+		if t.Name == name {
+			return
+		}
+	}
 	g.Teams = append(g.Teams, types.Team{
 		Name:  name,
 		Score: 0,

@@ -8,7 +8,7 @@ export enum MessageKind {
     addTeam = "addTeam",
     addWord = "addWord",
     createGame = "createGame",
-    invalidGame = "invalidGame",
+    error = "error",
     leaveGame = "leaveGame",
     startTurn = "startTurn",
     endTurn = "endTurn",
@@ -155,16 +155,16 @@ export class MessageCreateGame {
         this.gameName = source["gameName"];
     }
 }
-export class MessageInvalidGame {
-    gameName: string;
+export class MessageError {
+    error: string;
 
     static createFrom(source: any = {}) {
-        return new MessageInvalidGame(source);
+        return new MessageError(source);
     }
 
     constructor(source: any = {}) {
         if ('string' === typeof source) source = JSON.parse(source);
-        this.gameName = source["gameName"];
+        this.error = source["error"];
     }
 }
 export class MessageStartTurn {

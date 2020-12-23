@@ -1,18 +1,18 @@
 package types
 
 const (
-	KindGameState   = "gameState"
-	KindRegister    = "register"
-	KindJoinGame    = "joinGame"
-	KindAddTeam     = "addTeam"
-	KindAddWord     = "addWord"
-	KindCreateGame  = "createGame"
-	KindInvalidGame = "invalidGame"
-	KindLeaveGame   = "leaveGame"
-	KindStartTurn   = "startTurn"
-	KindEndTurn     = "endTurn"
-	KindGuess       = "guess"
-	KindStartGame   = "startGame"
+	KindGameState  = "gameState"
+	KindRegister   = "register"
+	KindJoinGame   = "joinGame"
+	KindAddTeam    = "addTeam"
+	KindAddWord    = "addWord"
+	KindCreateGame = "createGame"
+	KindError      = "error"
+	KindLeaveGame  = "leaveGame"
+	KindStartTurn  = "startTurn"
+	KindEndTurn    = "endTurn"
+	KindGuess      = "guess"
+	KindStartGame  = "startGame"
 )
 
 var AllMessageKinds = []MessageKind{
@@ -22,7 +22,7 @@ var AllMessageKinds = []MessageKind{
 	KindAddTeam,
 	KindAddWord,
 	KindCreateGame,
-	KindInvalidGame,
+	KindError,
 	KindLeaveGame,
 	KindStartTurn,
 	KindEndTurn,

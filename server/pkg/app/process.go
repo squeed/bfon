@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -213,6 +214,9 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) {
 	if _, err := a.store.GetGame(cmd.Create.GameName); err == nil {
 		log.Printf("error: create existing game %s", cmd.Create.GameName)
+		conn.Enqueue(&types.MessageError{
+			Error: fmt.Sprintf("Game %s already exists", cmd.Create.GameName),
+		})
 		return
 	}
 
@@ -231,8 +235,8 @@ func (a *App) joinGame(conn conn.Conn, userID string, name string) {
 
 	if err != nil {
 		log.Printf("Join nonexistent game %s", gameID)
-		conn.Enqueue(&types.MessageInvalidGame{
-			GameName: string(gameID),
+		conn.Enqueue(&types.MessageError{
+			Error: fmt.Sprintf("Game %s doesn't exist", name),
 		})
 		return
 	}

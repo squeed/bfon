@@ -23,8 +23,8 @@ type MessageCreateGame struct {
 	GameName string `json:"gameName"`
 }
 
-type MessageInvalidGame struct {
-	GameName string `json:"gameName"`
+type MessageError struct {
+	Error string `json:"error"`
 }
 
 type MessageAddTeam struct {

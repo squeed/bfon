@@ -18,7 +18,7 @@ func main() {
 	t.Add(types.MessageAddTeam{})
 	t.Add(types.MessageAddWord{})
 	t.Add(types.MessageCreateGame{})
-	t.Add(types.MessageInvalidGame{})
+	t.Add(types.MessageError{})
 	t.Add(types.MessageStartTurn{})
 	t.Add(types.MessageEndTurn{})
 	t.Add(types.MessageGuess{})

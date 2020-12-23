@@ -1,4 +1,6 @@
 import React from "react";
+import { withAlert, AlertManager } from 'react-alert'
+
 
 import "./styles/App.scss";
 
@@ -9,14 +11,13 @@ import * as extras from "./Extras";
 
 type AppState = {
   connected: boolean;
-  gameName: string | undefined;
   gameState: types.MessageGameState | undefined;
   userID: string | undefined;
 };
 
 const LOCAL_MODE = !process.env.REACT_APP_SERVER_URL;
 
-class App extends React.Component<{}, AppState> {
+class App extends React.Component<{alert: AlertManager}, AppState> {
   conn: Connection | undefined;
   passwordInputRef = React.createRef<HTMLInputElement>();
 
@@ -26,7 +27,6 @@ class App extends React.Component<{}, AppState> {
         connected: true,
         userID: "1111-2222",
         //To set the "beginning of game" state, comment out from here...
-        gameName: "crazy llama",
         gameState: new types.MessageGameState({
           name: "Crazy Llama",
           ID: "crazyllama",
@@ -68,7 +68,8 @@ class App extends React.Component<{}, AppState> {
     this.conn = new Connection(
       url,
       () => this.onConnect(),
-      (s) => this.onNewState(s)
+      (s) => this.onNewState(s),
+      (msg) => this.onError(msg),
     );
   }
 
@@ -79,18 +80,22 @@ class App extends React.Component<{}, AppState> {
     });
   }
 
+  onError(message: string) {
+    this.props.alert.show(message, {
+      type: 'error',
+    });
+  }
+
   onNewState(st: any) {
     console.log("got new server state", st);
     if (!st) {
       this.setState({
         userID: this.conn?.uid(),
         gameState: undefined,
-        gameName: undefined,
       });
     } else {
       this.setState({
         gameState: st,
-        gameName: st.name,
         userID: this.conn?.uid(),
       });
     }
@@ -99,7 +104,6 @@ class App extends React.Component<{}, AppState> {
   addWord(word: string) {
     if (LOCAL_MODE) {
       let st = {
-        gameName: this.state.gameName,
         connected: this.state.connected,
         gameState: this.state.gameState,
         userID: this.state.userID,
@@ -131,7 +135,7 @@ class App extends React.Component<{}, AppState> {
     }
     const name = node.value;
     if (name === "") {
-      console.log("Ignoring empty password");
+      this.onError("Please enter a password.");
       return;
     }
     if (LOCAL_MODE) {
@@ -146,7 +150,6 @@ class App extends React.Component<{}, AppState> {
           words: [],
           remainingWords: [],
         }),
-        gameName: name,
         userID: this.state.userID,
         connected: this.state.connected,
       });
@@ -155,7 +158,6 @@ class App extends React.Component<{}, AppState> {
 
     this.setState({
       gameState: undefined,
-      gameName: name,
     });
     if (!this.conn) {
       console.log("not connected");
@@ -178,13 +180,12 @@ class App extends React.Component<{}, AppState> {
     }
     const name = node.value;
     if (name === "") {
-      console.log("Ignoring empty password");
+      this.onError("Please enter a password.");
       return;
     }
 
     this.setState({
       gameState: undefined,
-      gameName: name,
     });
     if (!this.conn) {
       console.log("not connected");
@@ -203,7 +204,6 @@ class App extends React.Component<{}, AppState> {
     if (LOCAL_MODE) {
       let st = {
         connected: this.state.connected,
-        gameName: this.state.gameName,
         gameState: this.state.gameState,
         userID: this.state.userID,
       };
@@ -213,7 +213,6 @@ class App extends React.Component<{}, AppState> {
       let w = st.gameState.remainingWords.filter(w => w !== word);
       st.gameState.remainingWords = w;
       st.gameState.teams[st.gameState.currentTeam].score++
-      console.log("foo");
       this.setState(st);
 
       return
@@ -232,7 +231,6 @@ class App extends React.Component<{}, AppState> {
     if (LOCAL_MODE) {
       let st = {
         connected: this.state.connected,
-        gameName: this.state.gameName,
         gameState: this.state.gameState,
         userID: this.state.userID,
       };
@@ -240,7 +238,6 @@ class App extends React.Component<{}, AppState> {
         return;
       }
       st.gameState.teams = st.gameState.teams.concat([{ name: name, score: 0 }]);
-      console.log("foobar");
 
       this.setState(st);
 
@@ -263,7 +260,6 @@ class App extends React.Component<{}, AppState> {
     if (LOCAL_MODE) {
       let st = {
         connected: this.state.connected,
-        gameName: this.state.gameName,
         gameState: this.state.gameState,
         userID: this.state.userID,
       };
@@ -286,7 +282,6 @@ class App extends React.Component<{}, AppState> {
     if (LOCAL_MODE) {
       let st = {
         connected: this.state.connected,
-        gameName: this.state.gameName,
         gameState: this.state.gameState,
         userID: this.state.userID,
       };
@@ -310,7 +305,6 @@ class App extends React.Component<{}, AppState> {
     if (LOCAL_MODE) {
       let st = {
         connected: this.state.connected,
-        gameName: this.state.gameName,
         gameState: this.state.gameState,
         userID: this.state.userID,
       };
@@ -332,7 +326,7 @@ class App extends React.Component<{}, AppState> {
     if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting...</div>;
     }
-    if (!this.state.gameName) {
+    if (!this.state.gameState) {
       return (
         <div className="gameLaunch">
           <div className="gameMainTitle">
@@ -363,11 +357,6 @@ class App extends React.Component<{}, AppState> {
       );
     }
 
-
-    if (!this.state.gameState) {
-      return <div>Joining game...</div>;
-    }
-
     return (
       <div>
         <Game
@@ -386,4 +375,4 @@ class App extends React.Component<{}, AppState> {
   }
 }
 
-export default App;
+export default withAlert()(App);

@@ -14,18 +14,20 @@ export class Connection {
     id: string;
     onNewState: NewStateFunc;
     onConnect: () => void;
+    onError: (msg: string) => void;
 
-    constructor(url: string, onConnected: () => void,  onNewState: NewStateFunc) {
+    constructor(url: string, onConnected: () => void, onNewState: NewStateFunc, onError: (msg: string) => void ) {
         this.id = getID();
         this.onNewState = onNewState;
-        this.ws = new ReconnectingWebSocket(url, [], {debug: true});
+        this.ws = new ReconnectingWebSocket(url, [], { debug: true });
         this.ws.onmessage = (e) => this.onMessage(e);
         this.ws.onopen = (e) => this.handleConnection();
         this.onConnect = onConnected;
+        this.onError = onError;
     }
 
     handleConnection() {
-        this.sendCommand(types.MessageKind.register, {id: this.id});
+        this.sendCommand(types.MessageKind.register, { id: this.id });
         if (!!this.onConnect) {
             this.onConnect();
         }
@@ -34,8 +36,6 @@ export class Connection {
     public uid(): string {
         return this.id;
     }
-
-    
 
     public sendCommand(kind: types.MessageKind, data: any) {
         const cmd = {
@@ -49,13 +49,17 @@ export class Connection {
     onMessage(evt: MessageEvent<string>) {
         console.log("got message", evt.data);
         const response = JSON.parse(evt.data);
-        if (! response.kind || !response.data) {
+        if (!response.kind || !response.data) {
             console.log("invalid message");
         }
 
         if (response.kind === "gameState") {
             this.onNewState(response.data);
         }
+
+        if (response.kind === types.MessageKind.error) {
+            this.onError(response.data.error);
+        }  
 
         if (response.kind === "leaveGame") {
             this.onNewState(null);

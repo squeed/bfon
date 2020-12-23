@@ -9,8 +9,8 @@ type Messageable interface {
 	ToMessage() Message
 }
 
-func (ig *MessageInvalidGame) ToMessage() Message {
-	msg, err := ToMessage(KindInvalidGame, ig)
+func (m *MessageError) ToMessage() Message {
+	msg, err := ToMessage(KindError, m)
 	if err != nil {
 		panic(err)
 	}

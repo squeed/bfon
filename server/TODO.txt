@@ -1,4 +1,4 @@
 TODO:
 
-- allow user to leave game
-- admin mode, somehow
+Clean up old games
+Game creation failure report
