@@ -703,7 +703,6 @@ button {
     
     .bowlImage {
         @include zeromarg();
-        position: absolute;
         z-index: -1;
         bottom: 10px;
         img {
