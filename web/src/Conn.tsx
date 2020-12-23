@@ -1,5 +1,6 @@
 import * as Cookies from 'js-cookie';
 import uuid from 'uuid-random';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 import * as types from "./Types";
 
@@ -9,7 +10,7 @@ const COOKIE_NAME = "ID";
 type NewStateFunc = (state: any) => void;
 
 export class Connection {
-    ws: WebSocket;
+    ws: ReconnectingWebSocket;
     id: string;
     onNewState: NewStateFunc;
     onConnect: () => void;
@@ -17,7 +18,7 @@ export class Connection {
     constructor(url: string, onConnected: () => void,  onNewState: NewStateFunc) {
         this.id = getID();
         this.onNewState = onNewState;
-        this.ws = new WebSocket(url);
+        this.ws = new ReconnectingWebSocket(url, [], {debug: true});
         this.ws.onmessage = (e) => this.onMessage(e);
         this.ws.onopen = (e) => this.handleConnection();
         this.onConnect = onConnected;

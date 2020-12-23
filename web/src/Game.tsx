@@ -28,65 +28,74 @@ type GameProps = {
 class Game extends React.Component<GameProps> {
   render() {
     const ss = this.props.serverState;
-    const isAdmin=(ss.adminUser === this.props.myUserID);
-/* this is the word-adding screen, I think? */
+    const isAdmin = ss.adminUser === this.props.myUserID;
+    /* this is the word-adding screen, I think? */
     return (
       <div id="game">
-        <extras.GameNav gameName={ss.name} leaveGame={() => this.props.leaveGame() } />
+        <extras.GameNav
+          gameName={ss.name}
+          leaveGame={() => this.props.leaveGame()}
+        />
 
         {ss.round === 0 && (
           <div>
-            
             <WordList words={ss.words} addWord={this.props.addWord} />
-            { isAdmin && 
-            (<div>  
-            <TeamForm serverState={ss} addTeam={(team: string)=>this.props.addTeam(team)} />
-            <div>
-              <button onClick={() => this.props.startGame()}>
-                Start Game!
-                
-              </button>
-              <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
-            </div>
-            </div>)}
+            {isAdmin && (
+              <div>
+                <TeamForm
+                  serverState={ss}
+                  addTeam={(team: string) => this.props.addTeam(team)}
+                />
+                <div>
+                  <button onClick={() => this.props.startGame()}>
+                    Start Game!
+                  </button>
+                  <TeamList
+                    serverState={ss}
+                    iAmClueing={false}
+                    startClueing={() => {
+                      return;
+                    }}
+                  />
+                </div>
+              </div>
+            )}
 
             {/* TODO: only show this when there are enough teams & words */}
-            
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
           <div>
-            <TeamList 
-              serverState={ss} 
-              
+            <TeamList
+              serverState={ss}
               iAmClueing={this.props.myUserID === ss.userGuessing}
               startClueing={() => this.props.startGuessing()}
             />
             {ss.round === 1 && (
-              <div className="roundDescription"><h4>Round 1</h4>
-              <p>Say anything – except for the word itself.</p></div>
-            )
-            }
+              <div className="roundDescription">
+                <h4>Round 1</h4>
+                <p>Say anything – except for the word itself.</p>
+              </div>
+            )}
             {ss.round === 2 && (
               <div className="roundDescription">
                 <h4>Round 2</h4>
                 <p>Say only ONE word. No actions.</p>
-                </div>
-            )
-            }
+              </div>
+            )}
             {ss.round === 3 && (
               <div className="roundDescription">
                 <h4>Round 3</h4>
-                <p>Actions only – no talking!</p></div>
-            )
-            }
+                <p>Actions only – no talking!</p>
+              </div>
+            )}
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
               submitGuess={(c) => this.props.guess(c)}
               endTurn={() => this.props.endTurn()}
             />
-            
+
             <Bowl
               words={ss.words.length}
               remainingWords={ss.remainingWords.length}
@@ -96,7 +105,13 @@ class Game extends React.Component<GameProps> {
         {ss.round >= 4 && (
           <div>
             Game is over!
-            <TeamList serverState={ss} iAmClueing={false} startClueing={()=>{return;}} />
+            <TeamList
+              serverState={ss}
+              iAmClueing={false}
+              startClueing={() => {
+                return;
+              }}
+            />
           </div>
         )}
       </div>
@@ -126,35 +141,36 @@ class WordList extends React.Component<{
       <div className="addWords">
         Every player adds 5 words to the bowl.
         <div className="yes">
-<ul>
-  <li>
-    Proper nouns
-    <span className="example">&nbsp;(Billie Eilish, Nigeria)</span>
-  </li>
-  <li>
-    Noun phrases
-    <span className="example">&nbsp;(cabernet sauvignon, bus driver)</span>
-    
-  </li>
-</ul>
+          <ul>
+            <li>
+              Proper nouns
+              <span className="example">&nbsp;(Billie Eilish, Nigeria)</span>
+            </li>
+            <li>
+              Noun phrases
+              <span className="example">
+                &nbsp;(cabernet sauvignon, bus driver)
+              </span>
+            </li>
+          </ul>
         </div>
         <div className="no">
           <ul>
             <li>
-            Boring words
-    <span className="example">&nbsp;(chair, tv, phone)</span>
-    
+              Boring words
+              <span className="example">&nbsp;(chair, tv, phone)</span>
             </li>
           </ul>
         </div>
-
-        <Bowl
-              words={50}
-              remainingWords={this.props.words.length}
-        />
+        <Bowl words={50} remainingWords={this.props.words.length} />
         <form onSubmit={(e) => this.addWord(e)}>
           <label>
-            <input className="addWord" type="text" autoComplete="off" ref={this.inputRef} />
+            <input
+              className="addWord"
+              type="text"
+              autoComplete="off"
+              ref={this.inputRef}
+            />
           </label>
           <input className="submitWord" type="submit" value="Submit" />
         </form>
@@ -181,7 +197,11 @@ class TeamForm extends React.Component<{
     return (
       <div>
         <label htmlFor="teamNameInput">Who's on Team 1?</label>
-        <input id="teamNameInput" autoComplete="off" ref={this.teamNameRef}></input>
+        <input
+          id="teamNameInput"
+          autoComplete="off"
+          ref={this.teamNameRef}
+        ></input>
         <button onClick={() => this.addTeam()}>
           <i className="fa fa-plus" aria-hidden="true"></i>
         </button>
@@ -193,25 +213,22 @@ class TeamForm extends React.Component<{
 class TeamList extends React.Component<{
   serverState: types.MessageGameState;
   iAmClueing: boolean;
-  startClueing: ()=>void;
+  startClueing: () => void;
 }> {
-
   render() {
     const ss = this.props.serverState;
 
-    
-
-    if (this.props.iAmClueing){
-      const team = ss.teams[ss.currentTeam]
+    if (this.props.iAmClueing) {
+      const team = ss.teams[ss.currentTeam];
       return (
         <Team
-        team={team}
-        active={true}
-        deadline={ss.deadline}
-        startClueing={()=>this.props.startClueing()}
-        key={team.name}
-      />
-      )
+          team={team}
+          active={true}
+          deadline={ss.deadline}
+          startClueing={() => this.props.startClueing()}
+          key={team.name}
+        />
+      );
     }
 
     const teams = ss.teams.map((team, index) => (
@@ -219,51 +236,59 @@ class TeamList extends React.Component<{
         team={team}
         active={ss.round > 0 && ss.round <= 3 && index === ss.currentTeam}
         deadline={ss.deadline}
-        startClueing={()=>this.props.startClueing()}
+        startClueing={() => this.props.startClueing()}
         key={team.name}
       />
     ));
-    return (
-      <div>
-        {teams}
-      </div>
-    );
+    return <div>{teams}</div>;
   }
 }
 
-type TeamProps = { 
-  team: types.Team; 
+type TeamProps = {
+  team: types.Team;
   active: boolean;
   deadline: number | undefined;
-  startClueing: ()=>void;
+  startClueing: () => void;
 };
 
 class Team extends React.Component<TeamProps> {
   render() {
     const t = this.props.team;
-    if(this.props.active){
+    if (this.props.active) {
       return (
-      <div className="teamRow active"> 
-        <div className="teamDetails">
-        <p className="teamName">{t.name} </p>
-        
-        {!!this.props.deadline && <p className="countdown"><extras.Countdown deadline={this.props.deadline} /></p>}
-        {!this.props.deadline && <p className="goButton"><button onClick={()=>this.props.startClueing()}>I'm the Cluemeister <i className="fa fa-arrow-right"></i></button></p>}
-        
+        <div className="teamRow active">
+          <div className="teamDetails">
+            <p className="teamName">{t.name}</p>
+
+            {!!this.props.deadline && (
+              <p className="countdown">
+                <extras.Countdown deadline={this.props.deadline} />
+              </p>
+            )}
+            {!this.props.deadline && (
+              <p className="goButton">
+                <button onClick={() => this.props.startClueing()}>
+                  I'm the Cluemeister <i className="fa fa-arrow-right"></i>
+                </button>
+              </p>
+            )}
+          </div>
+          <div className="teamScore">
+            <p className="scoreNumber">{t.score}</p>
+          </div>
         </div>
-        
-        {/* {this.props.active && <div>Yer' Up</div>} */}
-        
-        <p className="teamScore"> <p className="scoreNumber">{t.score}</p></p>
-      </div>
-      )
+      );
     } else
-    return (
-      <div className="teamRow"> 
-        <div className="teamDetails"><p className="teamName">{t.name}</p></div>
-        <p className="teamScore"> <p className="scoreNumber">{t.score}</p></p>
-      </div>
-    );
+      return (
+        <div className="teamRow">
+          <div className="teamDetails">
+            <p className="teamName">{t.name}</p>
+          </div>
+          <div className="teamScore">
+            <p className="scoreNumber">{t.score}</p>
+          </div>
+        </div>
+      );
   }
 }
 // BOWL
@@ -271,19 +296,19 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
   render() {
     let bowl = bowl0;
     let bowlLabel = "bowlImage bowl0";
-    let bowlFill = this.props.remainingWords/this.props.words;
-    if (bowlFill > .8){
-        bowl = bowl100;
-        bowlLabel = "bowlImage bowl100";
-    } else if (bowlFill > .6){
-        bowl = bowl80;
-        bowlLabel = "bowlImage bowl80";
-    } else if (bowlFill > .4){
-        bowl = bowl60;
-        bowlLabel = "bowlImage bowl60";
-    } else if (bowlFill > .2){
-        bowl = bowl40;
-        bowlLabel = "bowlImage bowl40";
+    let bowlFill = this.props.remainingWords / this.props.words;
+    if (bowlFill > 0.8) {
+      bowl = bowl100;
+      bowlLabel = "bowlImage bowl100";
+    } else if (bowlFill > 0.6) {
+      bowl = bowl80;
+      bowlLabel = "bowlImage bowl80";
+    } else if (bowlFill > 0.4) {
+      bowl = bowl60;
+      bowlLabel = "bowlImage bowl60";
+    } else if (bowlFill > 0.2) {
+      bowl = bowl40;
+      bowlLabel = "bowlImage bowl40";
     } else if (bowlFill > 0) {
       bowl = bowl20;
       bowlLabel = "bowlImage bowl20";
@@ -295,14 +320,18 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
     return (
       <div className="bowl">
         <svg className="remainingWordsSVG">
-        <text x="50%" y="90%" className="textFill" >{this.props.remainingWords}</text>
-        <text x="51%" y="91%" className="textStroke">{this.props.remainingWords}</text>
+          <text x="50%" y="90%" className="textFill">
+            {this.props.remainingWords}
+          </text>
+          <text x="51%" y="91%" className="textStroke">
+            {this.props.remainingWords}
+          </text>
         </svg>
-        
+
         {/* <p className="remainingWords">{this.props.remainingWords}</p> */}
         <div className={bowlLabel}>
           <img src={bowl} alt=""></img>
-          </div>
+        </div>
       </div>
     );
   }
@@ -322,18 +351,20 @@ type GuessState = {
 // CLUEING WIDGET
 class Guess extends React.Component<GuessProps, GuessState> {
   constructor(props: GuessProps) {
-    super(props)
+    super(props);
 
     this.state = {
       wordIdx: Math.floor(
         Math.random() * props.serverState.remainingWords.length
       ),
-      len: props.serverState.remainingWords.length
-
+      len: props.serverState.remainingWords.length,
     };
   }
 
-  static getDerivedStateFromProps(props: GuessProps, state: GuessState): GuessState | null {
+  static getDerivedStateFromProps(
+    props: GuessProps,
+    state: GuessState
+  ): GuessState | null {
     if (state.len === props.serverState.remainingWords.length) {
       return null;
     }
@@ -342,7 +373,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
       wordIdx: Math.floor(
         Math.random() * props.serverState.remainingWords.length
       ),
-      len: props.serverState.remainingWords.length
+      len: props.serverState.remainingWords.length,
     };
   }
 
@@ -373,30 +404,29 @@ class Guess extends React.Component<GuessProps, GuessState> {
   render() {
     const ss = this.props.serverState;
     if (!ss.userGuessing || !ss.deadline) {
-      return (
-        <div>
-          {/* nothing */}
-        </div>
-      );
+      return <div>{/* nothing */}</div>;
     }
 
-   
     var cw = ss.remainingWords[this.state.wordIdx];
     if (ss.userGuessing === this.props.myUserID && !!ss.deadline) {
       return (
         <div className="clueWidget">
           <p className="clueWord">
             <ScaleText>{cw}</ScaleText>
-            
-            
-            </p>
-          <p className="buttonCorrect"><button onClick={() => this.guess(true)}>Got it!</button></p>
+          </p>
+          <p className="buttonCorrect">
+            <button onClick={() => this.guess(true)}>Got it!</button>
+          </p>
           <div className="otherButtons">
-          <p className="buttonWhoops"><button onClick={() => this.guess(false)}>Whoops, bad clue</button></p>
-          <p className="buttonGiveUp"><button onClick={() => this.props.endTurn()}>I give up</button></p>
+            <p className="buttonWhoops">
+              <button onClick={() => this.guess(false)}>
+                Whoops, bad clue
+              </button>
+            </p>
+            <p className="buttonGiveUp">
+              <button onClick={() => this.props.endTurn()}>I give up</button>
+            </p>
           </div>
-          
-          
         </div>
       );
     }

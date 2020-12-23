@@ -67,12 +67,12 @@ export class GameNav extends React.Component<
         return (
             <div className="gameNav">
                 <p className="gameTitle heading--stroke heading--shadow"> B.F.O.N.</p>
-                <p className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName} <span className="gameSettings">
-                    <i className="fa fa-angle-down" ></i>
-
-                </span>
+                <div className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName}
+                    <span className="gameSettings">
+                        <i className="fa fa-angle-down" ></i>
+                    </span>
                     {this.state.showSettings && <GameMenu leaveGame={() => this.props.leaveGame()} />}
-                </p>
+                </div>
 
             </div>
         );
