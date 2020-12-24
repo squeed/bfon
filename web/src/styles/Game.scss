@@ -467,7 +467,6 @@ button {
         font-family: "Kalam", sans-serif;
         background-color: $white;
         width: 90%;
-       
         text-align: center;
         font-size: 2.5rem;
         margin: 1rem 0;
@@ -533,7 +532,7 @@ button {
             margin: .8rem 0;
             background-color: $pink4;
             border-radius: 3px;
-            width: 50%;
+            width: 6rem;
             font-size: 2.5rem;
             text-align: right;
 
@@ -580,12 +579,16 @@ button {
 
 .roundDescription {
     @include page-edge();
+    text-align: center;
     margin: .6em 1.5em;
-    background-color: $blue3;
-        color: $light1;
+   
+        color: $dark1;
        
         padding: .5rem .9rem;
         border-radius: 3px;
+    img {
+        max-width: 8rem;
+    }
     h4 {
         padding: 0;
         margin: 0;
@@ -606,13 +609,13 @@ button {
       @include page-edge();
 
       .clueWord {
-        
-        background-color: $white;
+        font-family: 'Kalam', sans-serif;
+        //background-color: $white;
         text-align: center;
         
         margin: 1rem 0;
         padding: .5rem .5rem .5rem .5rem;
-        height: 5rem;
+        height: 3rem;
         line-height: 1rem;
         align-items: center;
         justify-content: center;
@@ -703,6 +706,7 @@ button {
     
     .bowlImage {
         @include zeromarg();
+        position: relative;
         z-index: -1;
         bottom: 10px;
         img {

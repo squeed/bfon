@@ -5,6 +5,9 @@ import bowl40 from "./img/bowl40.svg";
 import bowl60 from "./img/bowl60.svg";
 import bowl80 from "./img/bowl80.svg";
 import bowl100 from "./img/bowl100.svg";
+import round1 from "./img/round1.svg";
+import round2 from "./img/round2.svg";
+import round3 from "./img/round3.svg";
 
 import * as types from "./Types";
 import React from "react";
@@ -73,20 +76,26 @@ class Game extends React.Component<GameProps> {
             />
             {ss.round === 1 && (
               <div className="roundDescription">
+                
+                <img src={round1}></img>
                 <h4>Round 1</h4>
-                <p>Say anything – except for the word itself.</p>
+                <p>Say anything except for the word:</p>
               </div>
             )}
             {ss.round === 2 && (
               <div className="roundDescription">
-                <h4>Round 2</h4>
-                <p>Say only ONE word. No actions.</p>
+                
+                <img src={round2}></img>
+                
+                <p>Say ONLY ONE word:</p>
               </div>
             )}
             {ss.round === 3 && (
               <div className="roundDescription">
-                <h4>Round 3</h4>
-                <p>Actions only – no talking!</p>
+                
+                <img src={round3}></img>
+              
+                <p>Act out the word:</p>
               </div>
             )}
             <Guess

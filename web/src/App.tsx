@@ -32,7 +32,7 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
           ID: "crazyllama",
           adminUser: "1111-2222",
 
-          round: 3,
+          round: 1,
 
           teams: [
             {
