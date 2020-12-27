@@ -15,6 +15,7 @@ import React from "react";
 import ScaleText from "react-scale-text";
 
 import * as extras from "./Extras";
+import * as underscore from "underscore";
 
 type GameProps = {
   serverState: types.MessageGameState;
@@ -104,6 +105,8 @@ class Game extends React.Component<GameProps> {
               submitGuess={(c) => this.props.guess(c)}
               endTurn={() => this.props.endTurn()}
             />
+
+            {ss.deadline !== 0 && ss.userGuessing !== this.props.myUserID && <WordLog remainingWords={ss.remainingWords} />}
 
             <Bowl
               words={ss.words.length}
@@ -442,3 +445,47 @@ class Guess extends React.Component<GuessProps, GuessState> {
     return null;
   }
 }
+
+const WordLog : React.FunctionComponent<{remainingWords: string[]}> = (props) => {
+  const [prevRW, setPrevRW] = React.useState<string[]>([]);
+  const [wordLog, setWordLog] = React.useState<string[]>([]);
+
+  React.useEffect( () => {
+    // arrays unchanged? continue
+    if (prevRW.length === props.remainingWords.length && underscore.difference(props.remainingWords, prevRW).length === 0 ) {
+      return;
+    }
+
+    var removed: string[];
+    
+    // we've rolled over turns
+    if (props.remainingWords.length > prevRW.length) {
+      removed = prevRW;
+      setPrevRW(props.remainingWords);
+    } else {
+      removed = underscore.difference(prevRW, props.remainingWords);
+    }
+    setPrevRW(props.remainingWords);
+
+    for (const word of removed) {
+      setWordLog(wordLog.concat(word));
+      window.setTimeout(() => {
+        console.log("remove " + word);
+        setWordLog(wordLog => underscore.without(wordLog, word));
+      }, 5 * 1000);
+    }
+
+    return undefined;
+  }, [prevRW, props.remainingWords, wordLog]);
+
+
+  const words = wordLog.map((word) => <li key={word}>{word}</li>);
+  return (
+    <div>
+      Recently guessed words:
+      <ul>
+        {words}
+      </ul>
+    </div>
+  );
+};
