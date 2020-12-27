@@ -130,25 +130,46 @@ class Game extends React.Component<GameProps> {
 
 export default Game;
 
-class WordList extends React.Component<{
+type WordListProps = {
   words: string[];
+   
   addWord: (word: string) => void;
-}> {
+};
+
+class WordList extends React.Component<WordListProps, {wordsAdded: number}   > {
   inputRef = React.createRef<HTMLInputElement>();
+  
+  constructor(props: WordListProps){
+    super(props);
+    this.state={wordsAdded: 0};
+  }
 
   addWord(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     const node = this.inputRef.current;
+   
+    
     if (node) {
-      this.props.addWord(node.value);
-      node.value = "";
-    }
+      
+      if (node.value === ""){
+        alert ("no word, ya bozo");
+      } else {
+        this.props.addWord(node.value);
+        node.value = "";
+        this.setState({wordsAdded: this.state.wordsAdded + 1});
+      }
+      
+    } 
+    
   }
-
+  
   render() {
-    return (
+    
+    return (  
       <div className="addWords">
-        Every player adds 5 words to the bowl.
+
+        <h3>Fill the bowl with words.</h3>
+    
         <div className="yes">
           <ul>
             <li>
@@ -169,11 +190,21 @@ class WordList extends React.Component<{
               Boring words
               <span className="example">&nbsp;(chair, tv, phone)</span>
             </li>
+            <li>
+              Being super specific and tricky
+              <span className="example">&nbsp;(bouquet of fragrant purple roses)</span>
+            </li>
           </ul>
         </div>
-        <Bowl words={50} remainingWords={this.props.words.length} />
+        
+
+        
+        
         <form onSubmit={(e) => this.addWord(e)}>
-          <label>
+          
+          {((this.state.wordsAdded < 4) && (this.state.wordsAdded >= 0)) && (
+            <div>
+              <label>
             <input
               className="addWord"
               type="text"
@@ -181,8 +212,50 @@ class WordList extends React.Component<{
               ref={this.inputRef}
             />
           </label>
-          <input className="submitWord" type="submit" value="Submit" />
+          <p className="wordDirections">You can add { 5- this.state.wordsAdded} more words.</p>
+          <input className="submitWord" type="submit" value="Add word"/>
+
+
+          </div>
+        )}
+        {this.state.wordsAdded === 4 && (
+          <div>
+            <label>
+            <input
+              className="addWord"
+              type="text"
+              autoComplete="off"
+              ref={this.inputRef}
+            />
+          </label>
+          <p className="wordDirections">Just { 5- this.state.wordsAdded} more word.</p>
+          <input className="submitWord" type="submit" value="Add word" />
+          </div>
+        )}
+        {this.state.wordsAdded === 5 && (
+          <div>
+            <label>
+            <input
+              className="addWord"
+              type="text"
+              autoComplete="off"
+              ref={this.inputRef}
+            />
+          </label>
+          <p className="wordDirections"><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></p>
+          <input className="submitWord" type="submit" value="Add word" /></div>
+        )}
+        {this.state.wordsAdded === 6 && (
+          <div>
+          <p className="wordDirections">Alright, buddy, we're cutting you off. Wait for the host to start the game.</p>
+          </div>
+        )}
+
         </form>
+
+
+
+
       </div>
     );
   }
