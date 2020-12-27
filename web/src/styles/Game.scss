@@ -464,7 +464,7 @@ button {
      }
 
      .addWord {
-        font-family: "Kalam", sans-serif;
+        font-family: "Caveat Brush", sans-serif;
         background-color: $white;
         width: 90%;
         text-align: center;
@@ -540,8 +540,8 @@ button {
 
         .teamName {
             @include zeromarg();
-            font-size: 1.6rem;
-          font-weight: 300;
+            font-size: 1.3rem;
+          font-weight: 700;
           
           
         }
@@ -580,14 +580,14 @@ button {
 .roundDescription {
     @include page-edge();
     text-align: center;
-    margin: .6em 1.5em;
+    margin: 0 1.5em;
    
         color: $dark1;
        
         padding: .5rem .9rem;
         border-radius: 3px;
     img {
-        max-width: 8rem;
+        max-height: 10rem;
     }
     h4 {
         padding: 0;
@@ -606,17 +606,19 @@ button {
   /* ---------- CLUEING ----------- */
 
   .clueWidget {
-      @include page-edge();
+     
 
       .clueWord {
-        font-family: 'Kalam', sans-serif;
+        @include page-edge();
+        font-family: 'Caveat Brush', sans-serif;
         //background-color: $white;
         text-align: center;
         
-        margin: 1rem 0;
+        margin: 0;
         padding: .5rem .5rem .5rem .5rem;
-        height: 3rem;
-        line-height: 1rem;
+        position: relative;
+        top: -2rem;
+        line-height: 1.9em;
         align-items: center;
         justify-content: center;
         .scaletext-wrapper {
@@ -628,40 +630,65 @@ button {
         }
         
       }
-      .buttonCorrect {
-          font-size: 1.5rem;
+
+      .cluemeisterButtons {
+          @include zeromarg();
+          height: 4rem;
+          display: flex;
+      
+      p {
+          
           text-align: center;
           z-index: 500;
+          justify-content: space-around;
           button {
-              background-color: $green3;
-              color: $light1;
+              
+              
+              width: 100%;
+              
               cursor: pointer;
           }
 
       }
+    }
+      .buttonCorrect {
+        flex: 2;
+          button {
+            background-color: $green3;
+            font-size: 2rem;
+            height: 4rem;
+            letter-spacing: .1rem;
+            text-transform: uppercase;
+            border-bottom: 3px solid $green4;
+            color: $light1;
+            margin: 0 .7rem;
+
+          }
+      }
       .otherButtons {
-          text-align: center;
-          @include zeromarg();
+          
+          
+
+        button  {
+            margin: 0;
+            font-size: .9rem;
+            text-decoration: underline;
+            background-color: transparent;
+            color: $dark6;
+            a {
+                color: $dark6;
+            }
+
+          }
+
       }
       .buttonWhoops, .buttonGiveUp {
-          display: inline-block;
-          text-align: center;
-          margin: 0;
-          padding: 0em .6rem;
-      }
-      .buttonWhoops button, .buttonGiveUp button {
-          margin: 0;
-          padding: 0;
-          background-color: transparent;
-          text-decoration: underline;
-          text-align: center;
-      }
-      .buttonWhoops {
 
+        margin: 0;
+          
       }
-      .buttonGiveUp{
+      
 
-      }
   }
 
   /* ---------- BOWL ----------- */
@@ -708,9 +735,9 @@ button {
         @include zeromarg();
         position: relative;
         z-index: -1;
-        bottom: 10px;
+        bottom: -2rem;
         img {
-            height: 12rem;
+            height: 8rem;
             width: 100%;
             margin-left: auto;
         margin-right: auto;
