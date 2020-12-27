@@ -78,8 +78,8 @@ class Game extends React.Component<GameProps> {
               <div className="roundDescription">
                 
                 <img src={round1}></img>
-                <h4>Round 1</h4>
-                <p>Say anything except for the word:</p>
+                
+                <p>Say anything except for:</p>
               </div>
             )}
             {ss.round === 2 && (
@@ -87,7 +87,7 @@ class Game extends React.Component<GameProps> {
                 
                 <img src={round2}></img>
                 
-                <p>Say ONLY ONE word:</p>
+                <p>Say ONLY ONE word to help your team guess:</p>
               </div>
             )}
             {ss.round === 3 && (
@@ -423,19 +423,23 @@ class Guess extends React.Component<GuessProps, GuessState> {
           <p className="clueWord">
             <ScaleText>{cw}</ScaleText>
           </p>
-          <p className="buttonCorrect">
-            <button onClick={() => this.guess(true)}>Got it!</button>
-          </p>
-          <div className="otherButtons">
+          
+          <div className="cluemeisterButtons">
+          <p className="otherButtons">
+            <p className="buttonGiveUp">
+              <button onClick={() => this.props.endTurn()}>End my turn</button>
+            </p>
             <p className="buttonWhoops">
               <button onClick={() => this.guess(false)}>
-                Oops, I cheated.
+                Oops, I cheated
               </button>
-            </p>
-            <p className="buttonGiveUp">
-              <button onClick={() => this.props.endTurn()}>End my turn.</button>
-            </p>
-          </div>
+              </p>
+              </p>
+              <p className="buttonCorrect">
+            <button onClick={() => this.guess(true)}>Got it!</button>
+          </p>
+
+            </div>
         </div>
       );
     }
