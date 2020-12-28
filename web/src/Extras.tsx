@@ -123,7 +123,9 @@ export class Footer extends React.Component<{}, {
         return (
             <div className="launchFooter">
                 <p>
-                    <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
+                    <a href="../instructions.html" className="gameInstructions" >How to Play</a>
+
+                    {/* <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
 
                     <Modal
                         isOpen={this.state.showInstructions}
@@ -133,7 +135,7 @@ export class Footer extends React.Component<{}, {
                         <a href="#" className="gameInstructions closeX" onClick={() => this.setShowInstructions(false)}><i className="fa fa-times"></i></a>
                         <Instructions />
 
-                    </Modal>
+                    </Modal> */}
                 </p>
                 <p className="credits">
                     By <a href="http://molly.is">Molly</a> and{" "}
