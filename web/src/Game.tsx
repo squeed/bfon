@@ -75,7 +75,7 @@ class Game extends React.Component<GameProps> {
               iAmClueing={this.props.myUserID === ss.userGuessing}
               startClueing={() => this.props.startGuessing()}
             />
-            
+
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
@@ -87,37 +87,37 @@ class Game extends React.Component<GameProps> {
 
             <div className="gameDash">
 
-            {ss.round === 1 && (
-              <div className="roundRule">
-                
-                <img src={round1}></img>
-                
-                <div className="roundDescription">Avoid this word</div>
-              </div>
-            )}
-            {ss.round === 2 && (
-              <div className="roundRule">
-                
-                <img src={round2}></img>
-                
-                <div className="roundDescription">Say ONE word</div>
-              </div>
-            )}
-            {ss.round === 3 && (
-              <div className="roundRule">
-                
-                <img src={round3}></img>
-              
-                <div className="roundDescription">Actions only, no talking</div>
-              </div>
-            )}
-            <Bowl
-              words={ss.words.length}
-              remainingWords={ss.remainingWords.length}
-            />
-</div>
-</div>
-          
+              {ss.round === 1 && (
+                <div className="roundRule">
+
+                  <img src={round1}></img>
+
+                  <div className="roundDescription">Avoid this word</div>
+                </div>
+              )}
+              {ss.round === 2 && (
+                <div className="roundRule">
+
+                  <img src={round2}></img>
+
+                  <div className="roundDescription">Say ONE word</div>
+                </div>
+              )}
+              {ss.round === 3 && (
+                <div className="roundRule">
+
+                  <img src={round3}></img>
+
+                  <div className="roundDescription">Actions only, no talking</div>
+                </div>
+              )}
+              <Bowl
+                words={ss.words.length}
+                remainingWords={ss.remainingWords.length}
+              />
+            </div>
+          </div>
+
         )}
         {ss.round >= 4 && (
           <div>
@@ -140,44 +140,44 @@ export default Game;
 
 type WordListProps = {
   words: string[];
-   
+
   addWord: (word: string) => void;
 };
 
-class WordList extends React.Component<WordListProps, {wordsAdded: number}   > {
+class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
   inputRef = React.createRef<HTMLInputElement>();
-  
-  constructor(props: WordListProps){
+
+  constructor(props: WordListProps) {
     super(props);
-    this.state={wordsAdded: 0};
+    this.state = { wordsAdded: 0 };
   }
 
   addWord(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     const node = this.inputRef.current;
-   
-    
+
+
     if (node) {
-      
-      if (node.value === ""){
-        alert ("no word, ya bozo");
+
+      if (node.value === "") {
+        alert("no word, ya bozo");
       } else {
         this.props.addWord(node.value);
         node.value = "";
-        this.setState({wordsAdded: this.state.wordsAdded + 1});
+        this.setState({ wordsAdded: this.state.wordsAdded + 1 });
       }
-      
-    } 
-    
+
+    }
+
   }
-  
+
   render() {
-    
-    return (  
+
+    return (
       <div className="addWords">
 
         <h3>Fill the bowl with words.</h3>
-    
+
         <div className="yes">
           <ul>
             <li>
@@ -204,60 +204,60 @@ class WordList extends React.Component<WordListProps, {wordsAdded: number}   > {
             </li>
           </ul>
         </div>
-        
 
-        
-        
+
+
+
         <form onSubmit={(e) => this.addWord(e)}>
-          
+
           {((this.state.wordsAdded < 4) && (this.state.wordsAdded >= 0)) && (
             <div>
               <label>
-            <input
-              className="addWord"
-              type="text"
-              autoComplete="off"
-              ref={this.inputRef}
-            />
-          </label>
-          <p className="wordDirections">You can add { 5- this.state.wordsAdded} more words.</p>
-          <input className="submitWord" type="submit" value="Add word"/>
+                <input
+                  className="addWord"
+                  type="text"
+                  autoComplete="off"
+                  ref={this.inputRef}
+                />
+              </label>
+              <p className="wordDirections">You can add {5 - this.state.wordsAdded} more words.</p>
+              <input className="submitWord" type="submit" value="Add word" />
 
 
-          </div>
-        )}
-        {this.state.wordsAdded === 4 && (
-          <div>
-            <label>
-            <input
-              className="addWord"
-              type="text"
-              autoComplete="off"
-              ref={this.inputRef}
-            />
-          </label>
-          <p className="wordDirections">Just { 5- this.state.wordsAdded} more word.</p>
-          <input className="submitWord" type="submit" value="Add word" />
-          </div>
-        )}
-        {this.state.wordsAdded === 5 && (
-          <div>
-            <label>
-            <input
-              className="addWord"
-              type="text"
-              autoComplete="off"
-              ref={this.inputRef}
-            />
-          </label>
-          <p className="wordDirections"><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></p>
-          <input className="submitWord" type="submit" value="Add word" /></div>
-        )}
-        {this.state.wordsAdded === 6 && (
-          <div>
-          <p className="wordDirections">Alright, buddy, we're cutting you off. Wait for the host to start the game.</p>
-          </div>
-        )}
+            </div>
+          )}
+          {this.state.wordsAdded === 4 && (
+            <div>
+              <label>
+                <input
+                  className="addWord"
+                  type="text"
+                  autoComplete="off"
+                  ref={this.inputRef}
+                />
+              </label>
+              <p className="wordDirections">Just {5 - this.state.wordsAdded} more word.</p>
+              <input className="submitWord" type="submit" value="Add word" />
+            </div>
+          )}
+          {this.state.wordsAdded === 5 && (
+            <div>
+              <label>
+                <input
+                  className="addWord"
+                  type="text"
+                  autoComplete="off"
+                  ref={this.inputRef}
+                />
+              </label>
+              <p className="wordDirections"><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></p>
+              <input className="submitWord" type="submit" value="Add word" /></div>
+          )}
+          {this.state.wordsAdded === 6 && (
+            <div>
+              <p className="wordDirections">Alright, buddy, we're cutting you off. Wait for the host to start the game.</p>
+            </div>
+          )}
 
         </form>
 
@@ -505,24 +505,24 @@ class Guess extends React.Component<GuessProps, GuessState> {
           <p className="clueWord">
             <ScaleText>{cw}</ScaleText>
           </p>
-          
+
           <div className="cluemeisterButtons">
-         
-              <p className="buttonCorrect">
-            <button onClick={() => this.guess(true)}>Got it!</button>
-          </p>
-          <p className="otherButtons">
-            <p className="buttonGiveUp">
-              <button onClick={() => this.props.endTurn()}>End my turn</button>
+
+            <p className="buttonCorrect">
+              <button onClick={() => this.guess(true)}>Got it!</button>
             </p>
-            <p className="buttonWhoops">
-              <button onClick={() => this.guess(false)}>
-                Oops, I cheated
+            <p className="otherButtons">
+              <p className="buttonGiveUp">
+                <button onClick={() => this.props.endTurn()}>End my turn</button>
+              </p>
+              <p className="buttonWhoops">
+                <button onClick={() => this.guess(false)}>
+                  Oops, I cheated
               </button>
               </p>
-              </p>
+            </p>
 
-            </div>
+          </div>
         </div>
       );
     }
@@ -530,18 +530,18 @@ class Guess extends React.Component<GuessProps, GuessState> {
   }
 }
 
-const WordLog : React.FunctionComponent<{remainingWords: string[]}> = (props) => {
+const WordLog: React.FunctionComponent<{ remainingWords: string[] }> = (props) => {
   const [prevRW, setPrevRW] = React.useState<string[]>([]);
   const [wordLog, setWordLog] = React.useState<string[]>([]);
 
-  React.useEffect( () => {
+  React.useEffect(() => {
     // arrays unchanged? continue
-    if (prevRW.length === props.remainingWords.length && underscore.difference(props.remainingWords, prevRW).length === 0 ) {
+    if (prevRW.length === props.remainingWords.length && underscore.difference(props.remainingWords, prevRW).length === 0) {
       return;
     }
 
     var removed: string[];
-    
+
     // we've rolled over turns
     if (props.remainingWords.length > prevRW.length) {
       removed = prevRW;
@@ -567,9 +567,9 @@ const WordLog : React.FunctionComponent<{remainingWords: string[]}> = (props) =>
   return (
     <div className="recentlyGuessed">
       <p>Last word guessed:</p>
-      
-        {words}
-      
+
+      {words}
+
     </div>
   );
 };

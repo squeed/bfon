@@ -42,9 +42,9 @@ export class Countdown extends React.Component<CountdownProps, CountdownState> {
         function time_convert(num: number) {
             const minutes = Math.floor(num / 60);
             const seconds = num % 60;
-            var seconds_padded = ""+seconds;
+            var seconds_padded = "" + seconds;
             if (seconds < 10) {
-                seconds_padded = "0"+seconds_padded;
+                seconds_padded = "0" + seconds_padded;
             }
 
             return minutes + ":" + seconds_padded;
