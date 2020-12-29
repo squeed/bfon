@@ -563,10 +563,10 @@ const WordLog : React.FunctionComponent<{remainingWords: string[]}> = (props) =>
   }, [prevRW, props.remainingWords, wordLog]);
 
 
-  const words = wordLog.map((word) => <p key={word}>{word}</p>);
+  const words = wordLog.map((word) => <p className="guessedWord" key={word}>{word}</p>);
   return (
     <div className="recentlyGuessed">
-      
+      <p>Last word guessed:</p>
       
         {words}
       

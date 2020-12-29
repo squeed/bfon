@@ -695,22 +695,21 @@ button {
 
    .recentlyGuessed {
        @include page-edge();
+       padding: 3rem 1.5rem 1rem 1.5rem;
        p {
-           padding: 1rem 1.5rem;
+        text-align: center;
+       }
+       p.guessedWord {
+           
            margin: 0;
            font-family: "Caveat Brush", sans-serif;
            font-size: 2.5rem;
-           list-style-type: none;
-
-               word-wrap: break-word;
+          
+            
+            word-wrap: break-word;
           
        }
-       p:before {    
-        font-family: 'FontAwesome';
-        content: '\f058';
-        margin:0 15px 0 -20px;
-        color: $green3;
-    }
+       
    }
 
   /* ---------- BOWL and GAMEDASH ----------- */
