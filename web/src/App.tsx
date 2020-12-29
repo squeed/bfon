@@ -17,7 +17,7 @@ type AppState = {
 
 const LOCAL_MODE = !process.env.REACT_APP_SERVER_URL;
 
-class App extends React.Component<{alert: AlertManager}, AppState> {
+class App extends React.Component<{ alert: AlertManager }, AppState> {
   conn: Connection | undefined;
   passwordInputRef = React.createRef<HTMLInputElement>();
 
