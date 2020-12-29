@@ -4,19 +4,21 @@ set -euo pipefail
 mkdir -p /var/bfon-data /var/bfon-data/caddy_data /var/bfon-data/caddy_config /var/bfon-data/db
 chmod -R go+rwx /var/bfon-data
 
-podman pod kill bfon || true
-podman pod rm bfon || true
-
 TAG="${TAG:-latest}"
 IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
+
+podman pull "$IMAGE"
+
+podman pod kill bfon || true
+podman pod rm bfon || true
 
 podman pod create --name bfon -p 80:80 -p 443:443
 
 podman run --pod bfon \
     -d  \
 	--userns=host \
-    -v /var/bfon-data/caddy_data:/data:rw \
-    -v /var/bfon-data/caddy_config:/config:rw \
+    -v /var/bfon-data/caddy_data:/data:Z \
+    -v /var/bfon-data/caddy_config:/config:Z \
     --name=bfon-web \
     "$IMAGE" \
     /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
@@ -24,7 +26,7 @@ podman run --pod bfon \
 podman run --pod bfon \
 	-d \
 	--userns=host \
-    -v /var/bfon-data/db:/db:rw \
+    -v /var/bfon-data/db:/db:Z \
     --name=bfon-server \
     "$IMAGE" \
     /usr/bin/bfon-server \
