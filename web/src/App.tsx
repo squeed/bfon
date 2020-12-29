@@ -15,11 +15,14 @@ type AppState = {
   connected: boolean;
   gameState: types.MessageGameState | undefined;
   userID: string | undefined;
+  showGameIntro: boolean;
 };
+
+type AppProps = { alert: AlertManager }
 
 const LOCAL_MODE = !process.env.REACT_APP_SERVER_URL;
 
-class App extends React.Component<{ alert: AlertManager }, AppState> {
+class App extends React.Component<AppProps, AppState> {
   conn: Connection | undefined;
   passwordInputRef = React.createRef<HTMLInputElement>();
 
@@ -92,23 +95,30 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
     console.log("got new server state", st);
     if (!st) {
       this.setState({
-        userID: this.conn?.uid(),
         gameState: undefined,
       });
     } else {
-      this.setState({
-        gameState: st,
-        userID: this.conn?.uid(),
-      });
+      this.setState((oldState) => {
+        const ss = new types.MessageGameState(st);
+        if (!oldState.gameState && st && ss.adminUser === oldState.userID && ss.round === 0) {
+          return {
+            gameState: st,
+            showGameIntro: true,
+          };
+        }
+        return {
+          gameState: st,
+          showGameIntro: oldState.showGameIntro,
+        };
+      }
+      );
     }
   }
 
   addWord(word: string) {
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       if (st.gameState) {
         st.gameState.words.push(word);
@@ -195,9 +205,7 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
   guess(word: string) {
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       if (!st.gameState) {
         return;
@@ -222,9 +230,7 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
   addTeam(name: string) {
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       if (!st.gameState) {
         return;
@@ -251,9 +257,7 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
 
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       st.gameState.remainingWords = st.gameState.words;
       st.gameState.round = 1;
@@ -273,9 +277,7 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
 
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       st.gameState.userGuessing = this.state.userID;
       st.gameState.deadline = Math.floor((Date.now() / 1000) + 30)
@@ -296,9 +298,7 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
 
     if (LOCAL_MODE) {
       let st = {
-        connected: this.state.connected,
         gameState: this.state.gameState,
-        userID: this.state.userID,
       };
       st.gameState.userGuessing = undefined;
       st.gameState.deadline = undefined;
@@ -310,6 +310,10 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
       seqNumber: this.state.gameState.seqNumber,
     });
     this.conn?.sendCommand(types.MessageKind.endTurn, msg);
+  }
+
+  hideIntroModal() {
+    this.setState({ showGameIntro: false });
   }
 
   render() {
@@ -349,6 +353,23 @@ class App extends React.Component<{ alert: AlertManager }, AppState> {
 
     return (
       <div>
+        {this.state.showGameIntro &&
+          <Modal isOpen={this.state.showGameIntro} onRequestClose={() => this.hideIntroModal()}>
+            <div>
+              <a href="#" className="gameInstructions closeX" onClick={() => this.hideIntroModal()}><i className="fa fa-times"></i></a>
+              Welcome, admin user. Here's what to do!
+              <div>
+                Your game ID is <span>{this.state.gameState.name}</span>. Tell everyone to join this game. They can start adding words now.
+              </div>
+              <div>
+                You need to create some teams now.
+              </div>
+              <div>
+                When everyone is done adding words, you can start the game! Have fun!
+              </div>
+            </div>
+          </Modal>
+        }
         <Game
           serverState={this.state.gameState}
           myUserID={this.state.userID}
