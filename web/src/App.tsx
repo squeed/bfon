@@ -1,6 +1,6 @@
 import React from "react";
 import { withAlert, AlertManager } from 'react-alert'
-
+import Modal from 'react-modal';
 
 import "./styles/App.scss";
 
@@ -8,6 +8,8 @@ import * as types from "./Types";
 import { Connection } from "./Conn";
 import Game from "./Game";
 import * as extras from "./Extras";
+
+Modal.setAppElement("#root");
 
 type AppState = {
   connected: boolean;

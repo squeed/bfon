@@ -3,15 +3,33 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
+import Instructions from "./Instructions";
+
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-mui'
 //import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <AlertProvider template={AlertTemplate}>
-      <App />
-    </AlertProvider>
+    <Router>
+      <Switch>
+        <Route path="/instructions">
+          <Instructions />
+        </Route>
+        <Route path="/">
+          <AlertProvider template={AlertTemplate}>
+            <App />
+          </AlertProvider>
+        </Route>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
