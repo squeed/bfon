@@ -71,7 +71,7 @@ export class GameNav extends React.Component<
     render() {
         return (
             <div className="gameNav">
-                <p className="gameTitle heading--stroke heading--shadow"> B.F.O.N.</p>
+                <p className="gameTitle heading--stroke heading--shadow"> <a href="../instructions.html" target="_blank">B.F.O.N.</a></p>
                 <div className="gameName" onClick={() => this.toggleSettings()}>{this.props.gameName}
                     <span className="gameSettings">
                         <i className="fa fa-angle-down" ></i>
@@ -145,5 +145,3 @@ export class Footer extends React.Component<{}, {
         );
     }
 }
-
-
