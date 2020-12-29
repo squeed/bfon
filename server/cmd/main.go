@@ -22,7 +22,8 @@ func main() {
 	var err error
 
 	//st := store.NewMemStore()
-	st, err := store.NewDBStore(*dbFile)
+	stopCh := make(chan struct{})
+	st, err := store.NewDBStore(*dbFile, stopCh)
 	if err != nil {
 		log.Fatal(err)
 		os.Exit(2)
@@ -40,4 +41,5 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+	close(stopCh)
 }
