@@ -9,18 +9,21 @@ podman pod rm bfon || true
 TAG="${TAG:-latest}"
 IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
 
-podman pod create --name bfon -p 80:80 -p 443:443
+podman pod create --name bfon -p 8080:80
 
 podman run --pod bfon \
     -d  \
-    -v "$(pwd)"/bfon-data/caddy_data:/data:rw \
-    -v "$(pwd)"/bfon-data/caddy_config:/config:rw \
+	--userns=host \
+    -v "$(pwd)"/bfon-data/caddy_data:/data:Z \
+    -v "$(pwd)"/bfon-data/caddy_config:/config:Z \
     --name=bfon-web \
     "$IMAGE" \
     /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
 
 podman run --pod bfon \
-    -v "$(pwd)"/bfon-data/db:/db:rw \
+	-d \
+	--userns=host \
+    -v "$(pwd)"/bfon-data/db:/db:Z \
     --name=bfon-server \
     "$IMAGE" \
     /usr/bin/bfon-server \
