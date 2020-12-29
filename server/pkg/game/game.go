@@ -60,6 +60,10 @@ func (g *Game) DeadlineTime() *time.Time {
 	return &d
 }
 
+func (g *Game) Finished() bool {
+	return g.Round == 4
+}
+
 func (g *Game) AddTeam(name string) {
 	if g.Round > 0 {
 		log.Printf("rejecting AddTeam, round %d", g.Round)

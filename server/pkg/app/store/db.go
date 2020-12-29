@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -15,7 +17,7 @@ type DBStore struct {
 	db *sql.DB
 }
 
-func NewDBStore(dbFile string) (*DBStore, error) {
+func NewDBStore(dbFile string, stopCh <-chan struct{}) (*DBStore, error) {
 	db, err := sql.Open("sqlite3", fmt.Sprintf("file:%s", dbFile))
 
 	if err != nil {
@@ -29,6 +31,25 @@ func NewDBStore(dbFile string) (*DBStore, error) {
 	if err := s.ensureTables(); err != nil {
 		return nil, err
 	}
+
+	if err := s.Cleanup(); err != nil {
+		return nil, err
+	}
+
+	ticker := time.NewTicker(1 * time.Hour)
+	go func() {
+		for {
+			select {
+			case <-stopCh:
+				return
+			case <-ticker.C:
+				err := s.Cleanup()
+				if err != nil {
+					fmt.Println(err)
+				}
+			}
+		}
+	}()
 
 	return s, nil
 }
@@ -58,16 +79,21 @@ func (s *DBStore) GetGame(gameID string) (*game.Game, error) {
 }
 
 func (s *DBStore) SetGame(game *game.Game) error {
+	finished := game.Finished()
+
 	blob, err := json.Marshal(game.GetState())
 	if err != nil {
 		return fmt.Errorf("failed to marshal game: %w", err)
 	}
 
-	query := `INSERT INTO game(id, state) values (?, ?)
-		ON CONFLICT(id) DO UPDATE SET state=excluded.state;
+	query := `INSERT INTO game(id, state, finished, updated_at) values (?, ?, ?, current_timestamp)
+		ON CONFLICT(id) DO UPDATE SET 
+			state=excluded.state,
+			finished=excluded.finished,
+			updated_at=excluded.updated_at;
 	`
 
-	_, err = s.db.Exec(query, game.ID, blob)
+	_, err = s.db.Exec(query, game.ID, blob, finished)
 	if err != nil {
 		return fmt.Errorf("failed to insert game: %w", err)
 	}
@@ -125,11 +151,41 @@ func (s *DBStore) GetGameUsers(gameID string) ([]string, error) {
 	return out, nil
 }
 
+// ClearOldGames deletes any finished games older than 3h, and unfinished
+// games older than 5 days
+func (s *DBStore) Cleanup() error {
+	log.Println("Clearing old games")
+	query := `
+	DELETE FROM game
+	WHERE (finished = true AND updated_at < datetime('now', '-3 hours'))
+		OR (finished = false AND updated_at < datetime('now', '-5 days'));`
+
+	_, err := s.db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("Failed to delete old games: %w", err)
+	}
+
+	log.Println("Clearing old user associations")
+	query = `
+	DELETE FROM user2game WHERE gameid NOT IN (select id from game) ;`
+
+	_, err = s.db.Exec(query)
+	if err != nil {
+		return fmt.Errorf("Failed to delete old association: %w", err)
+	}
+
+	log.Println("Cleanup done")
+	return nil
+}
+
 func (s *DBStore) ensureTables() error {
 	schemas := []string{
 		`game (
 			id text not null primary key,
-			state blob
+			state blob,
+			finished boolean,
+			created_at datetime DEFAULT CURRENT_TIMESTAMP,
+			updated_at datetime
 		)`,
 
 		`user2game (
