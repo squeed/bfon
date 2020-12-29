@@ -9,5 +9,6 @@
 bfon.club:80
 
 root * /srv
+rewrite /instructions /
 reverse_proxy /ws localhost:5000
 file_server
