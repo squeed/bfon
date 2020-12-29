@@ -32,7 +32,7 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
           ID: "crazyllama",
           adminUser: "1111-2222",
 
-          round: 2,
+          round: 3,
 
           teams: [
             {
@@ -49,8 +49,8 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
           // set to 0 - 1 to make a certain team active
           currentTeam: 1,
           // say "nobody is guessing" by commenting the next two lines out
-          //userGuessing: "1111-2222",
-          //deadline: 1707980688,
+          // userGuessing: "1111-2222",
+          // deadline: 1483150000,
 
           words: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],
           remainingWords: ["astrolabe", "grunge rock", "Boutros Boutros-Ghali", "Babe Ruth", "chicken à la king", "greengrocer", "Philip Roth", "IHOP", "Laika the space dog", "sackbut", "Australian shepherd", "Hunchback of Notre Dame", "Buzz Lightyear", "Tesla Model X", "Der Spiegel"],

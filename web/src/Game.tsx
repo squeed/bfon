@@ -75,30 +75,7 @@ class Game extends React.Component<GameProps> {
               iAmClueing={this.props.myUserID === ss.userGuessing}
               startClueing={() => this.props.startGuessing()}
             />
-            {ss.round === 1 && (
-              <div className="roundDescription">
-                
-                <img src={round1}></img>
-                
-                <p>Say anything except for:</p>
-              </div>
-            )}
-            {ss.round === 2 && (
-              <div className="roundDescription">
-                
-                <img src={round2}></img>
-                
-                <p>Say ONLY ONE word to help your team guess:</p>
-              </div>
-            )}
-            {ss.round === 3 && (
-              <div className="roundDescription">
-                
-                <img src={round3}></img>
-              
-                <p>Act out the word:</p>
-              </div>
-            )}
+            
             <Guess
               serverState={ss}
               myUserID={this.props.myUserID}
@@ -108,11 +85,39 @@ class Game extends React.Component<GameProps> {
 
             {ss.deadline !== 0 && ss.userGuessing !== this.props.myUserID && <WordLog remainingWords={ss.remainingWords} />}
 
+            <div className="gameDash">
+
+            {ss.round === 1 && (
+              <div className="roundRule">
+                
+                <img src={round1}></img>
+                
+                <div className="roundDescription">Avoid this word</div>
+              </div>
+            )}
+            {ss.round === 2 && (
+              <div className="roundRule">
+                
+                <img src={round2}></img>
+                
+                <div className="roundDescription">Say ONE word</div>
+              </div>
+            )}
+            {ss.round === 3 && (
+              <div className="roundRule">
+                
+                <img src={round3}></img>
+              
+                <div className="roundDescription">Actions only, no talking</div>
+              </div>
+            )}
             <Bowl
               words={ss.words.length}
               remainingWords={ss.remainingWords.length}
             />
-          </div>
+</div>
+</div>
+          
         )}
         {ss.round >= 4 && (
           <div>
@@ -404,19 +409,20 @@ class Bowl extends React.Component<{ words: number; remainingWords: number }> {
 
     return (
       <div className="bowl">
-        <svg className="remainingWordsSVG">
+        {/* <svg className="remainingWordsSVG">
           <text x="50%" y="90%" className="textFill">
             {this.props.remainingWords}
           </text>
           <text x="51%" y="91%" className="textStroke">
             {this.props.remainingWords}
           </text>
-        </svg>
+        </svg> */}
 
         {/* <p className="remainingWords">{this.props.remainingWords}</p> */}
         <div className={bowlLabel}>
           <img src={bowl} alt=""></img>
         </div>
+        <div className="bowlDescription">{this.props.remainingWords} words left</div>
       </div>
     );
   }
@@ -501,6 +507,10 @@ class Guess extends React.Component<GuessProps, GuessState> {
           </p>
           
           <div className="cluemeisterButtons">
+         
+              <p className="buttonCorrect">
+            <button onClick={() => this.guess(true)}>Got it!</button>
+          </p>
           <p className="otherButtons">
             <p className="buttonGiveUp">
               <button onClick={() => this.props.endTurn()}>End my turn</button>
@@ -511,9 +521,6 @@ class Guess extends React.Component<GuessProps, GuessState> {
               </button>
               </p>
               </p>
-              <p className="buttonCorrect">
-            <button onClick={() => this.guess(true)}>Got it!</button>
-          </p>
 
             </div>
         </div>
@@ -556,13 +563,13 @@ const WordLog : React.FunctionComponent<{remainingWords: string[]}> = (props) =>
   }, [prevRW, props.remainingWords, wordLog]);
 
 
-  const words = wordLog.map((word) => <li key={word}>{word}</li>);
+  const words = wordLog.map((word) => <p key={word}>{word}</p>);
   return (
-    <div>
-      Recently guessed words:
-      <ul>
+    <div className="recentlyGuessed">
+      
+      
         {words}
-      </ul>
+      
     </div>
   );
 };
