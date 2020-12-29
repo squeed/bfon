@@ -1,6 +1,8 @@
 package store
 
 import (
+	"errors"
+
 	"github.com/squeed/bfon/server/pkg/game"
 )
 
@@ -13,3 +15,5 @@ type Store interface {
 
 	GetGameUsers(gameID string) ([]string, error)
 }
+
+var GameNotFound = errors.New("Game not found")

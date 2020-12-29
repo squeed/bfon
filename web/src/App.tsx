@@ -128,21 +128,11 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
   }
 
   createGame() {
-    const node = this.passwordInputRef.current;
-    if (!node) {
-      console.log("BUG: missing node");
-      return;
-    }
-    const name = node.value;
-    if (name === "") {
-      this.onError("Please enter a password.");
-      return;
-    }
     if (LOCAL_MODE) {
       this.setState({
         gameState: new types.MessageGameState({
-          name: name,
-          ID: name,
+          name: "Funky Chicken",
+          ID: "funkychicken",
           seqNumber: 0,
           round: 0,
           teams: [],
@@ -164,7 +154,7 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
       return;
     }
 
-    const msg: types.MessageCreateGame = { gameName: name };
+    const msg: types.MessageCreateGame = {};
     this.conn.sendCommand(types.MessageKind.createGame, msg);
   }
 
@@ -321,8 +311,6 @@ class App extends React.Component<{alert: AlertManager}, AppState> {
   }
 
   render() {
-
-
     if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting to BFON central...</div>;
     }

@@ -20,7 +20,7 @@ type MessageJoinGame struct {
 }
 
 type MessageCreateGame struct {
-	GameName string `json:"gameName"`
+	GameName string `json:"gameName,omitempty"`
 }
 
 type MessageError struct {

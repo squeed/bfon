@@ -144,7 +144,7 @@ export class MessageAddWord {
     }
 }
 export class MessageCreateGame {
-    gameName: string;
+    gameName?: string;
 
     static createFrom(source: any = {}) {
         return new MessageCreateGame(source);

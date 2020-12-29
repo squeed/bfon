@@ -63,7 +63,7 @@ func (s *DBStore) GetGame(gameID string) (*game.Game, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("game %s does not exist", gameID)
+			return nil, GameNotFound
 		}
 		return nil, fmt.Errorf("Could not get game: %w", err)
 	}

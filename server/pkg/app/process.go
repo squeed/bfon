@@ -7,6 +7,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/squeed/bfon/server/pkg/conn"
+	"github.com/squeed/bfon/server/pkg/game"
 	pgame "github.com/squeed/bfon/server/pkg/game"
 	"github.com/squeed/bfon/server/pkg/types"
 )
@@ -88,15 +89,15 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindLeaveGame {
+		a.leaveGame(userID)
+		return
+	}
+
 	// At this point, must have valid game
 	game, err = a.store.GetUserGame(userID)
 	if err != nil {
 		log.Printf("User %s game is null %v", userID, err)
-		return
-	}
-
-	if cmd.Kind == types.KindLeaveGame {
-		a.leaveGame(userID)
 		return
 	}
 
@@ -212,7 +213,29 @@ func (a *App) sendGameState(state *types.MessageGameState, userID string) {
 }
 
 func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) {
-	if _, err := a.store.GetGame(cmd.Create.GameName); err == nil {
+	gameName := cmd.Create.GameName
+
+	if gameName == "" {
+		var err error
+		gameName, err = a.pickGameName()
+		if err != nil {
+			log.Printf("error: can't create game: %v", err)
+			return
+		}
+	}
+
+	gameID := game.ParseGameID(gameName)
+	if gameID == "" {
+		log.Printf("Invalid empty game name")
+		conn.Enqueue(&types.MessageError{
+			Error: "Game creation failed",
+		})
+		return
+	}
+
+	log.Printf("Creating game %s", gameName)
+
+	if _, err := a.store.GetGame(gameID); err == nil {
 		log.Printf("error: create existing game %s", cmd.Create.GameName)
 		conn.Enqueue(&types.MessageError{
 			Error: fmt.Sprintf("Game %s already exists", cmd.Create.GameName),
@@ -220,13 +243,13 @@ func (a *App) createGame(conn conn.Conn, userID string, cmd *types.GameCommand) 
 		return
 	}
 
-	game := pgame.NewGame(cmd.Create.GameName, userID)
+	game := pgame.NewGame(gameName, userID)
 	if err := a.store.SetGame(game); err != nil {
 		log.Printf("failed to join game: %v", err)
 		return
 	}
 
-	a.joinGame(conn, userID, game.Name)
+	a.joinGame(conn, userID, game.ID)
 }
 
 func (a *App) joinGame(conn conn.Conn, userID string, name string) {
