@@ -154,6 +154,7 @@ class App extends React.Component<AppProps, AppState> {
         }),
         userID: this.state.userID,
         connected: this.state.connected,
+        showGameIntro: true,
       });
       return;
     }
