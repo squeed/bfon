@@ -36,7 +36,7 @@ class App extends React.Component<AppProps, AppState> {
           ID: "crazyllama",
           adminUser: "1111-2222",
 
-          round: 4,
+          round: 1,
 
           teams: [
             {
