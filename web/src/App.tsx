@@ -15,7 +15,6 @@ type AppState = {
   connected: boolean;
   gameState: types.MessageGameState | undefined;
   userID: string | undefined;
-  showGameIntro: boolean;
 };
 
 type AppProps = { alert: AlertManager }
@@ -98,20 +97,9 @@ class App extends React.Component<AppProps, AppState> {
         gameState: undefined,
       });
     } else {
-      this.setState((oldState) => {
-        const ss = new types.MessageGameState(st);
-        if (!oldState.gameState && st && ss.adminUser === oldState.userID && ss.round === 0) {
-          return {
-            gameState: st,
-            showGameIntro: true,
-          };
-        }
-        return {
+      this.setState({
           gameState: st,
-          showGameIntro: oldState.showGameIntro,
-        };
-      }
-      );
+      });
     }
   }
 
@@ -154,7 +142,6 @@ class App extends React.Component<AppProps, AppState> {
         }),
         userID: this.state.userID,
         connected: this.state.connected,
-        showGameIntro: true,
       });
       return;
     }
@@ -313,10 +300,6 @@ class App extends React.Component<AppProps, AppState> {
     this.conn?.sendCommand(types.MessageKind.endTurn, msg);
   }
 
-  hideIntroModal() {
-    this.setState({ showGameIntro: false });
-  }
-
   render() {
     if (!this.state || !this.state.connected || !this.state.userID) {
       return <div> Connecting to BFON central...</div>;
@@ -354,23 +337,6 @@ class App extends React.Component<AppProps, AppState> {
 
     return (
       <div>
-        {this.state.showGameIntro &&
-          <Modal isOpen={this.state.showGameIntro} onRequestClose={() => this.hideIntroModal()}>
-            <div>
-              <a href="#" className="gameInstructions closeX" onClick={() => this.hideIntroModal()}><i className="fa fa-times"></i></a>
-              Welcome, admin user. Here's what to do!
-              <div>
-                Your game ID is <span>{this.state.gameState.name}</span>. Tell everyone to join this game. They can start adding words now.
-              </div>
-              <div>
-                You need to create some teams now.
-              </div>
-              <div>
-                When everyone is done adding words, you can start the game! Have fun!
-              </div>
-            </div>
-          </Modal>
-        }
         <Game
           serverState={this.state.gameState}
           myUserID={this.state.userID}
