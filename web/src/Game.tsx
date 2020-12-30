@@ -63,6 +63,7 @@ class Game extends React.Component<GameProps, GameState> {
     /* this is the word-adding screen, I think? */
 
       var newRoundText = (<div></div>);
+      
       if (ss.round === 0) {
         if (isAdmin) {
           newRoundText = (<div>
@@ -79,38 +80,70 @@ class Game extends React.Component<GameProps, GameState> {
           </div>);
         } else {
         newRoundText = (<div>
-          Welcome to Bowl Full of Nouns! If you've not played before, you
-          might want to check out the instructions.<br/>
-          Now is the time to start adding words for people to guess.
+          <p>Welcome to Bowl Full of Nouns!</p>
+          <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions">instructions</a>.</p>
+          <p>Your first step is to add words to the bowl for people to guess.</p>
+          
         </div>);
         }
       } else if (ss.round === 1) {
-        newRoundText = (<div>
-          Round one: When you're the cluemeister, get your team to guess
-          your word <b>without saying that word</b>.<br/>
-          It's like the game <i>Taboo</i>.
+        
+        newRoundText = (<div className="newRoundDescription">
+                        <p className="roundTitle">Round 1</p>
+                                <img src={round1}></img>
+                                <p>The cluemeister can say anything to help their teammates
+                                guess – except the word itself. No fair spelling or rhyming the word, either.
+                    </p>
+                    <p>For example:</p>
+                                <p className="guessExample">
+                                    <p className="guessExampleWord">Meatballs</p>
+                                    <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
+                                </p>
+
+          
         </div>);
       } else if (ss.round === 2) {
+        
         newRoundText = (
-          <div>
-            Welcome to Round Two! Now, you can only say <b>one word</b> when
-            you're the cluemeister. Be careful!
+          <div className="newRoundDescription">
+            <p className="roundTitle">Round 2</p>
+                                <img src={round2}></img>
+                                <p>The cluemeister can only say ONE (1) word and can't make extra
+                        noises or motions.</p>
+                        <p>For example:</p>
+                                <p className="guessExample">
+                                    <p className="guessExampleWord">Meatballs</p>
+                                    <p className="guessExampleText">"IKEA."</p>
+                                </p>
+            
           </div>
         );
       } else if (ss.round === 3) {
+        
         newRoundText = (
-          <div>
-            Its Round Three! Now, you have to act the words out. It's 
-            like <i>Charades</i>. Good luck!
+          <div className="newRoundDescription">
+             <p className="roundTitle">Round 3</p>
+                                <img src={round3}></img>
+                                <p>No words allowed! The cluemeister must act the word out.</p>
+                                <p>For example:</p>
+                                <p className="guessExample">
+                                    <p className="guessExampleWord">Meatballs</p>
+                                    <p className="guessExampleText">[act out eating food, then act out assembling a chair]</p>
+                                </p>
+            
           </div>
         );
       } else if (ss.round === 4) {
+        
         newRoundText = (
-          <div>
-            The game is over! Thanks for playing
+          <div className="newRoundDescription">
+            <p className="roundTitle">The bowl is empty!</p>
+            <img src={bowl0}></img>
+            <p>Time to check out the final scores.</p>
           </div>
         );
-      }    
+      }
+          
 
     return (
       <div id="game">
@@ -119,11 +152,20 @@ class Game extends React.Component<GameProps, GameState> {
           leaveGame={() => this.props.leaveGame()}
         />
 
-        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({showInterstitial: false})}  >
-          <div>
-            <a href="#" className="gameInstructions closeX" onClick={() => this.setState({showInterstitial: false})}><i className="fa fa-times"></i></a>
-            <br/>
+        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({showInterstitial: false})} >
+          <div className="newRoundModal">
+            
             {newRoundText}
+            <p className="startRoundButton">
+            {ss.round < 4 &&
+            
+            <button onClick={() => this.setState({showInterstitial: false})}>Start round &nbsp;<i className="fa fa-arrow-right"></i></button>
+          }
+          {ss.round === 4 &&
+            
+            <button onClick={() => this.setState({showInterstitial: false})}>View scores</button>
+          }
+            </p>
           </div>
         </Modal>  
 
@@ -207,7 +249,7 @@ class Game extends React.Component<GameProps, GameState> {
         )}
         {ss.round >= 4 && (
           <div>
-            Game is over!
+            {/* Game is over! */}
             <TeamList
               serverState={ss}
               iAmClueing={false}

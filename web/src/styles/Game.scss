@@ -210,17 +210,17 @@ body {
 }
 
 button {
-    font-size: 1rem;
+    font-size: 1.1rem;
     border-radius: 3px;
-    padding: .5rem 1rem;
+    padding: .6rem 1.2rem;
     border: none;
     font-weight: 700;
     cursor: pointer;
 }
 @mixin buttonlike {
-    font-size: 1rem;
+    font-size: 1.1rem;
     border-radius: 3px;
-    padding: .5rem 1rem;
+    padding: .6rem 1.2rem;
     border: none;
     font-weight: 700;
     cursor: pointer;
@@ -812,31 +812,68 @@ button {
         .pink {
             color: $pink4;
         }
-        ul.roundDescriptions {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            li {
-                p.roundTitle {
-                    text-align: center;
-                    font-family: "Poppins", sans-serif;
-                    font-weight: 700;
-                    font-size: 1rem;
-                }
-                p.guessExample {
-                    background-color: $white;
-                    padding: .1rem 1rem;
-                    text-align: center;
-                    p.guessExampleWord {
-                        font-family: "Caveat Brush", sans-serif;
-                        font-size: 1.6em;
-                    }
-                    p.guessExampleText {
+        
+    }
+}
+// both for instruction page and for modals
+.roundDescriptions, .newRoundDescription {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    
+        p.roundTitle {
+            text-align: center;
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        p.guessExample {
+            background-color: $white;
+            padding: .1rem 1rem;
+            text-align: center;
+            p.guessExampleWord {
+                font-family: "Caveat Brush", sans-serif;
+                font-size: 1.6em;
+            }
+            p.guessExampleText {
 
-                    }
-                }
             }
         }
+    
+}
+// just for modals
+
+.ReactModal__Content--after-open {
+    padding: 0 !important;
+}
+.newRoundModal {
+    @include zeromarg();
+    height: 100%;
+    background-color: $light3;
+
+    p.guessExample {
+        margin: 0rem 0;
+    }
+    
+    p.startRoundButton {
+        text-align: center;
+        margin: .5rem 0;
+        button {
+            background-color: $green3;
+            color: $light1;
+            
+            
+        }
+        
+
+    }
+}
+
+.newRoundDescription {
+    padding: .5rem 1.5rem;
+    
+    img {
+        max-height: 8rem;
     }
 }
 
