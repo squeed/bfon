@@ -170,7 +170,9 @@ class Game extends React.Component<GameProps, GameState> {
               endTurn={() => this.props.endTurn()}
             />
 
-            {ss.deadline !== 0 && ss.userGuessing !== this.props.myUserID && <WordLog remainingWords={ss.remainingWords} />}
+
+            <WordLog remainingWords={ss.remainingWords}
+              hide={ss.deadline !== 0 && ss.userGuessing === this.props.myUserID} />
 
             <div className="gameDash">
 
@@ -579,7 +581,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
   }
 }
 
-const WordLog: React.FunctionComponent<{ remainingWords: string[] }> = (props) => {
+const WordLog: React.FunctionComponent<{ remainingWords: string[], hide: boolean }> = (props) => {
   const [prevRW, setPrevRW] = React.useState<string[]>([]);
   const [wordLog, setWordLog] = React.useState<string[]>([]);
 
@@ -611,14 +613,14 @@ const WordLog: React.FunctionComponent<{ remainingWords: string[] }> = (props) =
     return undefined;
   }, [prevRW, props.remainingWords, wordLog]);
 
-
+  if (props.hide) {
+    return <div></div>;
+  }
   const words = wordLog.map((word) => <p className="guessedWord" key={word}>{word}</p>);
   return (
     <div className="recentlyGuessed">
-      <p>Last word guessed:</p>
-
+      <p>Just guessed:</p>
       {words}
-
     </div>
   );
 };
