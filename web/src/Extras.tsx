@@ -92,13 +92,10 @@ class GameMenu extends React.Component<{ leaveGame: () => void }> {
             <div className="gameMenu">
                 <ul>
                     <li>
-                        <a href="#">Reset Round</a>
+                    <a href="../instructions" target="_blank">Instructions</a>
                     </li>
                     <li>
                         <a href="#" onClick={() => this.props.leaveGame()}>Leave Game</a>
-                    </li>
-                    <li>
-                        <a href="#">End Game for All</a>
                     </li>
                 </ul>
             </div>
@@ -125,19 +122,7 @@ export class Footer extends React.Component<{}, {
         return (
             <div className="launchFooter">
                 <p>
-                    <a href="../instructions.html" className="gameInstructions" >How to Play</a>
-
-                    {/* <a href="#" className="gameInstructions" onClick={() => this.setShowInstructions(true)} >How to Play</a>
-
-                    <Modal
-                        isOpen={this.state.showInstructions}
-                        onRequestClose={() => this.setShowInstructions(false)}
-                        contentLabel="Instructions"
-                    >
-                        <a href="#" className="gameInstructions closeX" onClick={() => this.setShowInstructions(false)}><i className="fa fa-times"></i></a>
-                        <Instructions />
-
-                    </Modal> */}
+                    <a href="../instructions" className="gameInstructions" >How to Play</a>
                 </p>
                 <p className="credits">
                     By <a href="http://molly.is">Molly</a> and{" "}

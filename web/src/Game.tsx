@@ -39,14 +39,14 @@ type GameState = {
 class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
-    this.state={showInterstitial: !this.props.serverState.userGuessing};
+    this.state = { showInterstitial: !this.props.serverState.userGuessing };
   }
 
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
     if (round !== prevProps.serverState.round) {
       if (round === 0 || round === 4) {
-        this.setState({showInterstitial: true});
+        this.setState({ showInterstitial: true });
       } else {
         window.setTimeout(() => {
           this.setState((state, props) => ({
@@ -56,94 +56,93 @@ class Game extends React.Component<GameProps, GameState> {
       }
     }
   }
-  
+
   render() {
     const ss = this.props.serverState;
     const isAdmin = ss.adminUser === this.props.myUserID;
-    /* this is the word-adding screen, I think? */
+    const canStartGame = (ss.words.length >= 15 && ss.teams.length >= 2);
 
-      var newRoundText = (<div></div>);
-      
-      if (ss.round === 0) {
-        if (isAdmin) {
-          newRoundText = (<div>
-            Welcome, admin user. Here's what to do!
-            <div>
-              Your game ID is <span>{ss.name}</span>. Tell everyone to join this game. They can start adding words now.
+    var newRoundText = (<div></div>);
+
+    if (ss.round === 0) {
+      if (isAdmin) {
+        newRoundText = (<div>
+          Welcome, admin user. Here's what to do!
+          <div>
+            Your game ID is <span>{ss.name}</span>. Tell everyone to join this game. They can start adding words now.
             </div>
-            <div>
-              You need to create some teams now.
+          <div>
+            You need to create some teams now.
             </div>
-            <div>
-              When everyone is done adding words, you can start the game! Have fun!
+          <div>
+            When everyone is done adding words, you can start the game! Have fun!
             </div>
-          </div>);
-        } else {
+        </div>);
+      } else {
         newRoundText = (<div>
           <p>Welcome to Bowl Full of Nouns!</p>
           <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions">instructions</a>.</p>
           <p>Your first step is to add words to the bowl for people to guess.</p>
-          
-        </div>);
-        }
-      } else if (ss.round === 1) {
-        
-        newRoundText = (<div className="newRoundDescription">
-                        <p className="roundTitle">Round 1</p>
-                                <img src={round1}></img>
-                                <p>The cluemeister can say anything to help their teammates
-                                guess – except the word itself. No fair spelling or rhyming the word, either.
-                    </p>
-                    <p>For example:</p>
-                                <p className="guessExample">
-                                    <p className="guessExampleWord">Meatballs</p>
-                                    <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
-                                </p>
 
-          
         </div>);
-      } else if (ss.round === 2) {
-        
-        newRoundText = (
-          <div className="newRoundDescription">
-            <p className="roundTitle">Round 2</p>
-                                <img src={round2}></img>
-                                <p>The cluemeister can only say ONE (1) word and can't make extra
-                        noises or motions.</p>
-                        <p>For example:</p>
-                                <p className="guessExample">
-                                    <p className="guessExampleWord">Meatballs</p>
-                                    <p className="guessExampleText">"IKEA."</p>
-                                </p>
-            
-          </div>
-        );
-      } else if (ss.round === 3) {
-        
-        newRoundText = (
-          <div className="newRoundDescription">
-             <p className="roundTitle">Round 3</p>
-                                <img src={round3}></img>
-                                <p>No words allowed! The cluemeister must act the word out.</p>
-                                <p>For example:</p>
-                                <p className="guessExample">
-                                    <p className="guessExampleWord">Meatballs</p>
-                                    <p className="guessExampleText">[act out eating food, then act out assembling a chair]</p>
-                                </p>
-            
-          </div>
-        );
-      } else if (ss.round === 4) {
-        
-        newRoundText = (
-          <div className="newRoundDescription">
-            <p className="roundTitle">The bowl is empty!</p>
-            <img src={bowl0}></img>
-            <p>Time to check out the final scores.</p>
-          </div>
-        );
       }
-          
+    } else if (ss.round === 1) {
+
+      newRoundText = (<div className="newRoundDescription">
+        <p className="roundTitle">Round 1</p>
+        <img src={round1}></img>
+        <p>The cluemeister can say anything to help their teammates
+        guess – except the word itself. No fair spelling or rhyming the word, either.
+                    </p>
+        <p>For example:</p>
+        <p className="guessExample">
+          <p className="guessExampleWord">Meatballs</p>
+          <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
+        </p>
+
+
+      </div>);
+    } else if (ss.round === 2) {
+
+      newRoundText = (
+        <div className="newRoundDescription">
+          <p className="roundTitle">Round 2</p>
+          <img src={round2}></img>
+          <p>The cluemeister can only say ONE (1) word and can't make extra
+                        noises or motions.</p>
+          <p>For example:</p>
+          <p className="guessExample">
+            <p className="guessExampleWord">Meatballs</p>
+            <p className="guessExampleText">"IKEA."</p>
+          </p>
+
+        </div>
+      );
+    } else if (ss.round === 3) {
+
+      newRoundText = (
+        <div className="newRoundDescription">
+          <p className="roundTitle">Round 3</p>
+          <img src={round3}></img>
+          <p>No words allowed! The cluemeister must act the word out.</p>
+          <p>For example:</p>
+          <p className="guessExample">
+            <p className="guessExampleWord">Meatballs</p>
+            <p className="guessExampleText">[act out eating food, then act out assembling a chair]</p>
+          </p>
+
+        </div>
+      );
+    } else if (ss.round === 4) {
+
+      newRoundText = (
+        <div className="newRoundDescription">
+          <p className="roundTitle">The bowl is empty!</p>
+          <img src={bowl0}></img>
+          <p>Time to check out the final scores.</p>
+        </div>
+      );
+    }
 
     return (
       <div id="game">
@@ -152,22 +151,21 @@ class Game extends React.Component<GameProps, GameState> {
           leaveGame={() => this.props.leaveGame()}
         />
 
-        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({showInterstitial: false})} >
+        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({ showInterstitial: false })} >
           <div className="newRoundModal">
-            
             {newRoundText}
             <p className="startRoundButton">
-            {ss.round < 4 &&
-            
-            <button onClick={() => this.setState({showInterstitial: false})}>Start round &nbsp;<i className="fa fa-arrow-right"></i></button>
-          }
-          {ss.round === 4 &&
-            
-            <button onClick={() => this.setState({showInterstitial: false})}>View scores</button>
-          }
+              {ss.round < 4 &&
+
+                <button onClick={() => this.setState({ showInterstitial: false })}>Start round &nbsp;<i className="fa fa-arrow-right"></i></button>
+              }
+              {ss.round === 4 &&
+
+                <button onClick={() => this.setState({ showInterstitial: false })}>View scores</button>
+              }
             </p>
           </div>
-        </Modal>  
+        </Modal>
 
         {ss.round === 0 && (
           <div>
@@ -179,9 +177,17 @@ class Game extends React.Component<GameProps, GameState> {
                   addTeam={(team: string) => this.props.addTeam(team)}
                 />
                 <div>
-                  <button onClick={() => this.props.startGame()}>
+                  <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
                     Start Game!
                   </button>
+                  {ss.teams.length < 2 && <div>
+                    You need to create some teams before you can start the game.
+                    </div>}
+                  {ss.words.length < 15 && <div>
+                    There need to be at least 15 words to start. Right now the
+                    bowl only has {ss.words.length} words in it.
+                    </div>}
+
                   <TeamList
                     serverState={ss}
                     iAmClueing={false}
@@ -192,8 +198,6 @@ class Game extends React.Component<GameProps, GameState> {
                 </div>
               </div>
             )}
-
-            {/* TODO: only show this when there are enough teams & words */}
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
@@ -211,7 +215,9 @@ class Game extends React.Component<GameProps, GameState> {
               endTurn={() => this.props.endTurn()}
             />
 
-            {ss.deadline !== 0 && ss.userGuessing !== this.props.myUserID && <WordLog remainingWords={ss.remainingWords} />}
+
+            <WordLog remainingWords={ss.remainingWords}
+              hide={ss.deadline !== 0 && ss.userGuessing === this.props.myUserID} />
 
             <div className="gameDash">
 
@@ -294,12 +300,19 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
         node.value = "";
         this.setState({ wordsAdded: this.state.wordsAdded + 1 });
       }
-
     }
-
   }
 
   render() {
+    var commentary = (<div>You should add 5 words</div>);
+    if (this.state.wordsAdded < 4 && this.state.wordsAdded > 0) {
+      commentary = (<div>You can add {5 - this.state.wordsAdded} more words.</div>);
+    } else if (this.state.wordsAdded === 4) {
+      commentary = <div>Just 1 more word.</div>;
+    } else if (this.state.wordsAdded === 5) {
+      commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
+    }
+
 
     return (
       <div className="addWords">
@@ -333,65 +346,20 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
           </ul>
         </div>
 
-
-
-
         <form onSubmit={(e) => this.addWord(e)}>
-
-          {((this.state.wordsAdded < 4) && (this.state.wordsAdded >= 0)) && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections">You can add {5 - this.state.wordsAdded} more words.</p>
-              <input className="submitWord" type="submit" value="Add word" />
-
-
-            </div>
-          )}
-          {this.state.wordsAdded === 4 && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections">Just {5 - this.state.wordsAdded} more word.</p>
-              <input className="submitWord" type="submit" value="Add word" />
-            </div>
-          )}
-          {this.state.wordsAdded === 5 && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections"><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></p>
-              <input className="submitWord" type="submit" value="Add word" /></div>
-          )}
-          {this.state.wordsAdded === 6 && (
-            <div>
-              <p className="wordDirections">Alright, buddy, we're cutting you off. Wait for the host to start the game.</p>
-            </div>
-          )}
-
+          <div>
+            <label>
+              <input
+                className="addWord"
+                type="text"
+                autoComplete="off"
+                ref={this.inputRef}
+              />
+            </label>
+            <p className="wordDirections">{commentary}</p>
+            <input className="submitWord" type="submit" value="Add word" />
+          </div>
         </form>
-
-
-
-
       </div>
     );
   }
@@ -658,7 +626,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
   }
 }
 
-const WordLog: React.FunctionComponent<{ remainingWords: string[] }> = (props) => {
+const WordLog: React.FunctionComponent<{ remainingWords: string[], hide: boolean }> = (props) => {
   const [prevRW, setPrevRW] = React.useState<string[]>([]);
   const [wordLog, setWordLog] = React.useState<string[]>([]);
 
@@ -690,14 +658,14 @@ const WordLog: React.FunctionComponent<{ remainingWords: string[] }> = (props) =
     return undefined;
   }, [prevRW, props.remainingWords, wordLog]);
 
-
+  if (props.hide) {
+    return <div></div>;
+  }
   const words = wordLog.map((word) => <p className="guessedWord" key={word}>{word}</p>);
   return (
     <div className="recentlyGuessed">
-      <p>Last word guessed:</p>
-
+      <p>Just guessed:</p>
       {words}
-
     </div>
   );
 };

@@ -98,7 +98,7 @@ class App extends React.Component<AppProps, AppState> {
       });
     } else {
       this.setState({
-          gameState: st,
+        gameState: st,
       });
     }
   }
@@ -313,9 +313,11 @@ class App extends React.Component<AppProps, AppState> {
           </div>
           <div className="launchOptions">
             <div className="joinGame">
-              <p><label htmlFor="gamePW">Enter password:</label></p>
-              <input id="gamepw" ref={this.passwordInputRef}></input>
-              <button onClick={() => this.joinGame()}>
+              <form id="joinForm" onSubmit={(e) => { e.preventDefault(); this.joinGame() }}>
+                <p><label htmlFor="gamePW">Enter password:</label></p>
+                <input id="gamepw" ref={this.passwordInputRef}></input>
+              </form>
+              <button type="submit" form="joinForm">
                 Join Game <i className="fa fa-arrow-right" aria-hidden="true"></i>
               </button>
             </div>
