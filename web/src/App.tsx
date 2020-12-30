@@ -98,7 +98,7 @@ class App extends React.Component<AppProps, AppState> {
       });
     } else {
       this.setState({
-          gameState: st,
+        gameState: st,
       });
     }
   }

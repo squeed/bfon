@@ -39,14 +39,14 @@ type GameState = {
 class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
-    this.state={showInterstitial: !this.props.serverState.userGuessing};
+    this.state = { showInterstitial: !this.props.serverState.userGuessing };
   }
 
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
     if (round !== prevProps.serverState.round) {
       if (round === 0 || round === 4) {
-        this.setState({showInterstitial: true});
+        this.setState({ showInterstitial: true });
       } else {
         window.setTimeout(() => {
           this.setState((state, props) => ({
@@ -56,61 +56,62 @@ class Game extends React.Component<GameProps, GameState> {
       }
     }
   }
-  
+
   render() {
     const ss = this.props.serverState;
     const isAdmin = ss.adminUser === this.props.myUserID;
-    /* this is the word-adding screen, I think? */
 
-      var newRoundText = (<div></div>);
-      if (ss.round === 0) {
-        if (isAdmin) {
-          newRoundText = (<div>
-            Welcome, admin user. Here's what to do!
-            <div>
-              Your game ID is <span>{ss.name}</span>. Tell everyone to join this game. They can start adding words now.
-            </div>
-            <div>
-              You need to create some teams now.
-            </div>
-            <div>
-              When everyone is done adding words, you can start the game! Have fun!
-            </div>
-          </div>);
-        } else {
+    /* Interstitial content */
+    var newRoundText = (<div></div>);
+    if (ss.round === 0) {
+      if (isAdmin) {
+        newRoundText = (<div>
+          Welcome, admin user. Here's what to do!
+          <div>
+            Your game ID is <span>{ss.name}</span>. Tell everyone to join this game. They can start adding words now.
+          </div>
+          <div>
+            You need to create some teams now.
+          </div>
+          <div>
+            When everyone is done adding words, you can start the game! Have fun!
+          </div>
+        </div>);
+      } else {
         newRoundText = (<div>
           Welcome to Bowl Full of Nouns! If you've not played before, you
-          might want to check out the instructions.<br/>
-          Now is the time to start adding words for people to guess.
+        might want to check out <a href="../instructions" target="_blank">the instructions</a>.<br />
+        Now is the time to start adding words for people to guess. The game creator
+        will start the game when everyone is ready to go.
         </div>);
-        }
-      } else if (ss.round === 1) {
-        newRoundText = (<div>
-          Round one: When you're the cluemeister, get your team to guess
-          your word <b>without saying that word</b>.<br/>
-          It's like the game <i>Taboo</i>.
-        </div>);
-      } else if (ss.round === 2) {
-        newRoundText = (
-          <div>
-            Welcome to Round Two! Now, you can only say <b>one word</b> when
-            you're the cluemeister. Be careful!
-          </div>
-        );
-      } else if (ss.round === 3) {
-        newRoundText = (
-          <div>
-            Its Round Three! Now, you have to act the words out. It's 
-            like <i>Charades</i>. Good luck!
-          </div>
-        );
-      } else if (ss.round === 4) {
-        newRoundText = (
-          <div>
-            The game is over! Thanks for playing
-          </div>
-        );
-      }    
+      }
+    } else if (ss.round === 1) {
+      newRoundText = (<div>
+        Round one: When you're the cluemeister, get your team to guess
+        your word <b>without saying that word.</b> <br />
+        It's like the game Taboo.
+      </div>);
+    } else if (ss.round === 2) {
+      newRoundText = (
+        <div>
+          Welcome to Round Two! Now, you can only say <b>one word</b> when
+          you're the cluemeister. Be careful!
+        </div>
+      );
+    } else if (ss.round === 3) {
+      newRoundText = (
+        <div>
+          Its Round Three! Now, you have to act the words out. It's
+          like <em>Charades</em>. Good luck!
+        </div>
+      );
+    } else if (ss.round === 4) {
+      newRoundText = (
+        <div>
+          The game is over! Thanks for playing.
+        </div>
+      );
+    }
 
     return (
       <div id="game">
@@ -119,13 +120,13 @@ class Game extends React.Component<GameProps, GameState> {
           leaveGame={() => this.props.leaveGame()}
         />
 
-        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({showInterstitial: false})}  >
+        <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({ showInterstitial: false })}  >
           <div>
-            <a href="#" className="gameInstructions closeX" onClick={() => this.setState({showInterstitial: false})}><i className="fa fa-times"></i></a>
-            <br/>
+            <a href="#" className="gameInstructions closeX" onClick={() => this.setState({ showInterstitial: false })}><i className="fa fa-times"></i></a>
+            <br />
             {newRoundText}
           </div>
-        </Modal>  
+        </Modal>
 
         {ss.round === 0 && (
           <div>
