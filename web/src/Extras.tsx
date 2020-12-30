@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 
 Modal.setAppElement("#root");
 
+export const LanguageContext = React.createContext({value: "EN"});
+
 
 type CountdownProps = { deadline: number };
 type CountdownState = { secondsLeft: number };
