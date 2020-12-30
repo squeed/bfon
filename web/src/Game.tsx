@@ -45,7 +45,7 @@ class Game extends React.Component<GameProps, GameState> {
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
     if (round !== prevProps.serverState.round) {
-      if (round === 0 || round === 4) {
+      if (round === 0 || round === 1 || round === 4) {
         this.setState({ showInterstitial: true });
       } else {
         window.setTimeout(() => {
