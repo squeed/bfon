@@ -253,12 +253,19 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
         node.value = "";
         this.setState({ wordsAdded: this.state.wordsAdded + 1 });
       }
-
     }
-
   }
 
   render() {
+    var commentary = (<div>You should add 5 words</div>);
+    if (this.state.wordsAdded < 4 && this.state.wordsAdded > 0) {
+      commentary = (<div>You can add {5 - this.state.wordsAdded} more words.</div>);
+    } else if (this.state.wordsAdded === 4) {
+      commentary = <div>Just 1 more word.</div>;
+    } else if (this.state.wordsAdded === 5) {
+      commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
+    }
+
 
     return (
       <div className="addWords">
@@ -292,63 +299,20 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
           </ul>
         </div>
 
-
-
-
         <form onSubmit={(e) => this.addWord(e)}>
-
-          {((this.state.wordsAdded < 4) && (this.state.wordsAdded >= 0)) && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections">You can add {5 - this.state.wordsAdded} more words.</p>
-              <input className="submitWord" type="submit" value="Add word" />
-            </div>
-          )}
-          {this.state.wordsAdded === 4 && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections">Just {5 - this.state.wordsAdded} more word.</p>
-              <input className="submitWord" type="submit" value="Add word" />
-            </div>
-          )}
-          {this.state.wordsAdded === 5 && (
-            <div>
-              <label>
-                <input
-                  className="addWord"
-                  type="text"
-                  autoComplete="off"
-                  ref={this.inputRef}
-                />
-              </label>
-              <p className="wordDirections"><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></p>
-              <input className="submitWord" type="submit" value="Add word" /></div>
-          )}
-          {this.state.wordsAdded === 6 && (
-            <div>
-              <p className="wordDirections">Alright, buddy, we're cutting you off. Wait for the host to start the game.</p>
-            </div>
-          )}
-
+          <div>
+            <label>
+              <input
+                className="addWord"
+                type="text"
+                autoComplete="off"
+                ref={this.inputRef}
+              />
+            </label>
+            <p className="wordDirections">{commentary}</p>
+            <input className="submitWord" type="submit" value="Add word" />
+          </div>
         </form>
-
-
-
-
       </div>
     );
   }
