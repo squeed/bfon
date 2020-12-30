@@ -61,6 +61,8 @@ class Game extends React.Component<GameProps, GameState> {
     const ss = this.props.serverState;
     const isAdmin = ss.adminUser === this.props.myUserID;
 
+    const canStartGame = (ss.words.length >= 15 && ss.teams.length >= 2);
+
     /* Interstitial content */
     var newRoundText = (<div></div>);
     if (ss.round === 0) {
@@ -138,9 +140,17 @@ class Game extends React.Component<GameProps, GameState> {
                   addTeam={(team: string) => this.props.addTeam(team)}
                 />
                 <div>
-                  <button onClick={() => this.props.startGame()}>
+                  <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
                     Start Game!
                   </button>
+                  {ss.teams.length < 2 && <div>
+                    You need to create some teams before you can start the game.
+                    </div>}
+                  {ss.words.length < 15 && <div>
+                    There need to be at least 15 words to start. Right now the
+                    bowl only has {ss.words.length} words in it.
+                    </div>}
+
                   <TeamList
                     serverState={ss}
                     iAmClueing={false}
@@ -151,8 +161,6 @@ class Game extends React.Component<GameProps, GameState> {
                 </div>
               </div>
             )}
-
-            {/* TODO: only show this when there are enough teams & words */}
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
