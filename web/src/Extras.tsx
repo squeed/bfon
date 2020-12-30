@@ -92,13 +92,10 @@ class GameMenu extends React.Component<{ leaveGame: () => void }> {
             <div className="gameMenu">
                 <ul>
                     <li>
-                        <a href="#">Reset Round</a>
+                    <a href="../instructions" target="_blank">Instructions</a>
                     </li>
                     <li>
                         <a href="#" onClick={() => this.props.leaveGame()}>Leave Game</a>
-                    </li>
-                    <li>
-                        <a href="#">End Game for All</a>
                     </li>
                 </ul>
             </div>

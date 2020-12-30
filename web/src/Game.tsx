@@ -309,8 +309,6 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
               </label>
               <p className="wordDirections">You can add {5 - this.state.wordsAdded} more words.</p>
               <input className="submitWord" type="submit" value="Add word" />
-
-
             </div>
           )}
           {this.state.wordsAdded === 4 && (
