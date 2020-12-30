@@ -263,6 +263,9 @@ class Game extends React.Component<GameProps, GameState> {
                 return;
               }}
             />
+            <div className="gameEnd"><p>Good game!</p>
+            <p>Play again?</p>
+            </div>
           </div>
         )}
       </div>
