@@ -157,7 +157,7 @@ class Game extends React.Component<GameProps, GameState> {
             <p className="startRoundButton">
               {ss.round < 4 &&
 
-                <button onClick={() => this.setState({ showInterstitial: false })}>Start round &nbsp;<i className="fa fa-arrow-right"></i></button>
+                <button onClick={() => this.setState({ showInterstitial: false })}>Roger that.</button>
               }
               {ss.round === 4 &&
 
