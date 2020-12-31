@@ -225,6 +225,10 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   addTeam(name: string) {
+    if (!name) {
+      return;
+    }
+
     if (LOCAL_MODE) {
       let st = {
         gameState: this.state.gameState,

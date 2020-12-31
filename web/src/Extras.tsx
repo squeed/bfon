@@ -126,7 +126,7 @@ export class Footer extends React.Component<{}, {
                 </p>
                 <p className="credits">
                     By <a href="http://molly.is">Molly</a> and{" "}
-                    <a href="http://caseyc.net">Casey</a>, Christmas 2020
+                    <a href="http://caseyc.net">Casey</a>, Christmas 2020. <a href="https://github.com/squeed/bfon" rel="noreferrer noopener" target="_blank">Source.</a>
             </p>
             </div>
         );
