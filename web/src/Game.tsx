@@ -160,7 +160,7 @@ class Game extends React.Component<GameProps, GameState> {
 
 
         <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({ showInterstitial: false })} >
-          <div className="newRoundModal hostModal">
+          <div className="newRoundModal">
             {newRoundText}
             <p className="startRoundButton">
               {ss.round === 0 &&
@@ -298,9 +298,18 @@ class Game extends React.Component<GameProps, GameState> {
               }}
             />
             <div className="gameEnd">
-              <p>Good game!</p> 
-              {isAdmin &&  <a href='#' onClick={()=>this.props.resetGame()} >New game, new teams?</a>}
-              <p>Spread the #bfon love, tell your friends <i className="fa fa-heart"></i></p>
+              <h5>Good game!</h5> 
+              
+              <p>Spread the #bfon love <i className="fa fa-heart"></i>&nbsp;Tell your family, friends, and coworkers!</p><p> BFON is free, forever. If you liked it, consider donating to <a href="https://sea-watch.org/en/">Sea Watch.</a></p>
+
+              <p className="hint">
+                <ul>
+                  <li>
+                    Want to play again? The host (that's you!) can click the shortcut below. People won't have to enter the game password again.
+                  </li>
+                </ul>
+              </p>
+              <p className="newGameButton">{isAdmin &&  <button onClick={()=>this.props.resetGame()} >Play again</button>}</p>
             </div>
           </div>
         )}
@@ -333,7 +342,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
     if (node) {
 
       if (node.value === "") {
-        alert("no word, ya bozo");
+        // alert("no word, ya bozo");
       } else {
         this.props.addWord(node.value);
         node.value = "";
@@ -476,6 +485,7 @@ class TeamList extends React.Component<{
       return (
         <Team
           team={team}
+          showScore={true}
           active={true}
           deadline={ss.deadline}
           startClueing={() => this.props.startClueing()}
@@ -487,6 +497,7 @@ class TeamList extends React.Component<{
     const teams = ss.teams.map((team, index) => (
       <Team
         team={team}
+        showScore={ss.round > 0}
         active={ss.round > 0 && ss.round <= 3 && index === ss.currentTeam}
         deadline={ss.deadline}
         startClueing={() => this.props.startClueing()}
@@ -501,11 +512,13 @@ type TeamProps = {
   team: types.Team;
   active: boolean;
   deadline: number | undefined;
+  showScore: boolean;
   startClueing: () => void;
 };
 
 class Team extends React.Component<TeamProps> {
   render() {
+
     const t = this.props.team;
     if (this.props.active) {
       return (
@@ -521,25 +534,32 @@ class Team extends React.Component<TeamProps> {
             {!this.props.deadline && (
               <p className="goButton">
                 <button onClick={() => this.props.startClueing()}>
-                  I'm the Cluemeister <i className="fa fa-arrow-right"></i>
+                  I'm the cluemeister <i className="fa fa-arrow-right"></i>
                 </button>
               </p>
             )}
+            
           </div>
           <div className="teamScore">
+            
             <p className="scoreNumber">{t.score}</p>
           </div>
         </div>
       );
     } else
       return (
-        <div className="teamRow">
+        <div className={this.props.showScore? "teamRow":"teamRow hostAddTeams"}>
           <div className="teamDetails">
+          
             <p className="teamName">{t.name}</p>
           </div>
+          {this.props.showScore &&
           <div className="teamScore">
+          
             <p className="scoreNumber">{t.score}</p>
+          
           </div>
+          }
         </div>
       );
   }

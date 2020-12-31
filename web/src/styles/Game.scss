@@ -131,6 +131,9 @@ dl {
     font-size: .8rem;
 }
 
+a {
+    color: $blue5;
+}
 /* -------- OFFSET STROKE --------- */
 
 
@@ -525,12 +528,23 @@ button {
          background-color: $pink3;
          color: $light1;
      }
+     .hostAddTeams {
+         &:first-child {
+             margin-top: 2.5rem;
+         }
+         
+         border-bottom: none;
+         
+         
+         margin: .5rem 0;
+     }
      
  }
 
+
  .teamsDoneButton {
      text-align: center;
-     margin-top: 1rem;
+     margin-top: 2rem;
      margin-bottom: 1.5rem;
      button {
 
@@ -841,6 +855,25 @@ button {
 
       }
 
+  }
+
+  /* ---------- GAME END ----------- */
+  .gameEnd {
+      @include page-edge();
+      .newGameButton {
+          text-align: center;
+          button {
+            @include pinkbutton();
+          }
+
+          
+      }
+      .fa-heart {
+        color: $pink4;
+    }
+      .werbung {
+          text-align: center;
+      }
   }
 
 /* ----------- INSTRUCTIONS ----------- */
