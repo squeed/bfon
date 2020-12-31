@@ -949,21 +949,21 @@ button {
     padding: 0;
     margin: 0;
     
-        p.roundTitle {
+        .roundTitle {
             text-align: center;
             font-family: "Poppins", sans-serif;
             font-weight: 700;
             font-size: 1rem;
         }
-        p.guessExample {
+        .guessExample {
             background-color: $white;
             padding: .1rem 1rem;
             text-align: center;
-            p.guessExampleWord {
+            .guessExampleWord {
                 font-family: "Caveat Brush", sans-serif;
                 font-size: 1.6em;
             }
-            p.guessExampleText {
+            .guessExampleText {
 
             }
         }
