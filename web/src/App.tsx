@@ -34,9 +34,9 @@ class App extends React.Component<AppProps, AppState> {
         gameState: new types.MessageGameState({
           name: "Crazy Llama",
           ID: "crazyllama",
-          adminUser: "1111-2222",
+          //adminUser: "1111-2222",
 
-          round: 1,
+          round: 0,
 
           teams: [
             {

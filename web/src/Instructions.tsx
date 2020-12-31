@@ -4,6 +4,7 @@ import { validateLocaleAndSetLanguage } from "typescript";
 import round1 from "./img/round1.svg";
 import round2 from "./img/round2.svg";
 import round3 from "./img/round3.svg";
+import devicesetup from "./img/devicesetup.svg";
 
 
 import {LanguageContext} from "./Extras";
@@ -47,8 +48,9 @@ class Instructions extends React.Component {
                     
                         <p>Bowl Full of Nouns (or, as we like to call it, BFON) is an online, remote-friendly, all-ages party game for 4+ people.</p>
 
-                        <p>You'll need to set up a video call on your favorite platform (Google Meet, Zoom, etc.)</p><p> In addition,
+                        <p>You'll need to set up a video call on your favorite platform (<a href="http://meet.google.com">Google Meet</a>, <a href="http://zoom.us">Zoom</a>, <a href="http://jitsi.org">Jitsi</a>, etc.)</p><p> In addition,
                 everybody needs a phone or other device that isn't being used for the video call.</p>
+                        <img src={devicesetup}></img>
 
                         <hr>
                         </hr>
