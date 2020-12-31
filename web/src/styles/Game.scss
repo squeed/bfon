@@ -12,10 +12,7 @@
     font-family: "Caveat Brush";
     src: url(CaveatBrush-Regular.ttf);
 }
-@font-face {
-    font-family: "Kalam";
-    src: url(Kalam-Regular.ttf);
-}
+
 
 
 /* --- media queries - only for usability, it's not gonna be pretty on big screens and that's ok --- */
@@ -28,16 +25,8 @@
     }
     .instructionsBody {
         margin: 15rem 10rem;
-        .yes {
-            width: 50%;
-        }
-        .no {
-            width: 50%;
-        }
-        .roundDescriptions {
-            width: 50%;
-            //margin: 0 auto;
-        }
+        width: 50%;
+        
     }
 }
 
