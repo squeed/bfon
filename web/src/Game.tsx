@@ -55,7 +55,7 @@ class Game extends React.Component<GameProps, GameState> {
     }
 
     if (round !== prevProps.serverState.round) {
-      if (round === 0 || round === 1 || round === 4) {
+      if (round === 0 || round === 1 || round === 4 || prevProps.serverState.userGuessing === this.props.myUserID) {
         this.setState({ showInterstitial: true });
       } else {
         window.setTimeout(() => {
@@ -212,6 +212,7 @@ class Game extends React.Component<GameProps, GameState> {
                   <div className="hint"><ul >
                     <li>Only the host (that's you!) can start the game.</li>
                     <li>Start the game when there are approximately 5 words per player.</li>
+                    <li>Once you start the game, there's no going back!</li>
                   </ul>
                   </div>
                   {ss.words.length < 15 && <div>
@@ -227,6 +228,9 @@ class Game extends React.Component<GameProps, GameState> {
               </div>
             }
             <WordList words={ss.words} addWord={this.props.addWord} />
+            {!isAdmin &&
+              <div style={{textAlign: "center"}}>Once everyone's ready, the host will start the game.</div>
+            }
 
           </div>
         )}
@@ -755,7 +759,7 @@ const WordLog: React.FunctionComponent<{ remainingWords: string[], hide: boolean
     return undefined;
   }, [prevRW, props.remainingWords, wordLog]);
 
-  if (props.hide) {
+  if (props.hide || wordLog.length === 0) {
     return <div></div>;
   }
   const words = wordLog.map((word) => <p className="guessedWord" key={word}>{word}</p>);
