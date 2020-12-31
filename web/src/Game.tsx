@@ -66,17 +66,14 @@ class Game extends React.Component<GameProps, GameState> {
 
     if (ss.round === 0) {
       if (isAdmin) {
-        newRoundText = (<div>
-          Welcome, admin user. Here's what to do!
-          <div>
-            Your game ID is <span>{ss.name}</span>. Tell everyone to join this game. They can start adding words now.
-            </div>
-          <div>
-            You need to create some teams now.
-            </div>
-          <div>
-            When everyone is done adding words, you can start the game! Have fun!
-            </div>
+        newRoundText = (<div className="newRoundDescription">
+          <p>Hey there, game host!</p>
+          <p>
+            Tell everyone else to go to <a href="#">bfon.club</a> on their phones and enter the password:</p> 
+            <p className="roundTitle">{ss.name}</p> 
+            <p>(Spaces and capitalization don't matter)</p>
+            <p>Everyone else can start adding words to the bowl while you set up the teams.</p>
+          
         </div>);
       } else {
         newRoundText = (<div>
@@ -155,9 +152,13 @@ class Game extends React.Component<GameProps, GameState> {
           <div className="newRoundModal">
             {newRoundText}
             <p className="startRoundButton">
-              {ss.round < 4 &&
+            {ss.round === 0 &&
 
-                <button onClick={() => this.setState({ showInterstitial: false })}>Roger that.</button>
+                <button onClick={() => this.setState({ showInterstitial: false })}>To team setup <i className="fa fa-arrow-right"></i></button>
+              }
+              {(ss.round < 4 && ss.round > 0) &&
+
+                <button onClick={() => this.setState({ showInterstitial: false })}>Okay!</button>
               }
               {ss.round === 4 &&
 
