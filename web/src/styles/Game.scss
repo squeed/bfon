@@ -26,6 +26,19 @@
             font-size: 50%;
         }
     }
+    .instructionsBody {
+        margin: 15rem 10rem;
+        .yes {
+            width: 50%;
+        }
+        .no {
+            width: 50%;
+        }
+        .roundDescriptions {
+            width: 50%;
+            //margin: 0 auto;
+        }
+    }
 }
 
 
@@ -100,7 +113,7 @@ body {
     font-size: 16px;
 }
 h3 {
-    font-family: "Work Sans", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-size: 1rem;
 }
@@ -126,8 +139,8 @@ dl {
     }
 }
 @mixin ptext {
-    font-family: "Poppins", sans-serif;
-    font-weight: 300;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 400;
     font-size: .8rem;
 }
 
@@ -918,6 +931,7 @@ button {
     }
     .instructionsBody {
         @include page-edge();
+        font-family: "Work Sans", sans-serif;
         margin-top: 5rem;
         h3 {
             font-family: "Poppins", sans-serif;
