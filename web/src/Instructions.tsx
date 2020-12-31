@@ -310,9 +310,10 @@ trying to guess as many words as possible, earning 1 point for each word correct
 </p>
 <hr></hr>
 <h3>Credits</h3>
-<p>Written by <a href="http://caseyc.net">Casey</a> and <a href="http://molly.is">Molly</a> in December 2020. BFON is our way of helping everyone get through what we hope is the last gasp of the coronavirus pandemic.</p>
+<p>Written by <a href="http://caseyc.net">Casey</a> and <a href="http://molly.is">Molly</a> in December 2020. BFON is our way of helping everyone get through (what we hope is) the last gasp of the coronavirus pandemic.</p>
 <p>Thanks to playtesters Ame, Sergio, Ng&#7885;c, and Kelsey.</p>
 <p>Special thanks to Liz Weinbloom, who taught us this game, and WOFIGO, who made it an institution.</p>
+<p>BFON is free, forever. If you liked it, consider donating to <a href="https://sea-watch.org/en/">Sea Watch.</a></p>
     </div>
     }
                 </div>
