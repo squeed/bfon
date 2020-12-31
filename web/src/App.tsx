@@ -104,6 +104,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   addWord(word: string) {
+    word = word.trim();
     if (LOCAL_MODE) {
       let st = {
         gameState: this.state.gameState,
@@ -225,6 +226,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   addTeam(name: string) {
+    name = name.trim();
     if (!name) {
       return;
     }

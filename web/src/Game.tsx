@@ -259,12 +259,10 @@ class Game extends React.Component<GameProps, GameState> {
               endTurn={() => this.props.endTurn()}
             />
 
-
             <WordLog remainingWords={ss.remainingWords}
               hide={ss.deadline !== 0 && ss.userGuessing === this.props.myUserID} />
 
             <div className="gameDash">
-
               {ss.round === 1 && (
                 <div className="roundRule">
 
@@ -383,7 +381,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
     } else if (this.state.wordsAdded === 4) {
       commentary = <div>Just 1 more word.</div>;
     } else if (this.state.wordsAdded >= 5) {
-      commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
+      commentary = (<div><p>You're done.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
     }
 
 
@@ -427,6 +425,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
                 type="text"
                 autoComplete="off"
                 ref={this.inputRef}
+                maxLength={50}
               />
             </label>
             <p className="wordDirections">{commentary}</p>
@@ -485,13 +484,13 @@ class TeamForm extends React.Component<{
           spellCheck="false"
           autoCapitalize="off"
           ref={this.teamNameRef}
+          maxLength={60}
         ></input>
           <button onClick={() => this.addTeam()}>Add team &nbsp;
           <i className="fa fa-plus" aria-hidden="true"></i>
           </button>
-
-
         </div>
+
       </div>
     );
   }
@@ -515,6 +514,7 @@ class TeamList extends React.Component<{
           deadline={ss.deadline}
           startClueing={() => this.props.startClueing()}
           key={team.name}
+          timeRemaining={undefined}
         />
       );
     }
@@ -527,6 +527,7 @@ class TeamList extends React.Component<{
         deadline={ss.deadline}
         startClueing={() => this.props.startClueing()}
         key={team.name}
+        timeRemaining={(index === ss.currentTeam && ss.timeRemaining) ? ss.timeRemaining : undefined}
       />
     ));
     return <div>{teams}</div>;
@@ -538,6 +539,7 @@ type TeamProps = {
   active: boolean;
   deadline: number | undefined;
   showScore: boolean;
+  timeRemaining: number | undefined;
   startClueing: () => void;
 };
 
@@ -562,6 +564,9 @@ class Team extends React.Component<TeamProps> {
                   I'm the cluemeister <i className="fa fa-arrow-right"></i>
                 </button>
               </p>
+            )}
+            {!!this.props.timeRemaining && (
+              <p>Still your turn! {this.props.timeRemaining} seconds remain.</p>
             )}
 
           </div>
