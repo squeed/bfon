@@ -13,6 +13,7 @@ const (
 	KindEndTurn    = "endTurn"
 	KindGuess      = "guess"
 	KindStartGame  = "startGame"
+	KindResetGame  = "resetGame"
 )
 
 var AllMessageKinds = []MessageKind{
@@ -28,6 +29,7 @@ var AllMessageKinds = []MessageKind{
 	KindEndTurn,
 	KindGuess,
 	KindStartGame,
+	KindResetGame,
 }
 
 func (k MessageKind) TSName() string {

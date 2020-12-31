@@ -139,6 +139,22 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 		return
 	}
 
+	if cmd.Kind == types.KindResetGame {
+		if !game.Finished() {
+			log.Println("reset unfinished game")
+			return
+		}
+		game.Reset()
+
+		if err := a.store.SetGame(game); err != nil {
+			log.Printf("ResetGame failed: %v", err)
+			return
+		}
+
+		a.broadcastGameState(game)
+		return
+	}
+
 	if cmd.Kind == types.KindStartTurn {
 		msg := game.StartTurn(userID, cmd.StartTurn.SeqNumber)
 		if msg == nil {

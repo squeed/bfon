@@ -158,6 +158,15 @@ class App extends React.Component<AppProps, AppState> {
     this.conn.sendCommand(types.MessageKind.createGame, msg);
   }
 
+  resetGame() {
+    if (LOCAL_MODE) {
+      //TODO
+      return;
+    }
+
+    this.conn?.sendCommand(types.MessageKind.resetGame, {});
+  }
+
   joinGame() {
     if (LOCAL_MODE) {
       console.log("BUG: cannot join game in local mode");
@@ -349,6 +358,7 @@ class App extends React.Component<AppProps, AppState> {
           endTurn={() => this.endTurn()}
           startGame={() => this.startGame()}
           leaveGame={() => this.leaveGame()}
+          resetGame={() => this.resetGame()}
         />
       </div>
     );

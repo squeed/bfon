@@ -123,16 +123,10 @@ func (m *Message) ToCommand() (*GameCommand, error) {
 			Guess: &out,
 		}, nil
 
-	case KindStartGame:
+	case KindStartGame, KindLeaveGame, KindResetGame:
 		return &GameCommand{
 			Kind: string(m.Kind),
 		}, nil
-
-	case KindLeaveGame:
-		return &GameCommand{
-			Kind: string(m.Kind),
-		}, nil
-
 	}
 	return nil, fmt.Errorf("ToCommand unknown kind %s", m.Kind)
 }

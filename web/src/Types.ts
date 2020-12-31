@@ -14,6 +14,7 @@ export enum MessageKind {
     endTurn = "endTurn",
     guess = "guess",
     startGame = "startGame",
+    resetGame = "resetGame",
 }
 export class Message {
     kind: MessageKind;

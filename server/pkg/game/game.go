@@ -64,6 +64,23 @@ func (g *Game) Finished() bool {
 	return g.Round == 4
 }
 
+func (g *Game) Reset() {
+	g.MessageGameState = types.MessageGameState{
+		Name: g.Name,
+		ID:   g.ID,
+
+		AdminUser: g.AdminUser,
+
+		Round: 0, // add words and teams
+
+		Teams:       []types.Team{},
+		CurrentTeam: -1,
+
+		Words:          []string{},
+		RemainingWords: []string{},
+	}
+}
+
 func (g *Game) AddTeam(name string) {
 	if g.Round > 0 {
 		log.Printf("rejecting AddTeam, round %d", g.Round)
@@ -200,6 +217,8 @@ func (g *Game) GuessWord(seqNo int, word string) {
 // EndRound moves to the next round - called when the bowl is empty
 func (g *Game) NextRound(remainingTime int) {
 	g.Round++
+	g.UserGuessing = ""
+	g.Deadline = 0
 	if g.Round == 4 {
 		// game over
 		return
@@ -210,8 +229,6 @@ func (g *Game) NextRound(remainingTime int) {
 
 	// Stop guessing
 	g.TimeRemaining = remainingTime
-	g.UserGuessing = ""
-	g.Deadline = 0
 
 	if g.CurrentTeam == -1 {
 		g.CurrentTeam = 0

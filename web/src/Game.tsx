@@ -29,6 +29,7 @@ type GameProps = {
   startGuessing: () => void;
   endTurn: () => void;
   leaveGame: () => void;
+  resetGame: () => void;
   myUserID: string;
 };
 
@@ -48,6 +49,11 @@ class Game extends React.Component<GameProps, GameState> {
 
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
+    if (!!this.props.serverState.userGuessing && this.state.showInterstitial) {
+      this.setState({showInterstitial: false});
+      return;
+    }
+
     if (round !== prevProps.serverState.round) {
       if (round === 0 || round === 1 || round === 4) {
         this.setState({ showInterstitial: true });
@@ -291,9 +297,10 @@ class Game extends React.Component<GameProps, GameState> {
                 return;
               }}
             />
-            <div className="gameEnd"><p>Good game!</p>
-              <p><a href="">New game, new teams</a></p>
-
+            <div className="gameEnd">
+              <p>Good game!</p> 
+              {isAdmin &&  <a href='#' onClick={()=>this.props.resetGame()} >New game, new teams?</a>}
+              <p>Spread the #bfon love, tell your friends <i className="fa fa-heart"></i></p>
             </div>
           </div>
         )}
@@ -710,7 +717,6 @@ const WordLog: React.FunctionComponent<{ remainingWords: string[], hide: boolean
     for (const word of removed) {
       setWordLog(wordLog.concat(word));
       window.setTimeout(() => {
-        console.log("remove " + word);
         setWordLog(wordLog => underscore.without(wordLog, word));
       }, 5 * 1000);
     }
