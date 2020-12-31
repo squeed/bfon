@@ -49,12 +49,18 @@ class Game extends React.Component<GameProps, GameState> {
 
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
+
     if (!!this.props.serverState.userGuessing && this.state.showInterstitial) {
       this.setState({ showInterstitial: false });
       return;
     }
 
     if (round !== prevProps.serverState.round) {
+      // game was reset
+      if (round === 0 && !this.state.showAddTeamDialog) {
+        this.setState({ showAddTeamDialog: true });
+      }
+
       if (round === 0 || round === 1 || round === 4 || prevProps.serverState.userGuessing === this.props.myUserID) {
         this.setState({ showInterstitial: true });
       } else {
@@ -89,7 +95,7 @@ class Game extends React.Component<GameProps, GameState> {
       } else {
         newRoundText = (<div>
           <p>Welcome to Bowl Full of Nouns!</p>
-          <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions">instructions</a>.</p>
+          <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions" target="_blank">instructions</a>.</p>
           <p>Your first step is to add words to the bowl for people to guess.</p>
 
         </div>);
@@ -103,10 +109,10 @@ class Game extends React.Component<GameProps, GameState> {
         guess – except the word itself. No fair spelling or rhyming the word, either.
                     </p>
         <p>For example:</p>
-        <p className="guessExample">
+        <div className="guessExample">
           <p className="guessExampleWord">Meatballs</p>
           <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
-        </p>
+        </div>
 
 
       </div>);
@@ -119,10 +125,10 @@ class Game extends React.Component<GameProps, GameState> {
           <p>The cluemeister can only say ONE (1) word and can't make extra
                         noises or motions.</p>
           <p>For example:</p>
-          <p className="guessExample">
+          <div className="guessExample">
             <p className="guessExampleWord">Meatballs</p>
             <p className="guessExampleText">"IKEA."</p>
-          </p>
+          </div>
 
         </div>
       );
@@ -134,10 +140,10 @@ class Game extends React.Component<GameProps, GameState> {
           <img src={round3} alt=""></img>
           <p>No words allowed! The cluemeister must act the word out.</p>
           <p>For example:</p>
-          <p className="guessExample">
+          <div className="guessExample">
             <p className="guessExampleWord">Meatballs</p>
             <p className="guessExampleText">[act out eating food, then act out assembling a chair]</p>
-          </p>
+          </div>
         </div>
       );
     } else if (ss.round === 4) {
@@ -163,7 +169,7 @@ class Game extends React.Component<GameProps, GameState> {
           <div className="newRoundModal">
             {newRoundText}
             <p className="startRoundButton">
-              {(ss.round < 4 ) &&
+              {(ss.round < 4) &&
 
                 <button onClick={() => this.setState({ showInterstitial: false })}>Okay!</button>
               }
@@ -229,7 +235,7 @@ class Game extends React.Component<GameProps, GameState> {
             }
             <WordList words={ss.words} addWord={this.props.addWord} />
             {!isAdmin &&
-              <div style={{textAlign: "center"}}>Once everyone's ready, the host will start the game.</div>
+              <div style={{ textAlign: "center" }}>Once everyone's ready, the host will start the game.</div>
             }
 
           </div>
