@@ -29,6 +29,7 @@ type GameProps = {
   startGuessing: () => void;
   endTurn: () => void;
   leaveGame: () => void;
+  resetGame: () => void;
   myUserID: string;
 };
 
@@ -44,6 +45,11 @@ class Game extends React.Component<GameProps, GameState> {
 
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
+    if (!!this.props.serverState.userGuessing && this.state.showInterstitial) {
+      this.setState({showInterstitial: false});
+      return;
+    }
+
     if (round !== prevProps.serverState.round) {
       if (round === 0 || round === 1 || round === 4) {
         this.setState({ showInterstitial: true });
@@ -263,8 +269,9 @@ class Game extends React.Component<GameProps, GameState> {
                 return;
               }}
             />
-            <div className="gameEnd"><p>Good game!</p>
-            <p>Play again?</p>
+            <div className="gameEnd">
+              <p>Good game!</p> <br/>
+              {isAdmin &&  <a href='#' onClick={()=>this.props.resetGame()} >Start over?</a>}
             </div>
           </div>
         )}
@@ -312,7 +319,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
       commentary = (<div>You can add {5 - this.state.wordsAdded} more words.</div>);
     } else if (this.state.wordsAdded === 4) {
       commentary = <div>Just 1 more word.</div>;
-    } else if (this.state.wordsAdded === 5) {
+    } else if (this.state.wordsAdded >= 5) {
       commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
     }
 
@@ -653,7 +660,6 @@ const WordLog: React.FunctionComponent<{ remainingWords: string[], hide: boolean
     for (const word of removed) {
       setWordLog(wordLog.concat(word));
       window.setTimeout(() => {
-        console.log("remove " + word);
         setWordLog(wordLog => underscore.without(wordLog, word));
       }, 5 * 1000);
     }
