@@ -3,10 +3,9 @@
         root /config
     }
 
-    auto_https off
 }
 
-bfon.club:80
+bfon.club
 
 root * /srv
 rewrite /instructions /
