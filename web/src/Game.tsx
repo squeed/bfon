@@ -422,6 +422,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
                 type="text"
                 autoComplete="off"
                 ref={this.inputRef}
+                maxLength={50}
               />
             </label>
             <p className="wordDirections">{commentary}</p>
@@ -480,13 +481,13 @@ class TeamForm extends React.Component<{
           spellCheck="false"
           autoCapitalize="off"
           ref={this.teamNameRef}
+          maxLength={60}
         ></input>
           <button onClick={() => this.addTeam()}>Add team &nbsp;
           <i className="fa fa-plus" aria-hidden="true"></i>
           </button>
-
-
         </div>
+
       </div>
     );
   }
