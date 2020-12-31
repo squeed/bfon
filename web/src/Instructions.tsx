@@ -46,20 +46,19 @@ class Instructions extends React.Component {
                     {this.context.value === "EN" && 
                     <div className="instructionsBody instructionsEN">
                     
-                        <p>Bowl Full of Nouns (or, as we like to call it, BFON) is an online, remote-friendly, all-ages party game for 4+ people.</p>
+                        <p>Bowl Full of Nouns (or, as we like to call it, BFON) is an online, remote-friendly, all-ages party game for 4+ people. It is basically a souped-up version of Charades.</p>
 
                         <p>You'll need to set up a video call on your favorite platform (<a href="http://meet.google.com">Google Meet</a>, <a href="http://zoom.us">Zoom</a>, <a href="http://jitsi.org">Jitsi</a>, etc.)</p><p> In addition,
                 everybody needs a phone or other device that isn't being used for the video call.</p>
                         <img src={devicesetup}></img>
 
-                        <hr>
-                        </hr>
-                        <h3>Playing the game</h3>
+                        
+                        
                         <h4>Create the game</h4>
                         <p>Click "Create New Game" to start.</p>
                         <h4>Create teams</h4>
                         <p>The person who created the game enters names for two or more teams.</p><p> Hint: we recommend typing the names of the people
-                on each team as the team name, so people remember what team they are on. For example, "Mom Dave Grandpa."</p>
+                on each team as the team name, so people remember what team they are on. For example, "Mom Eric Grandpa."</p>
                         <h4>Get everyone to join</h4>
                         <p>A game name will appear (like "Pink Whale").</p><p> All players should go to <a href="http://bfon.club">http://bfon.club</a> and enter this
                 name as the password.</p><p> Capitalization and spaces don't matter.</p>
@@ -158,10 +157,7 @@ class Instructions extends React.Component {
             </p>
                         <h4>Should we choose a different cluemeister for each turn?</h4>
                         <p>We think so. It's the most fun when everyone gets a turn to be the cluemeister.</p>
-                        <h4>Words that don't make sense</h4>
-                        <p>
-                            There is no way to throw out words. Maybe we'll make that in a future version. For now, you have to work with what you got.
-            </p>
+                        
                         <h4>End of round</h4>
                         <p>Each round is over when there are no more words in the bowl.</p>
                         <h4>Leftover time</h4>
@@ -179,6 +175,7 @@ class Instructions extends React.Component {
             <p>Written by <a href="http://caseyc.net">Casey</a> and <a href="http://molly.is">Molly</a> in December 2020. BFON is our way of helping everyone get through what we hope is the last gasp of the coronavirus pandemic.</p>
             <p>Thanks to playtesters Ame, Sergio, Ng&#7885;c, and Kelsey.</p>
             <p>Special thanks to Liz Weinbloom, who taught us this game, and WOFIGO, who made it an institution.</p>
+            <p>BFON is free and will stay free. If you like it, please consider donating to <a href="https://sea-watch.org">Sea Watch</a>.</p>
                     </div>
     } 
     {this.context.value === "DE" && 
