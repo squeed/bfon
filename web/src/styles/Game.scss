@@ -976,7 +976,7 @@ button {
 }
 
 .newRoundModal {
-    @include zeromarg();
+    
     height: 100%;
     background-color: $light3;
     border: 1px solid $light5;
