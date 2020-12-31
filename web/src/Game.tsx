@@ -95,11 +95,11 @@ class Game extends React.Component<GameProps, GameState> {
         </div>);
       } else {
         newRoundText = (<div className="newRoundDescription">
-          <p>Welcome to Bowl Full of Nouns!</p>
+          <h5>Welcome to Bowl Full of Nouns!</h5>
           <p>This is a word guessing game. Open this website on a device (like a phone) that you are NOT using for video calling.</p>
           <img src={devicesetup}></img>
-          <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions" target="_blank">instructions</a>.</p>
-          <p>Your first step is to add words to the bowl for people to guess.</p>
+          <p>If you haven't played before and you like reading instructions, check out the <a href="/instructions" target="_blank">instructions</a>. Otherwise you can just jump in and learn as you go.</p>
+          <p>Your first step is to add the words to the bowl that you will be guessing throughout the game.</p>
 
         </div>);
       }
