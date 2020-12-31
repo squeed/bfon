@@ -82,6 +82,11 @@ func (g *Game) Reset() {
 }
 
 func (g *Game) AddTeam(name string) {
+	if name == "" {
+		log.Printf("rejecting emtpy team")
+		return
+	}
+
 	if g.Round > 0 {
 		log.Printf("rejecting AddTeam, round %d", g.Round)
 		return
