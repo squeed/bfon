@@ -981,11 +981,11 @@ button {
     background-color: $light3;
     border: 1px solid $light5;
 
-    p.guessExample {
+    .guessExample {
         margin: 0rem 0;
     }
     
-    p.startRoundButton {
+    .startRoundButton {
         text-align: center;
         margin: .5rem 0;
         button {
@@ -998,7 +998,7 @@ button {
     }
 }
 .hostModal.newRoundModal {
-    p.startRoundButton {
+    .startRoundButton {
         button {
             @include pinkbutton();
         }
