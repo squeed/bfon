@@ -239,6 +239,11 @@ class Game extends React.Component<GameProps, GameState> {
                       Start game!
                   </button>
                   </p>
+                  <p className="startGameButton">
+                    <button onClick={() => this.setState({showAddTeamDialog: true})}>
+                      Add more teams
+                  </button>
+                  </p>
                 </div>
               </div>
             }
