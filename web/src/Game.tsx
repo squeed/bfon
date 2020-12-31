@@ -98,7 +98,7 @@ class Game extends React.Component<GameProps, GameState> {
 
       newRoundText = (<div className="newRoundDescription">
         <h5 className="roundTitle">Round 1</h5>
-        <img src={round1}></img>
+        <img src={round1} alt=""></img>
         <p>The cluemeister can say anything to help their teammates
         guess – except the word itself. No fair spelling or rhyming the word, either.
                     </p>
@@ -115,7 +115,7 @@ class Game extends React.Component<GameProps, GameState> {
       newRoundText = (
         <div className="newRoundDescription">
           <h5 className="roundTitle">Round 2</h5>
-          <img src={round2}></img>
+          <img src={round2} alt=""></img>
           <p>The cluemeister can only say ONE (1) word and can't make extra
                         noises or motions.</p>
           <p>For example:</p>
@@ -131,7 +131,7 @@ class Game extends React.Component<GameProps, GameState> {
       newRoundText = (
         <div className="newRoundDescription">
           <h5 className="roundTitle">Round 3</h5>
-          <img src={round3}></img>
+          <img src={round3} alt=""></img>
           <p>No words allowed! The cluemeister must act the word out.</p>
           <p>For example:</p>
           <p className="guessExample">
@@ -145,7 +145,7 @@ class Game extends React.Component<GameProps, GameState> {
       newRoundText = (
         <div className="newRoundDescription">
           <h5 className="roundTitle">The bowl is empty!</h5>
-          <img src={bowl0}></img>
+          <img src={bowl0} alt=""></img>
           <p>Time to check out the final scores.</p>
         </div>
       );
@@ -254,7 +254,7 @@ class Game extends React.Component<GameProps, GameState> {
               {ss.round === 1 && (
                 <div className="roundRule">
 
-                  <img src={round1}></img>
+                  <img src={round1} alt=""></img>
 
                   <div className="roundDescription">Avoid this word</div>
                 </div>
@@ -262,7 +262,7 @@ class Game extends React.Component<GameProps, GameState> {
               {ss.round === 2 && (
                 <div className="roundRule">
 
-                  <img src={round2}></img>
+                  <img src={round2} alt=""></img>
 
                   <div className="roundDescription">Say ONE word</div>
                 </div>
@@ -270,7 +270,7 @@ class Game extends React.Component<GameProps, GameState> {
               {ss.round === 3 && (
                 <div className="roundRule">
 
-                  <img src={round3}></img>
+                  <img src={round3} alt=""></img>
 
                   <div className="roundDescription">Actions only, no talking</div>
                 </div>
@@ -351,11 +351,11 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
 
 
     if (node) {
-
-      if (node.value === "") {
+      const v = node.value.trim();
+      if (v === "") {
         // alert("no word, ya bozo");
       } else {
-        this.props.addWord(node.value);
+        this.props.addWord(v);
         node.value = "";
         this.setState({ wordsAdded: this.state.wordsAdded + 1 });
       }

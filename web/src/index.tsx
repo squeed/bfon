@@ -6,9 +6,7 @@ import App from "./App";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
-} from "react-router-dom";
+  Route} from "react-router-dom";
 
 import Instructions from "./Instructions";
 
