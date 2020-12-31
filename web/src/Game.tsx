@@ -106,12 +106,13 @@ class Game extends React.Component<GameProps, GameState> {
         <h5 className="roundTitle">Round 1</h5>
         <img src={round1} alt=""></img>
         <p>The cluemeister can say anything to help their teammates
-        guess – except the word itself. No fair spelling or rhyming the word, either.
+        guess – except the word itself, or parts of the word. No fair spelling or rhyming the word, either.
                     </p>
         <p>For example:</p>
         <div className="guessExample">
           <p className="guessExampleWord">Meatballs</p>
-          <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
+          <p className="guessExampleText">"This is a food that you eat at IKEA."</p>
+          <p className="guessExampleText">(Not allowed: "These are balls made out of meat.")</p>
         </div>
 
 
