@@ -50,7 +50,7 @@ class Game extends React.Component<GameProps, GameState> {
   componentDidUpdate(prevProps: GameProps) {
     const round = this.props.serverState.round;
     if (!!this.props.serverState.userGuessing && this.state.showInterstitial) {
-      this.setState({showInterstitial: false});
+      this.setState({ showInterstitial: false });
       return;
     }
 
@@ -82,7 +82,8 @@ class Game extends React.Component<GameProps, GameState> {
             Tell everyone else to go to <a href="#">bfon.club</a> on their phones and enter the password:</p>
           <h5 className="roundTitle">{ss.name}</h5>
           <p>(Spaces and capitalization don't matter)</p>
-          <p>Everyone else can start adding words to the bowl while you set up the teams.</p>
+          <p>Everyone else can start adding words to the bowl.</p>
+          <p>Meanwhile, you set up the teams.</p>
 
         </div>);
       } else {
@@ -137,7 +138,6 @@ class Game extends React.Component<GameProps, GameState> {
             <p className="guessExampleWord">Meatballs</p>
             <p className="guessExampleText">[act out eating food, then act out assembling a chair]</p>
           </p>
-
         </div>
       );
     } else if (ss.round === 4) {
@@ -163,11 +163,7 @@ class Game extends React.Component<GameProps, GameState> {
           <div className="newRoundModal">
             {newRoundText}
             <p className="startRoundButton">
-              {ss.round === 0 &&
-
-                <button onClick={() => this.setState({ showInterstitial: false })}>Set up teams <i className="fa fa-arrow-right"></i></button>
-              }
-              {(ss.round < 4 && ss.round > 0) &&
+              {(ss.round < 4 ) &&
 
                 <button onClick={() => this.setState({ showInterstitial: false })}>Okay!</button>
               }
@@ -194,7 +190,7 @@ class Game extends React.Component<GameProps, GameState> {
                     </div>} */}
 
 
-              
+
               <div className="teamsDoneButton">
                 {ss.teams.length >= 2 &&
                   <button onClick={() => this.setState({ showAddTeamDialog: false })} disabled={ss.teams.length < 2}>
@@ -213,25 +209,25 @@ class Game extends React.Component<GameProps, GameState> {
               <div>
                 <div className="hostStartGame">
                   <p>The bowl contains {ss.words.length} words.</p>
-                  <p className="hint"><ul >
-                  <li>Only the host (that's you!) can start the game.</li>
-<li>Start the game when there are approximately 5 words per player.</li>
+                  <div className="hint"><ul >
+                    <li>Only the host (that's you!) can start the game.</li>
+                    <li>Start the game when there are approximately 5 words per player.</li>
                   </ul>
-                  </p>
-                {ss.words.length < 15 && <div>
-                  There need to be at least 15 words to start. Right now the
+                  </div>
+                  {ss.words.length < 15 && <div>
+                    There need to be at least 15 words to start. Right now the
                     bowl only has {ss.words.length} words in it.
                     </div>}
-                    <p className="startGameButton">
-                <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
-                  Start game!
+                  <p className="startGameButton">
+                    <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
+                      Start game!
                   </button>
                   </p>
-              </div>
+                </div>
               </div>
             }
             <WordList words={ss.words} addWord={this.props.addWord} />
-            
+
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
@@ -298,18 +294,33 @@ class Game extends React.Component<GameProps, GameState> {
               }}
             />
             <div className="gameEnd">
-              <h5>Good game!</h5> 
-              
+              <h5>Good game!</h5>
+
               <p>Spread the #bfon love <i className="fa fa-heart"></i>&nbsp;Tell your family, friends, and coworkers!</p><p> BFON is free, forever. If you liked it, consider donating to <a href="https://sea-watch.org/en/">Sea Watch.</a></p>
 
-              <p className="hint">
-                <ul>
-                  <li>
-                    Want to play again? The host (that's you!) can click the shortcut below. People won't have to enter the game password again.
+              {isAdmin &&
+                <div>
+                  <div className="hint">
+                    <ul>
+                      <li>
+                        Want to play again? The host (that's you!) can click the shortcut below. People won't have to enter the game password again.
                   </li>
-                </ul>
-              </p>
-              <p className="newGameButton">{isAdmin &&  <button onClick={()=>this.props.resetGame()} >Play again</button>}</p>
+                    </ul>
+                  </div>
+                  <p className="newGameButton"><button onClick={() => this.props.resetGame()} >Play again</button></p>
+                </div>
+              }
+              {!isAdmin &&
+                <div>
+                  <div className="hint">
+                    <ul>
+                      <li>
+                        Want to play again? Ask the host to start the game over.
+              </li>
+                    </ul>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         )}
@@ -435,23 +446,23 @@ class TeamForm extends React.Component<{
         <div className="hint">
           <ul>
             <li>
-            Fewer, larger teams mean people have more chances to guess. But if teams are too big, some people might not get a turn to be the cluemeister. Aim for maximum 4-5 people per team.
+              Fewer, larger teams mean people have more chances to guess. But if teams are too big, some people might not get a turn to be the cluemeister. Aim for maximum 4-5 people per team.
             </li>
             <li>
-            We recommend naming the team after the people
-                on each team, so people remember what team they are on. (For example: "Mom Eric Grandpa")
+              We recommend naming the team after the people
+              on each team, so people remember what team they are on. (For example: "Mom Eric Grandpa")
             </li>
           </ul></div>
 
 
-          <TeamList
-                serverState={this.props.serverState}
-                iAmClueing={false}
-                startClueing={() => {
-                  return;
-                }}
+        <TeamList
+          serverState={this.props.serverState}
+          iAmClueing={false}
+          startClueing={() => {
+            return;
+          }}
 
-              />
+        />
 
         <div className="addTeamForm"><input
           id="teamNameInput"
@@ -538,27 +549,27 @@ class Team extends React.Component<TeamProps> {
                 </button>
               </p>
             )}
-            
+
           </div>
           <div className="teamScore">
-            
+
             <p className="scoreNumber">{t.score}</p>
           </div>
         </div>
       );
     } else
       return (
-        <div className={this.props.showScore? "teamRow":"teamRow hostAddTeams"}>
+        <div className={this.props.showScore ? "teamRow" : "teamRow hostAddTeams"}>
           <div className="teamDetails">
-          
+
             <p className="teamName">{t.name}</p>
           </div>
           {this.props.showScore &&
-          <div className="teamScore">
-          
-            <p className="scoreNumber">{t.score}</p>
-          
-          </div>
+            <div className="teamScore">
+
+              <p className="scoreNumber">{t.score}</p>
+
+            </div>
           }
         </div>
       );
