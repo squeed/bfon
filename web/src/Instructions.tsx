@@ -22,7 +22,7 @@ class Instructions extends React.Component {
 
     
     render() {
-        
+
 
             return (
                 <LanguageContext.Provider value={this.context.value}>
@@ -47,7 +47,7 @@ class Instructions extends React.Component {
                     
                         <p>Bowl Full of Nouns (or, as we like to call it, BFON) is an online, remote-friendly, all-ages party game for 4+ people.</p>
 
-                        <p>You'll need a video call on your favorite platform (Google Meet, Zoom, etc.)</p><p> In addition,
+                        <p>You'll need to set up a video call on your favorite platform (Google Meet, Zoom, etc.)</p><p> In addition,
                 everybody needs a phone or other device that isn't being used for the video call.</p>
 
                         <hr>

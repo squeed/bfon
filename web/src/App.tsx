@@ -36,17 +36,17 @@ class App extends React.Component<AppProps, AppState> {
           ID: "crazyllama",
           adminUser: "1111-2222",
 
-          round: 1,
+          round: 0,
 
           teams: [
-            {
-              name: "Kelsey Ame Ngoc",
-              score: 5,
-            },
-            {
-              name: "Sergio Casey Molly",
-              score: 2,
-            }
+            // {
+            //   name: "Kelsey Ame Ngoc",
+            //   score: 5,
+            // },
+            // {
+            //   name: "Sergio Casey Molly",
+            //   score: 2,
+            // }
 
           ],
 
