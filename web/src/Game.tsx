@@ -255,12 +255,10 @@ class Game extends React.Component<GameProps, GameState> {
               endTurn={() => this.props.endTurn()}
             />
 
-
             <WordLog remainingWords={ss.remainingWords}
               hide={ss.deadline !== 0 && ss.userGuessing === this.props.myUserID} />
 
             <div className="gameDash">
-
               {ss.round === 1 && (
                 <div className="roundRule">
 
@@ -379,7 +377,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
     } else if (this.state.wordsAdded === 4) {
       commentary = <div>Just 1 more word.</div>;
     } else if (this.state.wordsAdded >= 5) {
-      commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
+      commentary = (<div><p>You're done.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
     }
 
 
