@@ -108,7 +108,7 @@ class Game extends React.Component<GameProps, GameState> {
       newRoundText = (<div className="newRoundDescription">
         <h5 className="roundTitle">Round 1</h5>
         <img src={round1} alt=""></img>
-        <p>The cluemeister can say anything to help their teammates
+        <p>The cluemeister can say almost anything to help their teammates
         guess – except the word itself, or parts of the word. No fair spelling or rhyming the word, either.
                     </p>
         <p>For example:</p>
@@ -116,6 +116,11 @@ class Game extends React.Component<GameProps, GameState> {
           <p className="guessExampleWord">Meatballs</p>
           <p className="guessExampleText">"This is a food that you eat at IKEA."</p>
           <p className="guessExampleText">(Not allowed: "These are balls made out of meat.")</p>
+        </div>
+        <div className="hint">
+          <ul>
+            <li>Pay attention, even when it isn't your turn! You will have to guess these words in a later round.</li>
+          </ul>
         </div>
 
 

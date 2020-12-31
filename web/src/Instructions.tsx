@@ -45,22 +45,33 @@ class Instructions extends React.Component {
                     </div>
                     {this.context.value === "EN" && 
                     <div className="instructionsBody instructionsEN">
+                        <h3>Hi there! Welcome to BFON.</h3>
                     
                         <p>Bowl Full of Nouns (or, as we like to call it, BFON) is an online, remote-friendly, all-ages party game for 4+ people. It is basically a souped-up version of Charades.</p>
 
                         <p>You'll need to set up a video call on your favorite platform (<a href="http://meet.google.com">Google Meet</a>, <a href="http://zoom.us">Zoom</a>, <a href="http://jitsi.org">Jitsi</a>, etc.)</p><p> In addition,
                 everybody needs a phone or other device that isn't being used for the video call.</p>
                         <img src={devicesetup}></img>
+                        <p className='hint'> 
+                        <ul>
+                            <li>Use the bigger screen for the video call and the smaller screen for BFON, not the other way around. You will want a bigger view of people's faces and bodies during round 3.</li>
+                        </ul>
+                        </p>
 
                         
                         
                         <h4>Create the game</h4>
-                        <p>Click "Create New Game" to start.</p>
+                        <p>One person clicks "Create New Game" to start a game. This person is the "host" of the game.</p>
                         <h4>Create teams</h4>
-                        <p>The person who created the game enters names for two or more teams.</p><p> Hint: we recommend typing the names of the people
-                on each team as the team name, so people remember what team they are on. For example, "Mom Eric Grandpa."</p>
+                        <p>The host enters names for two or more teams.</p>
+                        <p className='hint'> 
+                        <ul>
+                            <li>We recommend typing the names of the people
+                on each team as the team name, so people remember what team they are on. For example, "Mom Eric Grandpa."</li>
+                        </ul>
+                        </p>
                         <h4>Get everyone to join</h4>
-                        <p>A game name will appear (like "Pink Whale").</p><p> All players should go to <a href="http://bfon.club">http://bfon.club</a> and enter this
+                        <p>A game name will appear (like "Pink Whale").</p><p> All players should go to <a href="http://bfon.club">http://bfon.club</a> on their phones and enter this
                 name as the password.</p><p> Capitalization and spaces don't matter.</p>
                         <h4>Fill the bowl</h4>
 
@@ -121,6 +132,7 @@ class Instructions extends React.Component {
                                 <p className="guessExample">
                                     <p className="guessExampleWord">Meatballs</p>
                                     <p className="guessExampleText">"This is a food that you can eat at IKEA."</p>
+                                    <p className="guessExampleText">(Not allowed: "These are balls made out of meat.")</p>
                                 </p>
                             </li>
                             <li>
@@ -167,13 +179,12 @@ class Instructions extends React.Component {
             </p>
                         <h4>Scoring</h4>
                         <p>
-                            Each correctly guessed noun is worth 1 point. The game corrects for
-                            any unfairness in case one team got more play time than other teams.
+                            Each correctly guessed noun is worth 1 point.
             </p>
             <hr></hr>
             <h3>Credits</h3>
             <p>Written by <a href="http://caseyc.net">Casey</a> and <a href="http://molly.is">Molly</a> in December 2020. BFON is our way of helping everyone get through what we hope is the last gasp of the coronavirus pandemic.</p>
-            <p>Thanks to playtesters Ame, Sergio, Ng&#7885;c, and Kelsey.</p>
+            <p>Thanks to playtesters Ame, Sergio, Ng&#7885;c, Kelsey, Fran, Chris, and Jennifer.</p>
             <p>Special thanks to Liz Weinbloom, who taught us this game, and WOFIGO, who made it an institution.</p>
             <p>BFON is free and will stay free. If you like it, please consider donating to <a href="https://sea-watch.org">Sea Watch</a>.</p>
                     </div>
