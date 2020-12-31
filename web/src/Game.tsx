@@ -34,12 +34,16 @@ type GameProps = {
 
 type GameState = {
   showInterstitial: boolean;
+  showAddTeamDialog: boolean;
 };
 
 class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
-    this.state = { showInterstitial: !this.props.serverState.userGuessing };
+    this.state = {
+      showInterstitial: !this.props.serverState.userGuessing,
+      showAddTeamDialog: (props.serverState.round === 0 && props.myUserID === props.serverState.adminUser)
+    };
   }
 
   componentDidUpdate(prevProps: GameProps) {
@@ -69,11 +73,11 @@ class Game extends React.Component<GameProps, GameState> {
         newRoundText = (<div className="newRoundDescription">
           <p>Hey there, game host!</p>
           <p>
-            Tell everyone else to go to <a href="#">bfon.club</a> on their phones and enter the password:</p> 
-            <p className="roundTitle">{ss.name}</p> 
-            <p>(Spaces and capitalization don't matter)</p>
-            <p>Everyone else can start adding words to the bowl while you set up the teams.</p>
-          
+            Tell everyone else to go to <a href="#">bfon.club</a> on their phones and enter the password:</p>
+          <h5 className="roundTitle">{ss.name}</h5>
+          <p>(Spaces and capitalization don't matter)</p>
+          <p>Everyone else can start adding words to the bowl while you set up the teams.</p>
+
         </div>);
       } else {
         newRoundText = (<div>
@@ -86,7 +90,7 @@ class Game extends React.Component<GameProps, GameState> {
     } else if (ss.round === 1) {
 
       newRoundText = (<div className="newRoundDescription">
-        <p className="roundTitle">Round 1</p>
+        <h5 className="roundTitle">Round 1</h5>
         <img src={round1}></img>
         <p>The cluemeister can say anything to help their teammates
         guess – except the word itself. No fair spelling or rhyming the word, either.
@@ -103,7 +107,7 @@ class Game extends React.Component<GameProps, GameState> {
 
       newRoundText = (
         <div className="newRoundDescription">
-          <p className="roundTitle">Round 2</p>
+          <h5 className="roundTitle">Round 2</h5>
           <img src={round2}></img>
           <p>The cluemeister can only say ONE (1) word and can't make extra
                         noises or motions.</p>
@@ -119,7 +123,7 @@ class Game extends React.Component<GameProps, GameState> {
 
       newRoundText = (
         <div className="newRoundDescription">
-          <p className="roundTitle">Round 3</p>
+          <h5 className="roundTitle">Round 3</h5>
           <img src={round3}></img>
           <p>No words allowed! The cluemeister must act the word out.</p>
           <p>For example:</p>
@@ -134,7 +138,7 @@ class Game extends React.Component<GameProps, GameState> {
 
       newRoundText = (
         <div className="newRoundDescription">
-          <p className="roundTitle">The bowl is empty!</p>
+          <h5 className="roundTitle">The bowl is empty!</h5>
           <img src={bowl0}></img>
           <p>Time to check out the final scores.</p>
         </div>
@@ -148,13 +152,14 @@ class Game extends React.Component<GameProps, GameState> {
           leaveGame={() => this.props.leaveGame()}
         />
 
+
         <Modal isOpen={this.state.showInterstitial} onRequestClose={() => this.setState({ showInterstitial: false })} >
-          <div className="newRoundModal">
+          <div className="newRoundModal hostModal">
             {newRoundText}
             <p className="startRoundButton">
-            {ss.round === 0 &&
+              {ss.round === 0 &&
 
-                <button onClick={() => this.setState({ showInterstitial: false })}>To team setup <i className="fa fa-arrow-right"></i></button>
+                <button onClick={() => this.setState({ showInterstitial: false })}>Set up teams <i className="fa fa-arrow-right"></i></button>
               }
               {(ss.round < 4 && ss.round > 0) &&
 
@@ -168,37 +173,59 @@ class Game extends React.Component<GameProps, GameState> {
           </div>
         </Modal>
 
-        {ss.round === 0 && (
+        {this.state.showAddTeamDialog && (
           <div>
-            <WordList words={ss.words} addWord={this.props.addWord} />
-            {isAdmin && (
-              <div>
-                <TeamForm
-                  serverState={ss}
-                  addTeam={(team: string) => this.props.addTeam(team)}
-                />
-                <div>
-                  <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
-                    Start Game!
+            <TeamForm
+              serverState={ss}
+              addTeam={(team: string) => this.props.addTeam(team)}
+            />
+            <div>
+
+
+
+              {/* {ss.teams.length < 2 && <div>
+                You need to create some teams before you can start the game.
+                    </div>} */}
+
+
+              
+              <div className="teamsDoneButton">
+                {ss.teams.length >= 2 &&
+                  <button onClick={() => this.setState({ showAddTeamDialog: false })} disabled={ss.teams.length < 2}>
+                    Play with {ss.teams.length} teams <i className="fa fa-arrow-right"></i>
                   </button>
-                  {ss.teams.length < 2 && <div>
-                    You need to create some teams before you can start the game.
-                    </div>}
-                  {ss.words.length < 15 && <div>
-                    There need to be at least 15 words to start. Right now the
+                }
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {(ss.round === 0 && !this.state.showAddTeamDialog) && (
+          <div className="hostStartGameDialog">
+            {isAdmin &&
+              <div>
+                <div className="hostStartGame">
+                  <p>The bowl contains {ss.words.length} words.</p>
+                  <p className="hint"><ul >
+                  <li>Only the host (that's you!) can start the game.</li>
+<li>Start the game when there are approximately 5 words per player.</li>
+                  </ul>
+                  </p>
+                {ss.words.length < 15 && <div>
+                  There need to be at least 15 words to start. Right now the
                     bowl only has {ss.words.length} words in it.
                     </div>}
-
-                  <TeamList
-                    serverState={ss}
-                    iAmClueing={false}
-                    startClueing={() => {
-                      return;
-                    }}
-                  />
-                </div>
+                    <p className="startGameButton">
+                <button onClick={() => this.props.startGame()} disabled={!canStartGame}>
+                  Start game!
+                  </button>
+                  </p>
               </div>
-            )}
+              </div>
+            }
+            <WordList words={ss.words} addWord={this.props.addWord} />
+            
           </div>
         )}
         {ss.round > 0 && ss.round <= 3 && (
@@ -265,7 +292,7 @@ class Game extends React.Component<GameProps, GameState> {
               }}
             />
             <div className="gameEnd"><p>Good game!</p>
-            <p><a href="">New game, new teams</a></p>
+              <p><a href="">New game, new teams</a></p>
 
             </div>
           </div>
@@ -309,12 +336,12 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
   }
 
   render() {
-    var commentary = (<div>You should add 5 words</div>);
+    var commentary = (<div>You can add 5 more words.</div>);
     if (this.state.wordsAdded < 4 && this.state.wordsAdded > 0) {
       commentary = (<div>You can add {5 - this.state.wordsAdded} more words.</div>);
     } else if (this.state.wordsAdded === 4) {
       commentary = <div>Just 1 more word.</div>;
-    } else if (this.state.wordsAdded === 5) {
+    } else if (this.state.wordsAdded >= 5) {
       commentary = (<div><p>You're done.</p><p>Wait for the host to start the game.</p><p>(Psst! If you thought of one more perfect word, you can still sneak it in.)</p></div>);
     }
 
@@ -322,7 +349,7 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
     return (
       <div className="addWords">
 
-        <h3>Fill the bowl with words.</h3>
+        <h5>Fill the bowl with words.</h5>
 
         <div className="yes">
           <ul>
@@ -386,16 +413,44 @@ class TeamForm extends React.Component<{
 
   render() {
     return (
-      <div>
-        <label htmlFor="teamNameInput">Who's on Team 1?</label>
-        <input
+      <div className="addTeams">
+        <h5>Add teams</h5>
+        <p>Type names for 2 or more teams.</p>
+        <div className="hint">
+          <ul>
+            <li>
+            Fewer, larger teams mean people have more chances to guess. But if teams are too big, some people might not get a turn to be the cluemeister. Aim for maximum 4-5 people per team.
+            </li>
+            <li>
+            We recommend naming the team after the people
+                on each team, so people remember what team they are on. (For example: "Mom Eric Grandpa")
+            </li>
+          </ul></div>
+
+
+          <TeamList
+                serverState={this.props.serverState}
+                iAmClueing={false}
+                startClueing={() => {
+                  return;
+                }}
+
+              />
+
+        <div className="addTeamForm"><input
           id="teamNameInput"
           autoComplete="off"
+          autoCorrect="off"
+          spellCheck="false"
+          autoCapitalize="off"
           ref={this.teamNameRef}
         ></input>
-        <button onClick={() => this.addTeam()}>
+          <button onClick={() => this.addTeam()}>Add team &nbsp;
           <i className="fa fa-plus" aria-hidden="true"></i>
-        </button>
+          </button>
+
+
+        </div>
       </div>
     );
   }

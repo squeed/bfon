@@ -109,6 +109,14 @@ h4 {
     font-weight: 600;
     font-size: .8rem;
 }
+h5 {
+    // this is for center-aligned game state messages
+    font-family: "Work Sans", sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 1rem;
+}
 dl {
     dt {
 
@@ -226,6 +234,15 @@ button {
     cursor: pointer;
 }
 
+@mixin greenbutton {
+    background-color: $green3;
+    color: $light1;
+}
+@mixin pinkbutton {
+    background-color: $pink3;
+    color: $light1;
+}
+
 @mixin yesno {
     border-radius: 3px;
     padding: .2rem .5rem;
@@ -233,10 +250,10 @@ button {
     margin: 1rem 0;
     ul {
         list-style-type: none;
-        padding: .5rem 1rem;
+        padding: .7rem 1.3rem;
         margin: .2rem .2rem .2rem 1rem;
         li {
-            padding-bottom: .3rem;
+            padding-bottom: .5rem;
             span.example {
                 font-style: italic;
             }
@@ -263,6 +280,17 @@ button {
         content: '\f165';
         margin:0 5px 0 -25px;
         color: $dark2;
+    }
+}
+
+.hint {
+    @include yesno();
+    background-color: rgba(220,86,169,.3);
+    ul li:before {    
+        font-family: 'FontAwesome';
+        content: '\f0a4';
+        margin:0 5px 0 -25px;
+        color: $pink4;
     }
 }
 
@@ -471,12 +499,54 @@ button {
         @include ptext();
     }
 }
-  
+
+ /* ---------- ADD TEAMS ----------- */
+
+ .addTeams {
+     @include page-edge();
+
+     margin: 0;
+     .addTeamForm {
+         display: flex;
+     }
+     input {
+         height: 2.4rem;
+         flex: 2;
+         font-size: .8rem;
+         margin: 0 0 0 0;
+         border: 0;
+         border-radius: 3px 0 0 3px;
+     }
+     button {
+         @include buttonlike();
+         border-radius: 0 3px 3px 0;
+         margin: 0;
+         height: 2.5rem;
+         background-color: $pink3;
+         color: $light1;
+     }
+     
+ }
+
+ .teamsDoneButton {
+     text-align: center;
+     margin-top: 1rem;
+     margin-bottom: 1.5rem;
+     button {
+
+         @include pinkbutton();
+     }
+ }
+
+ 
+
  /* ---------- ADD WORDS ----------- */
  .addWords {
      @include page-edge();
      text-align: center;
-     margin-top: .5rem;
+     margin-top: 1rem;
+     margin-bottom: 1rem;
+     
 
      .bowlImage{
          left: 0;
@@ -494,6 +564,8 @@ button {
         line-height: 1rem;
         align-items: center;
         justify-content: center;
+        border: 0px;
+        border-radius: 3px;
         .scaletext-wrapper {
             overflow: visible !important;
             span {
@@ -516,6 +588,28 @@ button {
 
  }
 
+  /* ---------- HOST START GAME ----------- */
+
+  .hostStartGameDialog {
+      
+      .hostStartGame {
+        @include page-edge();
+        margin: 0 1rem;
+        padding-top: .1rem;
+        padding-bottom: .1rem; 
+        background-color: $light1;
+        border-radius: 3px;
+
+      }
+      .startGameButton{
+          text-align: center;
+          button {
+            @include pinkbutton();
+          }
+
+      }
+  }
+
   /* ---------- ALL TEAMS LIST ----------- */
 
   .teamRow {
@@ -537,8 +631,7 @@ button {
 
         
         button {
-            background-color: $green3;
-            color: $lightcream;
+            @include greenbutton();
             margin: .7rem 0 0 0;
             font-size: 1.1rem;
         }
@@ -806,8 +899,7 @@ button {
             max-height: 8rem;
         }
         .goButton button {
-            background-color: $green3;
-            color: $light1;
+            @include greenbutton();
         }
         .pink {
             color: $pink4;
@@ -846,10 +938,12 @@ button {
 .ReactModal__Content--after-open {
     padding: 0 !important;
 }
+
 .newRoundModal {
     @include zeromarg();
     height: 100%;
     background-color: $light3;
+    border: 1px solid $light5;
 
     p.guessExample {
         margin: 0rem 0;
@@ -859,14 +953,21 @@ button {
         text-align: center;
         margin: .5rem 0;
         button {
-            background-color: $green3;
-            color: $light1;
+            @include greenbutton();
             
             
         }
         
 
     }
+}
+.hostModal.newRoundModal {
+    p.startRoundButton {
+        button {
+            @include pinkbutton();
+        }
+    }
+    
 }
 
 .newRoundDescription {

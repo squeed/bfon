@@ -31,7 +31,7 @@ class Instructions extends React.Component {
                     <div className="instructionsNav">
                     <div className="gameTitle heading--stroke heading--shadow"> <a href="../game" target="_blank">B.F.O.N.</a></div>
                         
-                        <div className="languages">
+                        {/* <div className="languages">
                             <ul>
                                 <li>
                                     <a href="#" onClick={() => this.setLanguage("EN")}>EN</a>
@@ -40,7 +40,7 @@ class Instructions extends React.Component {
                                     <a href="#" onClick={() => this.setLanguage("DE")}>DE</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                     {this.context.value === "EN" && 
                     <div className="instructionsBody instructionsEN">
@@ -56,7 +56,7 @@ class Instructions extends React.Component {
                         <h4>Create the game</h4>
                         <p>Click "Create New Game" to start.</p>
                         <h4>Create teams</h4>
-                        <p>The person who created the game enters names for two teams.</p><p> Hint: we recommend typing the names of the people
+                        <p>The person who created the game enters names for two or more teams.</p><p> Hint: we recommend typing the names of the people
                 on each team as the team name, so people remember what team they are on. For example, "Mom Dave Grandpa."</p>
                         <h4>Get everyone to join</h4>
                         <p>A game name will appear (like "Pink Whale").</p><p> All players should go to <a href="http://bfon.club">http://bfon.club</a> and enter this
