@@ -264,7 +264,8 @@ class Game extends React.Component<GameProps, GameState> {
               }}
             />
             <div className="gameEnd"><p>Good game!</p>
-            <p>Play again?</p>
+            <p><a href="">New game, new teams</a></p>
+
             </div>
           </div>
         )}
