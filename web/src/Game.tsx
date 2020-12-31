@@ -249,12 +249,13 @@ class Game extends React.Component<GameProps, GameState> {
               startClueing={() => this.props.startGuessing()}
             />
 
-            <Guess
-              serverState={ss}
-              myUserID={this.props.myUserID}
-              submitGuess={(c) => this.props.guess(c)}
-              endTurn={() => this.props.endTurn()}
-            />
+            {this.props.myUserID === ss.userGuessing &&
+              <Guess
+                serverState={ss}
+                myUserID={this.props.myUserID}
+                submitGuess={(c) => this.props.guess(c)}
+                endTurn={() => this.props.endTurn()}
+              />}
 
             <WordLog remainingWords={ss.remainingWords}
               hide={ss.deadline !== 0 && ss.userGuessing === this.props.myUserID} />
@@ -646,35 +647,22 @@ type GuessProps = {
 };
 
 type GuessState = {
-  len: number;
   wordIdx: number; // index into array
+  lastRollLen: number;
 };
 // CLUEING WIDGET
 class Guess extends React.Component<GuessProps, GuessState> {
-  constructor(props: GuessProps) {
-    super(props);
-
-    this.state = {
-      wordIdx: Math.floor(
-        Math.random() * props.serverState.remainingWords.length
-      ),
-      len: props.serverState.remainingWords.length,
-    };
-  }
-
-  static getDerivedStateFromProps(
-    props: GuessProps,
-    state: GuessState
-  ): GuessState | null {
-    if (state.len === props.serverState.remainingWords.length) {
-      return null;
+  static getDerivedStateFromProps(props: GuessProps, state: GuessState) {
+    const len = props.serverState.remainingWords.length
+    if (state && len === state.lastRollLen) {
+      return;
     }
 
     return {
       wordIdx: Math.floor(
-        Math.random() * props.serverState.remainingWords.length
+        Math.random() * len
       ),
-      len: props.serverState.remainingWords.length,
+      lastRollLen: len,
     };
   }
 
@@ -693,7 +681,6 @@ class Guess extends React.Component<GuessProps, GuessState> {
 
       this.setState({
         wordIdx: newIdx,
-        len: this.state.len,
       });
       return;
     }
