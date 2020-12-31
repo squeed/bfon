@@ -509,6 +509,7 @@ class TeamList extends React.Component<{
           deadline={ss.deadline}
           startClueing={() => this.props.startClueing()}
           key={team.name}
+          timeRemaining={undefined}
         />
       );
     }
@@ -521,6 +522,7 @@ class TeamList extends React.Component<{
         deadline={ss.deadline}
         startClueing={() => this.props.startClueing()}
         key={team.name}
+        timeRemaining={(index === ss.currentTeam && ss.timeRemaining) ? ss.timeRemaining : undefined}
       />
     ));
     return <div>{teams}</div>;
@@ -532,6 +534,7 @@ type TeamProps = {
   active: boolean;
   deadline: number | undefined;
   showScore: boolean;
+  timeRemaining: number | undefined;
   startClueing: () => void;
 };
 
@@ -556,6 +559,9 @@ class Team extends React.Component<TeamProps> {
                   I'm the cluemeister <i className="fa fa-arrow-right"></i>
                 </button>
               </p>
+            )}
+            {!!this.props.timeRemaining && (
+              <p>Still your turn! {this.props.timeRemaining} seconds remain.</p>
             )}
 
           </div>
