@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"math/rand"
 	"strings"
 
@@ -12,7 +13,13 @@ func (a *App) pickGameName() (string, error) {
 	var err error
 	var gameName string
 
+	tries := 0
+
 	for err == nil {
+		tries++
+		if tries > 100 {
+			return "", errors.New("no free games")
+		}
 		gameName = permute()
 		gameID := game.ParseGameID(gameName)
 
