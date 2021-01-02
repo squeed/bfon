@@ -316,37 +316,39 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    if (!this.state || !this.state.connected || !this.state.userID) {
-      return <div> Connecting to BFON central...</div>;
-    }
-    if (!this.state.gameState) {
+    if (!this.state || !this.state.gameState || !this.state.userID) {
       return (
         <div className="gameLaunch">
           <div className="gameMainTitle">
             <h1 className="heading--stroke heading--shadow">Bowl Full of Nouns</h1>
             <h3>A remote party game for 4+ people</h3>
           </div>
-          <div className="launchOptions">
-            <div className="joinGame">
-              <form id="joinForm" onSubmit={(e) => { e.preventDefault(); this.joinGame() }}>
-                <p><label htmlFor="gamePW">Enter password:</label></p>
-                <input id="gamepw" ref={this.passwordInputRef}></input>
-              </form>
-              <button type="submit" form="joinForm">
-                Join Game <i className="fa fa-arrow-right" aria-hidden="true"></i>
-              </button>
-            </div>
-            <p>
-              OR
+          { (this.state && this.state.connected && this.state.userID) &&
+            <div className="launchOptions">
+              <div className="joinGame">
+                <form id="joinForm" onSubmit={(e) => { e.preventDefault(); this.joinGame() }}>
+                  <p><label htmlFor="gamePW">Enter password:</label></p>
+                  <input id="gamepw" ref={this.passwordInputRef}></input>
+                </form>
+                <button type="submit" form="joinForm">
+                  Join Game <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+              <p>
+                OR
             </p>
-            <div className="createGame">
-              <button onClick={() => this.createGame()}>
-                Create New Game
+              <div className="createGame">
+                <button onClick={() => this.createGame()}>
+                  Create New Game
               </button>
+              </div>
             </div>
-
-
-          </div>
+          }
+          {!(this.state && this.state.connected && this.state.userID) &&
+            <div>
+              Connecting you to BFON central. Please hold...
+            </div>
+          }
           <extras.Footer />
         </div>
       );
