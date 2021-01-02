@@ -715,7 +715,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
       return (
         <div className="clueWidget">
           <p className="clueWord">
-            <ScaleText>{cw}</ScaleText>
+            {cw}
           </p>
 
           <div className="cluemeisterButtons">
