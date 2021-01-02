@@ -103,8 +103,23 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  addWord(word: string) {
+  addWord(word: string): boolean {
     word = word.trim();
+
+    if (!this.state.gameState) {
+      return false; //unreachable
+    }
+
+    for (const w of this.state.gameState.words) {
+      if (word.localeCompare(w, undefined, {
+        ignorePunctuation: true,
+        sensitivity: "base",
+      }) === 0) {
+        this.onError("Hmm, that word is already in the bowl!");
+        return false;
+      }
+    }
+
     if (LOCAL_MODE) {
       let st = {
         gameState: this.state.gameState,
@@ -114,18 +129,19 @@ class App extends React.Component<AppProps, AppState> {
         st.gameState.remainingWords.push(word);
       }
       this.setState(st);
-      return;
+      return true;
     }
 
     if (!this.conn) {
       console.log("not connected");
-      return;
+      return false;
     }
 
     const msg: types.MessageAddWord = {
       word: word,
     }
     this.conn.sendCommand(types.MessageKind.addWord, msg);
+    return true;
   }
 
   createGame() {
@@ -230,14 +246,21 @@ class App extends React.Component<AppProps, AppState> {
     if (!name) {
       return;
     }
+    if (!this.state || !this.state.gameState) {
+      return; //unreachable
+    }
+    for (const team of this.state.gameState.teams) {
+      if (team.name === name) {
+        this.onError("That team name already exists.");
+        return;
+      }
+    }
 
     if (LOCAL_MODE) {
       let st = {
         gameState: this.state.gameState,
       };
-      if (!st.gameState) {
-        return;
-      }
+
       st.gameState.teams = st.gameState.teams.concat([{ name: name, score: 0 }]);
 
       this.setState(st);
@@ -245,7 +268,7 @@ class App extends React.Component<AppProps, AppState> {
       return
     }
 
-    if (!this.state.gameState || !this.conn) {
+    if (!this.conn) {
       return; // unreachable
     }
 

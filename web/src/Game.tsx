@@ -23,7 +23,7 @@ Modal.setAppElement("#root");
 
 type GameProps = {
   serverState: types.MessageGameState;
-  addWord: (word: string) => void;
+  addWord: (word: string) => boolean;
   addTeam: (name: string) => void;
   guess: (word: string) => void;
   startGame: () => void;
@@ -240,7 +240,7 @@ class Game extends React.Component<GameProps, GameState> {
                   </button>
                   </p>
                   <p className="startGameButton">
-                    <button onClick={() => this.setState({showAddTeamDialog: true})}>
+                    <button onClick={() => this.setState({ showAddTeamDialog: true })}>
                       Add more teams
                   </button>
                   </p>
@@ -357,7 +357,7 @@ export default Game;
 type WordListProps = {
   words: string[];
 
-  addWord: (word: string) => void;
+  addWord: (word: string) => boolean;
 };
 
 class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
@@ -378,9 +378,11 @@ class WordList extends React.Component<WordListProps, { wordsAdded: number }> {
       if (v === "") {
         // alert("no word, ya bozo");
       } else {
-        this.props.addWord(v);
+        const res = this.props.addWord(v);
         node.value = "";
-        this.setState({ wordsAdded: this.state.wordsAdded + 1 });
+        if (res) {
+          this.setState({ wordsAdded: this.state.wordsAdded + 1 });
+        }
       }
     }
   }
