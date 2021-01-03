@@ -9,8 +9,10 @@ IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
 
 podman pull "$IMAGE"
 
-podman pod kill bfon || true
+podman pod stop bfon || true
 podman pod rm bfon || true
+
+echo "Stopped old process..."
 
 podman pod create --name bfon -p 80:80 -p 443:443
 

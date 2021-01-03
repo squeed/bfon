@@ -8,7 +8,7 @@ repo="$(pwd)"
 
 rm -rf output && mkdir output
 
-TAG="${TAG:-latest}"
+TAG="${TAG:-$(git describe --match eom --always --dirty)}"
 IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
 
 cd "$repo/server"
@@ -23,6 +23,8 @@ REACT_APP_SERVER_URL="${REACT_APP_SERVER_URL:-wss://bfon.club/ws}" npm run build
 
 
 mv "$repo/web/build" "$repo/output/webroot"
+
+echo "$TAG" > "$repo/output/webroot/version.txt"
 
 
 cd "$repo"
