@@ -567,9 +567,9 @@ class Team extends React.Component<TeamProps> {
             <p className="teamName">{t.name}</p>
 
             {!!this.props.deadline && (
-              <p className="countdown">
+              <div className="countdown">
                 <extras.Countdown deadline={this.props.deadline} />
-              </p>
+              </div>
             )}
             {!this.props.deadline && (
               <p className="goButton">
@@ -667,10 +667,22 @@ type GuessState = {
 };
 // CLUEING WIDGET
 class Guess extends React.Component<GuessProps, GuessState> {
+  constructor(props: GuessProps) {
+    super(props);
+
+    const len = props.serverState.remainingWords.length
+    this.state = {
+      wordIdx: Math.floor(
+        Math.random() * len
+      ),
+      lastRollLen: len,
+    };
+  }
+
   static getDerivedStateFromProps(props: GuessProps, state: GuessState) {
     const len = props.serverState.remainingWords.length
     if (state && len === state.lastRollLen) {
-      return;
+      return null;
     }
 
     return {
@@ -723,7 +735,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
             <p className="buttonCorrect">
               <button onClick={() => this.guess(true)}>Got it!</button>
             </p>
-            <p className="otherButtons">
+            <div className="otherButtons">
               <p className="buttonGiveUp">
                 <button onClick={() => this.props.endTurn()}>End my turn</button>
               </p>
@@ -732,7 +744,7 @@ class Guess extends React.Component<GuessProps, GuessState> {
                   Oops, I cheated
               </button>
               </p>
-            </p>
+            </div>
 
           </div>
         </div>
