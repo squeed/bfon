@@ -265,8 +265,9 @@ func TestProcess(t *testing.T) {
 		&types.GameCommand{
 			Kind: "Deadline",
 			Deadline: &types.CommandDeadline{
-				GameID: GameID,
-				Round:  1,
+				GameID:   GameID,
+				Round:    1,
+				Deadline: 1707980688,
 			},
 		},
 	)

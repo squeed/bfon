@@ -30,7 +30,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 			log.Printf("error getting game: %v", err)
 			return
 		}
-		game.EndTurn(cmd.Deadline.Round)
+		game.EndTurn(cmd.Deadline.Round, cmd.Deadline.Deadline)
 		if err := a.store.SetGame(game); err != nil {
 			log.Printf("failed to save game: %v", err)
 			return
@@ -161,7 +161,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 			return
 		}
 		if err := a.store.SetGame(game); err != nil {
-			log.Printf("startguess failed: %v", err)
+			log.Printf("StartTurn failed: %v", err)
 			return
 		}
 		a.broadcastGameState(game)
@@ -170,8 +170,8 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 			return
 		}
 
-		go time.AfterFunc(time.Until(*t), func() {
-			log.Printf("Deadline expired, queuing...")
+		time.AfterFunc(time.Until(*t), func() {
+			log.Printf("Deadline for game %s expired, queuing...", game.ID)
 			a.cmds <- types.GameCommand{
 				Kind:     "Deadline",
 				Deadline: msg,

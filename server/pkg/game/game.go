@@ -133,7 +133,7 @@ func (g *Game) StartTurn(userID string, seqNumber int) *types.CommandDeadline {
 
 	g.UserGuessing = userID
 
-	period := 90
+	period := 10
 	if g.TimeRemaining != 0 {
 		period = g.TimeRemaining
 		g.TimeRemaining = 0
@@ -141,8 +141,9 @@ func (g *Game) StartTurn(userID string, seqNumber int) *types.CommandDeadline {
 
 	g.Deadline = time.Now().Add(time.Duration(period) * time.Second).Unix()
 	return &types.CommandDeadline{
-		GameID: g.ID,
-		Round:  g.Round,
+		GameID:   g.ID,
+		Round:    g.Round,
+		Deadline: g.Deadline,
 	}
 }
 
@@ -159,10 +160,15 @@ func (g *Game) EndUserTurn(seqNumber int) {
 	g.CurrentTeam = (g.CurrentTeam + 1) % len(g.Teams)
 }
 
-func (g *Game) EndTurn(round int) {
+func (g *Game) EndTurn(round int, deadline int64) {
 	log.Println("EndTurn")
 	if g.Round != round {
 		log.Println("round advanced; ignoring deadline")
+		return
+	}
+
+	if g.Deadline != deadline {
+		log.Println("Deadline changed; ignoring deadline")
 		return
 	}
 
@@ -204,7 +210,7 @@ func (g *Game) GuessWord(seqNo int, word string) {
 		remaining := time.Until(*g.DeadlineTime()).Seconds()
 		if remaining < 5 {
 			remaining = 0
-			g.EndTurn(g.Round)
+			g.EndTurn(g.Round, g.Deadline)
 		}
 		g.NextRound(int(remaining))
 		return

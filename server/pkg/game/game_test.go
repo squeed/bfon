@@ -60,8 +60,9 @@ func TestTurn(t *testing.T) {
 	assert.Equal(t, g.CurrentTeam, 1)
 	assert.Less(t, time.Now().Unix(), g.Deadline)
 	assert.Equal(t, &types.CommandDeadline{
-		GameID: "funkychicken",
-		Round:  1,
+		GameID:   "funkychicken",
+		Round:    1,
+		Deadline: g.Deadline,
 	}, msg)
 
 	// correct guess
@@ -79,7 +80,7 @@ func TestTurn(t *testing.T) {
 
 	// End the turn
 
-	g.EndTurn(1)
+	g.EndTurn(1, g.Deadline)
 
 	assert.Equal(t,
 		Game{

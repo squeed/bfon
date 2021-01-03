@@ -27,6 +27,7 @@ type GameCommand struct {
 type CommandDisconnect struct{}
 
 type CommandDeadline struct {
-	GameID string
-	Round  int
+	GameID   string
+	Round    int
+	Deadline int64
 }
