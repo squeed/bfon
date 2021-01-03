@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/squeed/bfon/server/pkg/conn"
 	"github.com/squeed/bfon/server/pkg/game"
 	pgame "github.com/squeed/bfon/server/pkg/game"
@@ -14,6 +15,7 @@ import (
 
 func (a *App) processCommand(cmd *types.GameCommand) {
 	log.Printf("processing cmd %s", spew.Sdump(cmd))
+	metricTotalCommands.With(prometheus.Labels{"command_kind": cmd.Kind}).Inc()
 
 	var connID = cmd.ConnID
 	var userID string

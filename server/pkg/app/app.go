@@ -27,7 +27,6 @@ type App struct {
 }
 
 func NewApp(db store.Store) *App {
-
 	return &App{
 		store: db,
 
@@ -66,6 +65,7 @@ func (a *App) HandleWS(w http.ResponseWriter, r *http.Request) {
 	)
 	a.conns[id] = c
 	c.Run()
+	metricTotalConns.Inc()
 }
 
 var upgrader = websocket.Upgrader{

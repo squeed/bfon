@@ -8,6 +8,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/squeed/bfon/server/pkg/app"
 	"github.com/squeed/bfon/server/pkg/app/store"
 )
@@ -31,8 +33,10 @@ func main() {
 	defer st.Close()
 
 	a := app.NewApp(st)
+	a.RegisterMetrics()
 
 	http.HandleFunc("/ws", a.HandleWS)
+	http.Handle("/metrics", promhttp.Handler())
 
 	go a.Run()
 
