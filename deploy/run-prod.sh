@@ -14,7 +14,7 @@ podman pod rm bfon || true
 
 echo "Stopped old process..."
 
-podman pod create --name bfon -p 80:80 -p 443:443
+podman pod create --name bfon -p 80:80 -p 443:443 -p 127.0.0.1:5000:5000 -p 127.0.0.1:2019:2019
 
 podman run --pod bfon \
     -d  \
