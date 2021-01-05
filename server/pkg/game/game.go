@@ -133,7 +133,7 @@ func (g *Game) StartTurn(userID string, seqNumber int) *types.CommandDeadline {
 
 	g.UserGuessing = userID
 
-	period := 10
+	period := 90
 	if g.TimeRemaining != 0 {
 		period = g.TimeRemaining
 		g.TimeRemaining = 0
