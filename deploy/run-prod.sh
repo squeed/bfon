@@ -4,32 +4,15 @@ set -euo pipefail
 mkdir -p /var/bfon-data /var/bfon-data/caddy_data /var/bfon-data/caddy_config /var/bfon-data/db
 chmod -R go+rwx /var/bfon-data
 
-TAG="${TAG:-latest}"
-IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
+if [[ -z "${TAG}" ]]; then
+    echo "missing TAG"
+    exit 1
+fi
 
-podman pull "$IMAGE"
+IMAGE=gcr.io/berlin-is-so-grey/bfon
 
-podman pod stop bfon || true
-podman pod rm bfon || true
+podman login -u _json_key --password-stdin https://gcr.io < /var/local/pull-secret.json
+podman pull "$IMAGE:$TAG"
 
-echo "Stopped old process..."
-
-podman pod create --name bfon -p 80:80 -p 443:443 -p 127.0.0.1:5000:5000 -p 127.0.0.1:2019:2019
-
-podman run --pod bfon \
-    -d  \
-	--userns=host \
-    -v /var/bfon-data/caddy_data:/data:Z \
-    -v /var/bfon-data/caddy_config:/config:Z \
-    --name=bfon-web \
-    "$IMAGE" \
-    /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
-
-podman run --pod bfon \
-	-d \
-	--userns=host \
-    -v /var/bfon-data/db:/db:Z \
-    --name=bfon-server \
-    "$IMAGE" \
-    /usr/bin/bfon-server \
-    -db /db/db.sqlite
+podman tag "$IMAGE:$TAG" "$IMAGE:_prod"
+systemctl restart pod-bfon
