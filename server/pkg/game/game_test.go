@@ -66,13 +66,13 @@ func TestTurn(t *testing.T) {
 	}, msg)
 
 	// correct guess
-	g.GuessWord(43, "b")
+	g.GuessWord(43, []string{"b"})
 
 	assert.Equal(t, uint(4), g.Teams[1].Score)
 	assert.Equal(t, []string{"a", "c"}, g.RemainingWords)
 	assert.Equal(t, 44, g.SeqNumber)
 
-	g.GuessWord(44, "c")
+	g.GuessWord(44, []string{"c"})
 
 	assert.Equal(t, uint(5), g.Teams[1].Score)
 	assert.Equal(t, []string{"a"}, g.RemainingWords)
@@ -107,7 +107,7 @@ func TestTurn(t *testing.T) {
 	g.StartTurn("4141", 46)
 
 	// Guess last word
-	g.GuessWord(47, "a")
+	g.GuessWord(47, []string{"a"})
 
 	assert.Greater(t, g.TimeRemaining, 0)
 
@@ -135,4 +135,14 @@ func TestTurn(t *testing.T) {
 			},
 		}, g,
 	)
+
+	// Start next turn
+	g.StartTurn("4141", 48)
+
+	// Guess last word
+	g.GuessWord(49, []string{"a", "b"})
+
+	assert.Equal(t, uint(4), g.Teams[0].Score)
+	assert.Equal(t, []string{"c"}, g.RemainingWords)
+	assert.Equal(t, 50, g.SeqNumber)
 }

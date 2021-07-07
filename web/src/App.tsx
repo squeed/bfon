@@ -24,6 +24,7 @@ const LOCAL_MODE = !process.env.REACT_APP_SERVER_URL;
 class App extends React.Component<AppProps, AppState> {
   conn: Connection | undefined;
   passwordInputRef = React.createRef<HTMLInputElement>();
+  wordQueue: string[] = [];
 
   componentDidMount() {
     if (LOCAL_MODE) {
@@ -100,6 +101,37 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({
         gameState: st,
       });
+
+      // Deal with the word queue
+      if (this.conn && this.wordQueue.length > 0 ){
+        if (!st.userGuessing) {
+          this.wordQueue = [];
+        } else {
+          // remove any missing words from the queue
+          var nwq: string[] = [];
+          for (const word of this.wordQueue) {
+            var found = false;
+            for (const rw of st.remainingWords) {
+              if (word === rw) {
+                found = true;
+                break;
+              }
+            }
+
+            // word was somehow not transmitted
+            if (found) {
+              console.log("Word " + word + " was not transmitted - resubmitting!");
+              nwq.push(word)
+            }
+          }
+
+          this.wordQueue = nwq;
+          if (this.wordQueue.length > 0) {
+            const msg: types.MessageGuess = { seqNumber: st.seqNumber, words: this.wordQueue };
+            this.conn.sendCommand(types.MessageKind.guess, msg);
+          }
+        }
+      }
     }
   }
 
@@ -235,9 +267,10 @@ class App extends React.Component<AppProps, AppState> {
     if (!this.state.gameState || !this.conn) {
       return; // unreachable
     }
+    
+    this.wordQueue.push(word)
 
-    const msg: types.MessageGuess = { seqNumber: this.state.gameState.seqNumber, word: word };
-
+    const msg: types.MessageGuess = { seqNumber: this.state.gameState.seqNumber, words: this.wordQueue };
     this.conn.sendCommand(types.MessageKind.guess, msg);
   }
 

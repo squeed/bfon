@@ -193,7 +193,7 @@ func (a *App) processCommand(cmd *types.GameCommand) {
 	}
 
 	if cmd.Kind == types.KindGuess {
-		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Word)
+		game.GuessWord(cmd.Guess.SeqNumber, cmd.Guess.Words)
 		if err := a.store.SetGame(game); err != nil {
 			log.Printf("Guess failed: %v", err)
 			return

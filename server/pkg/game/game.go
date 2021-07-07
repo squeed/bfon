@@ -178,7 +178,7 @@ func (g *Game) EndTurn(round int, deadline int64) {
 	g.CurrentTeam = (g.CurrentTeam + 1) % len(g.Teams)
 }
 
-func (g *Game) GuessWord(seqNo int, word string) {
+func (g *Game) GuessWord(seqNo int, words []string) {
 	log.Println("GuessWord")
 	if g.SeqNumber != seqNo {
 		log.Println("weird - word guess had incorrect seqno")
@@ -189,40 +189,48 @@ func (g *Game) GuessWord(seqNo int, word string) {
 		return
 	}
 
-	found := false
-	for _, w := range g.RemainingWords {
-		if w == word {
-			found = true
-			break
-		}
-	}
-	if !found {
-		log.Printf("Weird - word guess of nonexistent word %s", word)
+	if g.UserGuessing == "" {
+		log.Print("Ignoring guess after deadline")
 		return
 	}
 
 	g.SeqNumber++
-	g.Teams[g.CurrentTeam].Score++
 
-	if len(g.RemainingWords) == 1 {
-		g.RemainingWords = []string{}
-		// compute clock remaining
-		remaining := time.Until(*g.DeadlineTime()).Seconds()
-		if remaining < 5 {
-			remaining = 0
-			g.EndTurn(g.Round, g.Deadline)
+	for _, word := range words {
+		found := false
+		for _, w := range g.RemainingWords {
+			if w == word {
+				found = true
+				break
+			}
 		}
-		g.NextRound(int(remaining))
-		return
-	}
+		if !found {
+			log.Printf("Weird - word guess of nonexistent word %s", word)
+			return
+		}
 
-	words := make([]string, 0, len(g.RemainingWords)-1)
-	for _, w := range g.RemainingWords {
-		if w != word {
-			words = append(words, w)
+		g.Teams[g.CurrentTeam].Score++
+
+		if len(g.RemainingWords) == 1 {
+			g.RemainingWords = []string{}
+			// compute clock remaining
+			remaining := time.Until(*g.DeadlineTime()).Seconds()
+			if remaining < 5 {
+				remaining = 0
+				g.EndTurn(g.Round, g.Deadline)
+			}
+			g.NextRound(int(remaining))
+			return
 		}
+
+		words := make([]string, 0, len(g.RemainingWords)-1)
+		for _, w := range g.RemainingWords {
+			if w != word {
+				words = append(words, w)
+			}
+		}
+		g.RemainingWords = words
 	}
-	g.RemainingWords = words
 }
 
 // EndRound moves to the next round - called when the bowl is empty

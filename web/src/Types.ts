@@ -194,7 +194,8 @@ export class MessageEndTurn {
 }
 export class MessageGuess {
     seqNumber: number;
-    word: string;
+    word?: string;
+    words?: string[];
 
     static createFrom(source: any = {}) {
         return new MessageGuess(source);
@@ -204,5 +205,6 @@ export class MessageGuess {
         if ('string' === typeof source) source = JSON.parse(source);
         this.seqNumber = source["seqNumber"];
         this.word = source["word"];
+        this.words = source["words"];
     }
 }

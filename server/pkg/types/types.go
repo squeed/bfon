@@ -44,8 +44,8 @@ type MessageEndTurn struct {
 }
 
 type MessageGuess struct {
-	SeqNumber int    `json:"seqNumber"`
-	Word      string `json:"word"`
+	SeqNumber int      `json:"seqNumber"`
+	Words     []string `json:"words,omitempty"`
 }
 
 type MessageGameState struct {

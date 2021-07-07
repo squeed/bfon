@@ -205,7 +205,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 1,
-				Word:      "c"},
+				Words:     []string{"c"},
+			},
 		},
 	)
 
@@ -236,7 +237,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 2,
-				Word:      "a"},
+				Words:     []string{"a"},
+			},
 		},
 	)
 
@@ -336,7 +338,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 5,
-				Word:      "b"},
+				Words:     []string{"b"},
+			},
 		},
 	)
 
@@ -415,7 +418,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 7,
-				Word:      "a"},
+				Words:     []string{"a"},
+			},
 		},
 	)
 
@@ -445,7 +449,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 8,
-				Word:      "c"},
+				Words:     []string{"c"},
+			},
 		},
 	)
 
@@ -475,7 +480,8 @@ func TestProcess(t *testing.T) {
 			Kind:   types.KindGuess,
 			Guess: &types.MessageGuess{
 				SeqNumber: 9,
-				Word:      "b"},
+				Words:     []string{"b"},
+			},
 		},
 	)
 

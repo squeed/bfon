@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
@@ -45,6 +46,7 @@ func (a *App) Run() {
 			log.Printf("closed cmd q")
 			return
 		}
+		time.Sleep(time.Second * 2)
 		a.processCommand(&cmd)
 		log.Printf("processsing done")
 	}
