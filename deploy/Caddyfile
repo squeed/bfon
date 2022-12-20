@@ -8,9 +8,9 @@
 
 import /config/sites.d/*
 
-bfon.club
-
-root * /srv
-rewrite /instructions /
-reverse_proxy /ws localhost:5000
-file_server
+bfon.club {
+        root * /srv
+        rewrite /instructions /
+        reverse_proxy /ws localhost:5000
+        file_server
+}
