@@ -1,10 +1,14 @@
 {
-    storage file_system {
-        root /config
-    }
+        storage file_system {
+                root /config
+        }
 
-    admin  0.0.0.0:2019
+        admin 0.0.0.0:2019
+
+        auto_https off
 }
+
+import /config/sites.d/*
 
 bfon.club
 
