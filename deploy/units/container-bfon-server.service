@@ -14,7 +14,7 @@ After=pod-bfon.service
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/container-bfon-server.pid %t/container-bfon-server.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-bfon-server.pid --cidfile %t/container-bfon-server.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-bfon.pod-id --replace -d --userns=host -v /var/bfon-data/db:/db:Z --name=bfon-server gcr.io/berlin-is-so-grey/bfon:_prod /usr/bin/bfon-server -db /db/db.sqlite
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-bfon-server.pid --cidfile %t/container-bfon-server.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-bfon.pod-id --replace -d --userns=host -v /var/bfon-data/db:/db:Z --name=bfon-server ghcr.io/squeed/bfon:_prod /usr/bin/bfon-server -db /db/db.sqlite
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-bfon-server.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-bfon-server.ctr-id
 PIDFile=%t/container-bfon-server.pid

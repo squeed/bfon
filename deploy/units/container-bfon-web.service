@@ -14,7 +14,7 @@ After=pod-bfon.service
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/container-bfon-web.pid %t/container-bfon-web.ctr-id
-ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-bfon-web.pid --cidfile %t/container-bfon-web.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-bfon.pod-id --replace -d --userns=host -v /var/bfon-data/caddy_data:/data:Z -v /var/bfon-data/caddy_config:/config:Z --name=bfon-web gcr.io/berlin-is-so-grey/bfon:_prod /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
+ExecStart=/usr/bin/podman run --conmon-pidfile %t/container-bfon-web.pid --cidfile %t/container-bfon-web.ctr-id --cgroups=no-conmon --pod-id-file %t/pod-bfon.pod-id --replace -d --userns=host -v /var/bfon-data/caddy_data:/data:Z -v /var/bfon-data/caddy_config:/config:Z --name=bfon-web ghcr.io/squeed/bfon:_prod /usr/bin/caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/container-bfon-web.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/container-bfon-web.ctr-id
 PIDFile=%t/container-bfon-web.pid

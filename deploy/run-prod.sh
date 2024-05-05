@@ -9,9 +9,9 @@ if [[ -z "${TAG}" ]]; then
     exit 1
 fi
 
-IMAGE=gcr.io/berlin-is-so-grey/bfon
+IMAGE=ghcr.io/squeed/bfon
 
-podman login -u _json_key --password-stdin https://gcr.io < /var/local/pull-secret.json
+podman login --verbose ghcr.io -u squeed --password-stdin < /var/local/ghcr.token
 podman pull "$IMAGE:$TAG"
 
 podman tag "$IMAGE:$TAG" "$IMAGE:_prod"

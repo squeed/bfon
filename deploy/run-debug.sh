@@ -7,7 +7,7 @@ podman pod kill bfon || true
 podman pod rm bfon || true
 
 TAG="${TAG:-latest}"
-IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
+IMAGE=ghcr.io/squeed/bfon:"$TAG"
 
 podman pod create --name bfon -p 8080:80
 

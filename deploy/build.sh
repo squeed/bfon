@@ -9,7 +9,7 @@ repo="$(pwd)"
 rm -rf output && mkdir output
 
 TAG="${TAG:-$(git describe --match eom --always --dirty)}"
-IMAGE=gcr.io/berlin-is-so-grey/bfon:"$TAG"
+IMAGE=ghcr.io/squeed/bfon:"$TAG"
 
 cd "$repo/server"
 echo "building server"
