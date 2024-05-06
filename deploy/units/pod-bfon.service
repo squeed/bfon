@@ -14,7 +14,8 @@ Before=container-bfon-server.service container-bfon-web.service
 Environment=PODMAN_SYSTEMD_UNIT=%n
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/pod-bfon.pid %t/pod-bfon.pod-id
-ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/pod-bfon.pid --pod-id-file %t/pod-bfon.pod-id --name bfon -p 80:80 -p 443:443 -p 127.0.0.1:5000:5000 -p 127.0.0.1:2019:2019 --replace
+ExecStartPre=-/usr/bin/podman network create --ipv6 podman1
+ExecStartPre=/usr/bin/podman pod create --infra-conmon-pidfile %t/pod-bfon.pid --pod-id-file %t/pod-bfon.pod-id --network podman1 --name bfon -p 80:80 -p 443:443 -p 127.0.0.1:5000:5000 -p 127.0.0.1:2019:2019 --replace
 ExecStart=/usr/bin/podman pod start --pod-id-file %t/pod-bfon.pod-id
 ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/pod-bfon.pod-id -t 10
 ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/pod-bfon.pod-id
