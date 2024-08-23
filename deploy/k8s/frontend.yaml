@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:
+  Caddyfile: |
+    :5001 {
+    root * /srv
+      rewrite /instructions /
+      file_server
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/squeed/bfon:e8920e9
+          command: ["/usr/bin/caddy"]
+          args:
+            - run
+            - --config=/conf/Caddyfile
+            - --adapter=caddyfile
+          volumeMounts:
+            - name: conf
+              mountPath: /conf
+          ports:
+            - containerPort: 5001
+      imagePullSecrets:
+        - name: ghcr.io
+      volumes:
+        - name: conf
+          configMap:
+            name: frontend-config
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 5001
+    targetPort: 5001
+
+

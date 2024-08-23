@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backend-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 1Gi
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/squeed/bfon:e8920e9
+          command: ["/usr/bin/bfon-server"]
+          args: 
+          - -db=/db/db.sqlite
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: db
+              mountPath: /db
+      imagePullSecrets:
+        - name: ghcr.io
+      volumes:
+        - name: db
+          persistentVolumeClaim:
+            claimName: backend-db
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 5000
+    targetPort: 5000
